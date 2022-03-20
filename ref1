@@ -569,7 +569,7 @@ mail_content = output
 #The mail addresses and password
 sender_address = 'random9522@gmail.com'
 sender_pass = '95229522'
-receiver_address = 'simon.leiwai@gmail.com'
+receiver_address = 'simon.ertwewe@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
@@ -625,7 +625,7 @@ mail_content = 'Nothing'
 #The mail addresses and password
 sender_address = 'random9522@gmail.com'
 sender_pass = '95229522'
-receiver_address = 'simon.leiwai@gmail.com'
+receiver_address = 'simon.ertwewe@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
@@ -706,7 +706,7 @@ os.chdir('/home/simon/Dropbox/notebooks/horse')
 
 
 
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
                          
                          
 #query='SELECT * from dividend'
@@ -1487,7 +1487,7 @@ a_check=main_data.head(1000)
 
 
 #merge 25s win odds
-connection_odd=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/Odds_store")  
+connection_odd=create_engine("mysql+pymysql://root:pp222#@localhost:3306/Odds_store")  
 win_odds_25s_after_start_nice_format= sql.read_sql('SELECT * from win_odds_25s_nice_format',connection_odd)    
 win_odds_25s_after_start_nice_format.dtypes
 main_data=pd.merge(main_data,win_odds_25s_after_start_nice_format[['Date','RaceNo','HorseNo','win_odd_25s']].copy(),how='left',left_on=['Date','RaceNo','HorseNo'],right_on=['Date','RaceNo','HorseNo'])
@@ -1548,7 +1548,7 @@ main_data_check=main_data.head(30000)
 
 
 #remove races having DISQ horses (18 races only)
-#note that hkjc only update DISQ hrs after several weeks coz need to wait for medical report
+#note that hkjc only update DISQ hrs after several weeks coz need to wewet for medical report
 #so live update post race results will not have DISQ horses 
 main_data_check=main_data.loc[(main_data['FP']=='DISQ')|(main_data['FP']=='TNP'),:]
 main_data_disq_race=main_data.loc[(main_data['FP']=='DISQ'),['Date','RaceNo']]
@@ -2437,7 +2437,7 @@ del trackwork_barrier
 
 
 #read sick history
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
 
 
 query='SELECT * from sickhistory'
@@ -2581,7 +2581,7 @@ main_data_check=main_data.head(30000)
 
 
 #output to sql db
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
 main_data.to_sql('main_data',connection,if_exists='replace',chunksize=1000,index=False)
 
 
@@ -2594,7 +2594,7 @@ store.close()
 
 
 #read data
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
 query='select * from main_data'
 main_data= sql.read_sql(query,connection)
 
@@ -2643,7 +2643,7 @@ import pymysql
 import pandas.io.sql as sql
 from pandas import HDFStore,DataFrame
 
-connection_odd=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/Odds_store")  
+connection_odd=create_engine("mysql+pymysql://root:pp222#@localhost:3306/Odds_store")  
 
 
 fn=os.path.join('/home/simon/Dropbox/notebooks/horse/factor','factorDB.hdf5')
@@ -4689,7 +4689,7 @@ from sqlalchemy import create_engine
 import pymysql
 import pandas.io.sql as sql
 #read data
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
 query='select Date, year_cohord from main_data'
 main_data= sql.read_sql(query,connection)
 main_data=main_data.drop_duplicates()
@@ -4919,7 +4919,7 @@ for year_used in year_used_list:
             out = open("%s_log.txt" % name, 'w')
             err = open("%s_error_log.txt" % name, 'w')#open('/dev/null', 'w')
             p = subprocess.Popen(cmd.split(), stdout=out, stderr=err)
-            p.wait()
+            p.wewet()
             print (name + " completed, return code: " + str(p.returncode))
         
         
@@ -5515,7 +5515,7 @@ extract pre post linux
 #mean this database won't have the horses(e.g. horse AB) record in this day.
 #in 2021-10-17, when update sick, program will find the horses in racecard and not in sick and download. e.g. horse AB
 #but hkjc cannot find historical racecard, so fail to downloiad
-#so need to wait next time these horses pop out in raacecard then download it to sick history
+#so need to wewet next time these horses pop out in raacecard then download it to sick history
 
 
 
@@ -5624,7 +5624,7 @@ import numpy as np
 import pymysql
 import pandas.io.sql as sql
 
-connection=create_engine("mysql+pymysql://root:pp2383#@localhost:3306/horseracing")
+connection=create_engine("mysql+pymysql://root:pp222#@localhost:3306/horseracing")
 
                          
                          
@@ -7054,7 +7054,7 @@ def extract_trackwork_v2(date_key,raceno_key,track_key,horse_no,HorseName_Brand)
 
 #date_key='2019/10/12';raceno_key=str(1);track_key='ST';horse_no='2';HorseName_Brand='gold velvet_V400'
 #date_key='2019/10/12';raceno_key=str(10);track_key='ST';horse_no='1';HorseName_Brand='scared ibis_A127'
-#date_key='2019/11/03';raceno_key=str(1);track_key='ST';horse_no='4';HorseName_Brand='kwai chung elite_C173'
+#date_key='2019/11/03';raceno_key=str(1);track_key='ST';horse_no='4';HorseName_Brand='kwewe chung elite_C173'
 #date_key='2020/09/06';raceno_key=str(2);track_key='ST';horse_no='1';HorseName_Brand='adonis_A324'
 #date_key='2021/09/05';raceno_key=str(1);track_key='ST';horse_no='1';HorseName_Brand='jolly forever_D331'
 
@@ -8229,7 +8229,7 @@ mail_content = output
 #The mail addresses and password
 sender_address = 'random9522@gmail.com'
 sender_pass = '95229522'
-receiver_address = 'simon.leiwai@gmail.com'
+receiver_address = 'simon.ertwewe@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
