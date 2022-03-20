@@ -2356,7 +2356,7 @@ browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-fr
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-first-name")]')
 search.send_keys("ww kkk")
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-last-name")]')
-search.send_keys("lei wai")
+search.send_keys("lei wert")
 #click check-box
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-00n60000002gqco")]') #check box for energy
 search.click()
@@ -2814,7 +2814,7 @@ server.starttls()
 server.login("random9522@gmail.com", "95229522")
  
 msg = "YOUR MESSAGE!"
-server.sendmail("ww.leiwai@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
+server.sendmail("ww.wewe@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
 server.quit()
 
 
@@ -2826,7 +2826,7 @@ server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 server.login("random9522@gmail.com", "95229522")
 server.sendmail(
   "random9522@gmail.com", 
-  "ww.leiwai@gmail.com", 
+  "ww.wewe@gmail.com", 
   "this message is from python")
 server.quit()
 
@@ -5329,7 +5329,7 @@ from math import cos, pi, floor
 import requests
 
 Employee = pd.DataFrame({'EmployeeId': [11,12,13,14],
-                         'FirstName': ['lei wai','lung sing','wai man','mei yan'],
+                         'FirstName': ['lei wert','lung sing','wert man','mei yan'],
                          'LastName': ['kkk','lam','wong','chan']},index=False)
 
 Address = pd.DataFrame({'AddressId': [1,2,3,4],'EmployeeId': [11,12,13,14],
