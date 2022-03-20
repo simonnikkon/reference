@@ -2107,7 +2107,7 @@ data.groupby('col1').apply(lambda x: (x.col2 * x.col3).max())
 import pandas as pd
 from pandas import DataFrame
 data = pd.DataFrame(
-    {'horse':['ww','ww','ww','tom','tom','tom','sam','sam'],
+    {'wewe':['ww','ww','ww','tom','tom','tom','sam','sam'],
     'col2':[1,1,1,2,2,1,3,4],
      'col3':[-1,-2,-3,-4,-5,-6,-7,-8]
     }
@@ -2115,7 +2115,7 @@ data = pd.DataFrame(
 type(data)
 data
 col=data.columns.tolist();print(type(col));print(col)
-a=data.columns.get_loc("horse")
+a=data.columns.get_loc("wewe")
 
 a1=[col[a]] #chnage a single string to list
 
@@ -2129,7 +2129,7 @@ def find_no_unique(y,name):
                      'counts':out2})
     return output
 
-m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
 m.columns = ['out']
 m.index.tolist()
 m.ix[[('sam',0),('sam',1)],]
@@ -2143,7 +2143,7 @@ def find_no_unique(y,name):
     out2=len(y[name].unique())
     df = DataFrame(np.array([[out,out2]]), columns=['elements','counts'])
     return df
-m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
 
 
 def find_no_unique(y,name):
@@ -2153,7 +2153,7 @@ def find_no_unique(y,name):
                      'counts':[out2]})
     return output
 
-m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
 m
 
 
@@ -2165,10 +2165,10 @@ def find_no_unique(y,name):
                       'col2':out2})    
     return output
 
-m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
 m
 
-new=DataFrame(data.horse.unique())
+new=DataFrame(data.wewe.unique())
 new.columns=['name']
 new
 
@@ -2583,7 +2583,7 @@ def DBA(x):
 hkdb_with_track_work=hkdb_with_track_work.head(1)
 hkdb_with_track_work.sort_index(inplace=True)
 
-hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey','horse_no','Date']).apply(lambda x:DBA(x))
+hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey','wewe_no','Date']).apply(lambda x:DBA(x))
 
 %timeit DBA(x)
 
@@ -4836,11 +4836,11 @@ output=requests.post(url_use, allow_redirects=False).json()
 
 
 #multi process on dataframe apply
-data=main_data.loc[(main_data['Date']=='2019-10-20')&(main_data['Horse_Brand']=="i'm the conquist_B155"),:]
+data=main_data.loc[(main_data['Date']=='2019-10-20')&(main_data['wewe_Brand']=="i'm the conquist_B155"),:]
 def trackwork_swim_extract(data):
     data_index=data.index
     #data=data.reset_index(drop=True)
-    target_horse=data['Horse_Brand'].values[0]
+    target_wewe=data['wewe_Brand'].values[0]
     
     target_date=data['Date'].values[0]
     target_date_lag_two=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=2)
@@ -4856,8 +4856,8 @@ def trackwork_swim_extract(data):
     target_date_lag_30=target_date_lag_30.strftime("%Y-%m-%d") 
 
     #count_14=count_22=count_30=0
-    key_horse=trackwork_swim[:,1]==target_horse
-    trackwork_swim_temp=trackwork_swim[key_horse]
+    key_wewe=trackwork_swim[:,1]==target_wewe
+    trackwork_swim_temp=trackwork_swim[key_wewe]
     trackwork_swim_use=trackwork_swim_temp[(trackwork_swim_temp[:,0]<=target_date_lag_two)&(trackwork_swim_temp[:,0]>=target_date_lag_14)]
     count_14=np.shape(trackwork_swim_use)[0]
 
@@ -4872,12 +4872,12 @@ def trackwork_swim_extract(data):
 
 
     
-out=main_data[['Date','Horse_Brand']][0:1000].groupby(['Date','Horse_Brand'],group_keys=False).apply(lambda x:trackwork_swim_extract(x))
+out=main_data[['Date','wewe_Brand']][0:1000].groupby(['Date','wewe_Brand'],group_keys=False).apply(lambda x:trackwork_swim_extract(x))
 
 i=0
 all_out=pd.DataFrame([])
 for i in range(0,main_data[0:30].shape[0]):
-    out=trackwork_swim_extract(main_data[['Date','Horse_Brand']][i:i+1])
+    out=trackwork_swim_extract(main_data[['Date','wewe_Brand']][i:i+1])
     all_out=all_out.append(out)
     print(i)
 
@@ -4889,7 +4889,7 @@ def applyParallel(dfGrouped, func):
         ret_list = p.map(func, [group for name, group in dfGrouped])
     return pd.concat(ret_list)
 
-out=applyParallel(main_data[['Date','Horse_Brand']][0:10000].groupby(['Date','Horse_Brand'],group_keys=False), trackwork_swim_extract)
+out=applyParallel(main_data[['Date','wewe_Brand']][0:10000].groupby(['Date','wewe_Brand'],group_keys=False), trackwork_swim_extract)
 
 
 
@@ -5143,7 +5143,7 @@ def run(filename, path, inqueue, outqueue):
     finally:
         synchronized_close_file(h5file)
 
-os.chdir('/home/''/Dropbox/notebooks/horse/model')
+os.chdir('/home/''/Dropbox/notebooks/wewe/model')
 
 import os
 import queue
@@ -5499,7 +5499,7 @@ https://docs.telethon.dev/en/latest/basic/signing-in.html
 api_id = '6166311'
 api_hash = '6d6e7f24e14f3ccc98f89480b441381a'
 
-#horse quant
+#wewe quant
 api_id = '6864164'
 api_hash = '061fb4bb81d3fddf29103693a2c7d091'
 
@@ -5751,7 +5751,7 @@ python -m pip install python-crontab
 ./pip install --upgrade tensorflow-probability  
 
 ##########
-#install tensorflow 2.1, for edward 2, at least 2.1  (for horse, not using edward 2, so not necessary use 2.1)
+#install tensorflow 2.1, for edward 2, at least 2.1  (for wewe, not using edward 2, so not necessary use 2.1)
 
 ./pip install tensorflow-gpu==2.1   
 
