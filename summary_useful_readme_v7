@@ -1,0 +1,5928 @@
+# https://winpython.github.io/
+# need to install winpython to C:\\
+# place all the file in C:\WinPython-64bit-3.4.4.2\notebooks
+# F9 run selection/custom changed to shift+page up
+# F5 run all
+# place curser in front of a object and press ctrl+I then will get help
+# ctrl+1 is comment, ctrl+4 is block comment
+
+
+
+import imp
+imp.find_module("pandas")  #check module location/path
+imp.find_module("code2pdf") 
+
+
+
+import pandas
+pandas.__version__
+pandas.__file__
+
+
+
+#if fail to install pip, use below
+.\python C:\Users\\Desktop\python\get-pip\get-pip.py
+#the upgade with depenency
+.\pip install -U ib_insync
+
+
+len(y_pred)
+#check version
+import tensorflow as tf
+tf.__version__
+import numpy as np
+
+y_pred = [0, 2, 1, 3]
+np.array(y_pred)#disable chrome update
+#https://www.webnots.com/7-ways-to-disable-automatic-chrome-update-in-windows-and-mac/
+#cmd, services.msc
+#Look for “Google Update (gupdate)” and “Google Update (gupdatem)” on the list.
+#choose disable
+#restart
+
+import numpy as np
+np.__version__
+
+import scipy
+scipy.__version__
+import cython
+cython.__version__
+
+import numpy as np
+from scipy import optimize
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+
+a=0.7
+x=np.array([1,0.9,a,0.9,1,0.8,a,0.8,1])
+x=np.reshape(x,(3,3))
+
+np.all(np.linalg.eigvals(x) >= 0)
+
+
+import random
+import math
+inside=0
+total=1000
+for i in range(0,total):
+    x2=random.random()**2
+    y2=random.random()**2
+    if math.sqrt(x2+y2)<1:
+        inside=inside+1
+number=(float(inside)/total)*4
+
+
+
+
+
+
+
+
+
+import matplotlib.pyplot as plt
+plt.plot([1,2,3,4])
+plt.ylabel('some numbers')
+plt.show()
+
+          
+b=4
+
+#Multiple variables can be assigned on the same line using commas,
+x, y, z = 1, 3.1415, 'a'
+x
+
+
+
+#To input a floating data type, it is necessary to include a . (period,
+#dot) in the expression
+x = 1.0
+type(x)
+
+x = 2 + 3j
+x = complex(1)
+
+#Python contains another type of integer, known as a long
+#integer, which has no effective range limitation. Long integers are 
+#entered using the syntax x = 1L or by calling long().
+x = 1L
+x
+type(x)
+x=long(1)
+
+x='appleisgood'
+x[3:10:2]
+
+
+"""forloop"""
+for i in range(10):
+    print (i)
+
+
+
+def f(x,y):
+    return x*x
+print(f(3))
+
+
+def foo(param1, secondparam):
+    res=param1+secondparam
+    return res
+
+res    
+foo(300,500)
+
+print ('%s plus %s is equal to %s' % (3, 2, 5))
+
+
+
+
+#A list is a collection of other objects
+#– floats, integers, complex numbers, strings or even other lists.
+
+my_list = []
+my_list.append(18) 
+my_list.append(22) 
+my_list2 = [55.55,"Hi",3,99,222,222]
+my_list2[0]=333.333
+print(my_list)
+print (len(my_list),sum(my_list),my_list2.count(222))
+
+print(my_list2)
+print (my_list2[0])
+print(my_list2[-1])
+print(my_list2[1:3])
+print(my_list2[2:5])   #be careful the 5
+print(my_list2[2:])
+
+# 2dimensional list (list of lists)
+x = [[1,2,3,4], [5,6,7,8]]
+x[1]
+x[1][2]
+
+# Mixed data types
+x = [1,1.0,1+0j,'one',None,True]
+x
+    
+x = [0,1,2,3,4,5,6,7,8,9]
+x.append(0)
+x
+x.extend([11,12,13])
+x
+x.pop(1)
+x
+del x[0]
+x
+del x[1:3]
+x
+
+
+
+
+
+
+
+
+
+
+admins = set()    #assign empty set
+users = {'Smile', 'Tony','Happy','Sherry','Allen','Andy', 'Mars'}
+admins.add('ihc')
+admins.add('Mars')
+
+print (admins & users)
+print (admins | users)
+print (admins ^ users)
+print (admins - users )  
+print (users - admins )
+
+#字串可用雙引號"或用單引號'來進行標示
+
+# encoding: utf-8
+
+s = "Hello"  
+s += 'World'
+s1 = "HelloWorld".replace("ll","1")
+s2 = "Hello"[0]+"i" 
+print (s,s1,s2,len(s))
+
+
+
+#其中python字串內建的分割函式string.split()很好用，可以將字串依指定的字元(字串)切割
+
+s3 = "This is a sentence."
+s3_split=s3.split(' ')
+print (s3_split)
+
+
+
+
+
+
+
+
+
+#每個流程的結尾是用冒號:
+#屬於該流程底下的執行動作不需要任何括號，而是使用縮排
+#縮排可以使用Tab或四格Space，但不可混用，建議是把編輯器設定成Tab對應四格空白
+
+b=range(0,10)
+my_list=[]
+for i in range(0,10):  #for(i=0;i<10;i++) i=0...to 9
+    my_list.append(i+1)
+    print(i)
+    print(my_list[i])
+
+    
+if my_list[0]==1 and len(my_list)<10:
+    my_list[0]+=1
+    print ("1 state")
+elif (10 in my_list) or not(len(my_list)==10):
+    print ("2 state")
+    print ("range(i,j) is i~j-1")
+else:
+    print ("3 state")
+    print ("none of above")
+
+my_list=['alex','apple','anna']
+for i in my_list:      #for(i=0;i<my_list.length();i++)
+    print (i)          #cout<<my_list[i]
+
+
+#[自定義函式Function]
+def my_function(x,y):
+    return x-10,y+10
+x,y = my_function(10,20)
+print (x,y)
+
+
+#Class的初始化函式是由兩條底線包含著init做宣告。
+class Student:  
+    def __init__(self, name, grade, age):  
+        self.name = name  
+        self.grade = grade  
+        self.age = age  
+
+student_objects=[]
+student_objects.append( Student('john', 'B', 15) )
+student_objects.append( Student('dave', 'A', 12) )
+student_objects.append( Student('jane', 'A', 10) )
+
+for i in student_objects:
+    print (i.name,i.grade,i.age)
+
+
+'''[導入外部資源import]
+可以用import直接導入整個python檔中所有的函式
+或是用from檔案import函式，插入特定的函式'''
+
+import test #插入sys檔案中所有函式，使用sys檔中的write函式前須加檔名
+a=test.f(3)
+print(a)
+
+from test import f #從time檔案插入time()函式，使用time()前不需要加檔名
+a=f(3)
+print(a)
+
+
+import os
+print (os.getcwd()) # Prints the working directory
+
+
+#os.chdir(r'C:\Users\Ava Lau\Desktop\python\test_new')
+#print (os.getcwd())
+#import test4
+#a=test4.f(3)
+#print(a)
+
+
+
+
+#write text file
+file = open("newfile.txt", "w")
+file.write("hello world in the new file")
+file.write("and another line")
+file.close()
+
+
+
+
+
+
+
+
+
+#read variables from text file
+file = open('data.txt')
+for line in file:
+    name,age = line.strip().split()
+    print (name,age)
+
+
+    
+    
+f = open( "data.txt" )
+lines = f.readlines()
+f.close()
+for line in lines:
+    print (line)
+
+
+
+
+
+#排序是用程式處理資料中最常用到功能，python提供了很方便的sort函式
+#lambda是簡易型函式，只能回傳一個值，因此如果需要兩個值以上的排列順序，會用attrgetter
+
+class Student:  
+    def __init__(self, name, grade, age):  
+        self.name = name  
+        self.grade = grade  
+        self.age = age  
+
+student_objects=[]
+student_objects.append( Student('john', 'B', 15) )
+student_objects.append( Student('dave', 'A', 12) )
+student_objects.append( Student('jane', 'A', 10) )
+
+student_objects.sort(key=lambda i: i.grade) 
+for i in student_objects:
+    print (i.name,i.grade,i.age)
+
+
+from operator import attrgetter 
+
+student_objects.sort(key=attrgetter('grade', 'age'),reverse=True)  
+for i in student_objects:
+    print (i.name,i.grade,i.age) 
+
+
+
+matrix = [ [0,0,0,1,0],
+[0,0,0,0,0],
+[0,2,0,0,0],
+[0,0,0,0,0],
+[0,0,0,3,0] ]
+print(matrix)
+
+matrix = [ [1,2,2],
+[2,2,1],
+[1,2,1],]
+
+np.linalg.det(matrix)
+inverse = np.linalg.inv(matrix)
+np.linalg.det(inverse)
+
+
+
+from sympy import * # we are importing everything for ease of use
+x = Symbol("x")
+y = Symbol("y")     # create the two variables
+equation = Eq(x**3-2*x-5, y) # create the equation
+solve(equation, x)
+
+
+
+
+
+# install pandas is very troublesome, go to https://blogs.msdn.microsoft.com/pythonengineering/2016/04/11/unable-to-find-vcvarsall-bat/
+# for download Visual C++ Build Tools 2015
+# then go to program\python\python36\scripts, then shift+right click, open command window then
+# type pip install pandas
+
+import pandas
+data = pandas.read_csv('try.csv', sep=',', na_values=".")
+print(data) 
+
+
+
+
+print ('this is an apple'.split())
+
+
+#它匯入了最常用的 sys 內建模組。如果我們想處理指令行引數，就要靠 sys 模組裡的變數 argv：
+import sys
+print (sys.argv)
+
+
+
+
+
+
+
+
+
+
+
+
+
+                #### Below is the example from Scripylecture ####
+                # http://www.scipy-lectures.org/index.html
+
+                
+                
+############################
+############################
+############################
+############################
+############################
+######Start chapter 1#######
+############################
+############################
+############################
+############################
+############################
+                
+                
+                #1.2. The Python language
+            
+#1.2.2. Basic types
+print?
+a=4
+type(a) 
+
+
+test = (3 > 4)
+test
+
+#list
+l = ['red', 'blue', 'green', 'black', 'white']
+l[2:4]
+#Note that l[start:stop] contains the elements with indices i such as 
+#start<= i < stop (i ranging from start to stop-1)
+
+#slicing
+l[3:]
+l[:3]
+#append
+l.append('pink')
+l
+l.extend(['pink', 'purple'])
+l
+#concatenate
+r = ['red', 'pk']
+l+r
+#sort
+sorted(l)
+
+'''Methods and Object-Oriented Programming
+The notation r.method() (e.g. r.append(3) and L.pop()) 
+is our first example of object-oriented programming (OOP). Being a list, 
+the object r owns the method function that is 
+called using the notation. is necessary for going through this tutorial'''
+# r is a list, type r. then press tab, we can see all r objects
+
+help(r)
+
+'''The newline character is \n, and the tab character is \t.
+ Strings are collections like lists. '''
+a = "hello I am happy to see you"
+a[0]
+a[2:27:2] # Syntax: a[start:stop:step]
+a.replace('e', 'x', 2)
+help(replace)
+a.replace('e', 'x')
+
+#A dictionary is basically an efficient table that maps keys to values. It is an unordered container
+d = {'a':1, 'b':2, 3:'hello'}
+d.keys()
+d.values()
+
+d['a']
+d['alex']='hand'
+d
+del d['alex']
+
+#Tuples are basically immutable lists. The elements of a tuple are written between parentheses, or just separated by commas:
+t = 12345, 54321, 'hello!'
+t[0]="e"
+
+x =(0,1,2,3,4,5,6,7,8,9) # remember  () is tuple
+type(x)
+#It is not possible to add or remove elements forma tuple. However, if a tuple contains
+#a mutable data type, for example a tuple that contains a list, 
+#the contents mutable data type can change.
+x= ([1,2],[3,4])
+x[0][1] = 10
+x # Contents can change, elements cannot
+
+
+
+
+
+
+
+
+
+#Sets: unordered, unique items:
+x = set(['MSFT','GOOG','AAP','HPQ','SFT'])
+
+
+x.add('CSCO')
+y = set(['XOM', 'GOOG'])
+x.intersection(y)
+x = x.union(y)
+x
+x.remove('XOM')
+
+
+
+#As a result, when one variable is assigned to another (e.g. to y = x), these will actually point
+#to the same data in the computer’s memory. To verify this, id() can be used to determine the unique
+#identification number of a piece of data.5
+x=1
+y=x
+id(x)
+id(y)
+
+
+
+
+#id is object memory address
+a = [1, 2, 3]
+id(a)
+print(id(1))
+
+
+
+
+#1.2.3. Control Flow
+a = 10
+if a == 1:
+    print(1)
+elif a == 2:
+    print(2)
+else:
+    print('A lot')
+
+for i in range(4):
+    print(i)
+
+for word in ('cool', 'powerful', 'readable'):
+    print('Python is %s' % word)
+
+z = 1 + 1j
+while abs(z) < 100:
+    z = z**2 + 1
+    print(abs(z),z)
+
+import numbers, math, cmath, decimal
+math.sqrt(20)
+
+# break out of enclosing for/while loop:
+z = 1 + 1j
+while abs(z) < 100:
+    if z.imag == 0:
+        break
+    z = z**2 + 1
+
+#continue the next iteration of a loop, skip beneth code and go to next loop
+a = [1, 0, 2, 4]
+for element in a:
+    if element == 0:
+        continue
+    print(1/element)
+    print('go')
+
+1 is 1
+b = [1, 2, 3]
+2 in b
+
+
+vowels = 'aeiouy'
+
+for i in 'powerful':
+    if i in vowels:
+        print(i)
+
+#Could use while loop with a counter as above. Or a for loop:
+words = ('cool', 'powerful', 'readable')
+
+for i in range(0, len(words)):
+    print((i, words[i]))
+#But, Python provides a built-in function - enumerate - for this:
+for index, item in enumerate(words):
+    print((index, item))
+
+d = {'a': 1, 'b':1.2, 'c':1j}
+>>> for key, val in sorted(d.items()):
+        print('Key: %s has value: %s' % (key, val))
+
+this_is_list=[i**2 for i in range(4)]
+this_is_list
+type(this_is_list)
+
+#1.2.4. Defining functions
+def disk_area(radius):
+     return 3.14 * radius * radius
+disk_area(1.5)
+
+def double_it(x=2):
+   return x * 2
+double_it()
+
+x = 5
+def setx(y):
+    x = y
+    print('x is %d' % x)
+
+setx(10)
+x
+    
+def setx(y):
+    global x
+    x = y
+    print('x is %d' % x)
+
+setx(10)
+x
+
+#1.2.5. Reusing code: scripts and modules
+
+%run test.py
+
+import os
+os
+
+import numpy
+import numpy as np
+np.linspace(0, 10, 6)
+
+from pylab import *
+import scipy
+
+from importlib import reload
+reload(test)
+
+
+#How does python find packages?
+#https://leemendelowitz.github.io/blog/how-does-python-find-packages.html
+#Python imports work by searching the directories listed in sys.path.
+import sys
+print ('\n'.join(sys.path))
+#sys.path is populated using the current working directory, followed
+# by directories listed in your PYTHONPATH environment variable, followed
+# by installation-dependent default paths, which are controlled by the site module.
+
+
+# Create a hi module in your home directory.
+home_dir = os.path.expanduser("~")
+my_module_file = os.path.join(home_dir, "hi.py")
+with open(my_module_file, 'w') as f:
+  f.write('print ("hi")\n')
+  
+  f.write('a=10\n')
+
+# Add the home directory to sys.path
+sys.path.append(home_dir)
+
+# Now this works, and prints hi!
+import hi 
+print (hi.a)
+
+#When you import a module, you usually can check 
+#the __file__ attribute of the module to see where the module is in your filesystem:
+
+import numpy
+numpy.__file__
+import selenium
+selenium.__file__
+#find_module can be used to find a module:
+
+import imp
+imp.find_module('numpy')
+
+# Load the hi module using imp
+hi = imp.load_source('hi', my_module_file)
+
+# Now this works, and prints hi!
+import hi 
+print (hi.a) # a is 10!
+print (type(hi)) # it's a module!
+
+
+
+
+
+
+
+
+
+
+
+#The list of directories searched by Python is given by the sys.path variable
+import sys
+sys.path
+
+#Modules must be located in the search path, therefore you can: 
+    #creat new search directory
+    
+import test2
+
+import sys
+new_path = '/WinPython-64bit-3.4.4.2/new_module'
+if new_path not in sys.path:
+    sys.path.append(new_path)
+
+import test2
+
+#1.2.6. Input and Output
+
+#1.2.7. Standard Library
+import os
+os.getcwd() #current directory
+os.listdir(os.curdir)
+
+#make a directory (directory=file)
+os.mkdir('junkdir')
+#Rename the directory:
+os.rename('junkdir', 'foodir')
+os.remove('junk.txt')
+
+a = os.path.abspath('data.txt')
+a
+os.path.split(a)
+os.path.dirname(a)
+os.path.basename(a)
+
+os.path.exists('junk.txt')
+os.path.isfile('junk.txt')
+os.path.isdir('junk.txt')
+os.path.join(os.path.expanduser('~'), 'local', 'bin')
+
+#Walking a directory
+#os.path.walk generates a list of filenames in a directory tree.
+for dirpath, dirnames, filenames in os.walk(os.curdir):
+        for fp in filenames:
+            print (os.path.abspath(fp))
+
+#Environment variables: see teaching
+
+#Find all files ending in .txt:
+import glob
+glob.glob('*.txt')
+
+
+import raw_input
+
+1.2.8. Exception handling in Python see teaching when necessary
+https://www.programiz.com/python-programming/exception-handling
+while True:
+    try:
+        x = int(input('Please enter a number: '))
+        break
+    except ValueError:
+        print('That was no valid number. Try again...')
+
+        
+#They are not equivalent. Finally code is run no matter what else happens. It is useful for cleanup code that has to run.    
+        
+try:
+    x = int(input('Please enter a number: '))
+finally:
+    print('Thank you for your input')
+
+    
+    
+    
+    
+# import module sys to get the type of exception
+import sys
+
+randomList = ['a', 0, 2, 'b',4]
+
+for entry in randomList:
+    try:
+        print("The entry is", entry)
+        r = 1/int(entry)
+        break                          #if put a break here, it will quite for loop until no error happen
+    except:
+        print("Oops!",sys.exc_info()[0],"occured.")
+        print("Next entry.")
+        print()
+
+print("The reciprocal of",entry,"is",r)
+        
+
+        
+        
+        
+#except Exception as e can access the attributes of the exception object:
+import sys
+def catch():
+    try:
+        asd()
+    except Exception as e:
+        print (e.message,'\n', e.args,'\n',e.__doc__,'\n',sys.exc_info())
+
+catch()
+
+
+import sys
+def catch():
+    try:
+        asd()
+    except Exception as e:
+        return False
+
+
+catch()
+print("ee")
+        
+
+
+
+#http://www.runoob.com/python/python-exceptions.html        
+触发异常
+#我们可以使用raise语句自己触发异常            
+# 定义函数
+def mye( level ):
+    if level < 1:
+        raise Exception,"Invalid level!"
+        #raise Exception("Invalid level!", level)
+        print("not") # 触发异常后，后面的代码就不会再执行
+        
+try:
+    mye(0)            # 触发异常
+except Exception,err:
+    print 1,err
+else:
+    print 2        
+        
+print(3)        
+        
+        
+
+
+
+class Networkerror(RuntimeError):
+    def __init__(self, arg):
+        self.args = arg
+#在你定义以上类后，你可以触发该异常，如下所示：
+
+try:
+    raise Networkerror("Bad hostname")
+except Networkerror,e:
+    print e.args
+
+
+
+
+
+#http://c.biancheng.net/view/2360.html        
+def main():
+    try:
+        # 使用try...except来捕捉异常
+        # 此时即使程序出现异常，也不会传播给main函数
+        mtd(3)
+    except Exception as e:
+        print('abnormal', e)
+    # 不使用try...except捕捉异常，异常会传播出来导致程序中止
+    mtd(3)
+def mtd(a):
+    if a > 0:
+        raise ValueError("value >0")
+main()    
+
+        
+        
+        
+
+#1.2.9. Object-oriented programming (OOP)
+class Student(object):
+    def __init__(self, name):
+        self.name = name
+    def set_age(self, age):
+        self.age = age
+    def set_major(self, major):
+        self.major = major
+
+anna = Student('anna')
+anna.set_age(21)
+anna.set_major('physics')
+
+anna.name
+anna.age
+anna.major
+
+
+
+
+
+
+
+
+#                1.3. NumPy: creating and manipulating numerical data »
+#                    1.3.1. The Numpy array object
+
+import numpy as np
+a = np.array([0, 1, 2, 3])
+a
+type(a)
+np.lookfor('create array') 
+np.lookfor('find unique')
+np.con*?
+
+a = np.array([0, 1, 2, 3])
+a.ndim
+a.shape
+len(a)
+b = np.array([[0, 1, 2], [3, 4, 5]])    # 2 x 3 array
+b
+b[1,2]
+
+c = np.array([[[1,2], [2,3]], [[3,3], [2,4]]])
+c
+c.shape
+type(c)
+c.dtype
+
+x = [0.0, 1, 2, 3, 4] # Any float makes all float
+y = np.array(x)
+y
+y * y # Elementbyelement
+z = np.asmatrix(x)
+z
+
+import numpy as np
+x=np.array([1.0,2.0,3.0,4.0,5.0]) #entered as a 1-dimensional array using
+np.ndim(x)
+x.shape #this is a array with 5 element, not that it is placed horizontally
+x[2]
+
+
+
+x=np.array([[1.0,2.0,3.0,4.0,5.0]]) #If an array with 2-dimensions is required, it is necessary to use a trivial nested list.
+np.ndim(x)
+x.shape #1x5
+x[0,3]
+
+x=np.matrix([1.0,2.0,3.0,4.0,5.0])#A matrix is always 2-dimensional and so a nested list is not required to initialize a a row matrix
+np.ndim(x)
+x.shape #1x5
+x[0,3]
+
+x=np.matrix([[1.0],[2.0],[3.0],[4.0],[5.0]])
+np.ndim(x)
+x.shape #5x1
+x[2,0]
+
+x = np.array([[1.0,2.0,3.0],[4.0,5.0,6.0],[7.0,8.0,9.0]])
+x
+x.shape
+
+
+
+#1.3.1.2.2. Functions for creating arrays
+a = np.arange(10) # 0 .. n-1  (!)
+a
+b = np.arange(1, 9, 2) # start, end (exclusive), step
+b
+a = np.ones((3, 3))  # reminder: (3, 3) is a tuple
+a
+b = np.zeros((2, 2))
+b
+c = np.eye(3)
+c
+d = np.diag(np.array([1, 2, 3, 4]))
+d
+#random numbers 
+a = np.random.rand(4)       # uniform in [0, 1]
+a
+b = np.random.randn(4)      # Gaussian
+b  
+np.random.seed(1234)        # Setting the random seed
+
+#You may have noticed that, in some instances, array elements are 
+#displayed with a trailing dot (e.g. 2. vs 2). 
+#This is due to a difference in the data-type used:
+>>>
+a = np.array([1, 2, 3])
+a.dtype
+b = np.array([1., 2., 3.])
+b.dtype
+
+c = np.array([1, 2, 3], dtype=float)
+d = np.array([1+2j, 3+4j, 5+6*1j])
+d.dtype
+
+
+#Basic visualization
+import matplotlib.pyplot as plt  # the tidy way
+x = np.linspace(0, 3, 20)
+y = np.linspace(0, 9, 20)
+plt.plot(x, y)       # line plot    
+plt.plot(x, y, 'o')  # dot plot
+
+#2D plot
+image = np.random.rand(30, 30)
+plt.imshow(image, cmap=plt.cm.hot)    
+plt.colorbar()  
+
+
+
+#Indexing and slicing
+a = np.diag(np.arange(3))
+a
+a[1, 1]
+a[2, 1] = 10 # third line, second column
+a
+a[2]
+
+a = np.arange(10)
+a
+a[2:9:1] # [start:end:step]
+#All three slice components are not required: by default, 
+#start is 0, end is the last and step is 1:
+a = np.arange(10)
+a
+a[1:3]
+a[::3] #::s is the same as 0:n:s where n is the length of the array (or list).
+a[3:]
+
+x = np.array([1.0,2.0,3.0,4.0,5.0])
+y = x[1::2]
+y
+
+y = np.array([[0.0, 1, 2, 3, 4],[5, 6, 7, 8, 9]])
+y
+y[:1,:] # Row 0, all columns
+y[:1] # Same as y[:1,:]
+y[:,:1] # all rows, column 0
+y[:1,0:3] # Row 0, columns 0 to 2
+y[0,:]
+
+y = np.reshape(range(25),(5,5))
+y
+y[0] # Same as y[0,:], first row
+
+y.flat[0] # Scalar slice, flat is 1dimensional
+y.flat[13] # Scalar slice, flat is 1dimensional
+y.flat[:] # All element slice
+
+>>> x = np.reshape(range(4),(2,2))
+>>> s1 = np.copy(x[0,:]) # Function copy
+>>> s2 = x[:,0].copy() # Method copy
+>>> s3 = np.array(x[0,:]) # Create a new array
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+is_prime = np.ones((100,), dtype=bool)
+
+#Using boolean masks
+np.random.seed(3)
+a = np.random.random_integers(0, 20, 15)
+a
+mask = (a % 3 == 0)
+extract_from_a = a[mask] # or,  a[a%3==0]
+extract_from_a           # extract a sub-array with the mask
+
+#Indexing with a mask can be very useful to assign a new value to a sub-array:
+a[a % 3 == 0] = -1
+a
+
+#Indexing with an array of integers
+a = np.arange(0, 100, 10)
+a
+a[[9, 7]] = -100
+c
+type(a[[9, 7]])
+
+#1.3.2. Numerical operations on arrays
+b = np.ones(4)
+
+b = np.ones(4) + 1
+a - b
+a * b
+j = np.arange(5)
+2**(j + 1) - j
+
+a = np.arange(10000)
+%timeit a + 1  
+
+l = range(10000)
+%timeit [i+1 for i in l] 
+
+#Matrix multiplication:
+c = np.ones((3, 3))
+c
+c.dot(c)
+
+#Logical operations:
+a = np.array([1, 1, 0, 0], dtype=bool)
+b = np.array([1, 0, 1, 0], dtype=bool)
+np.logical_or(a, b)
+
+np.logical_and(a, b)
+
+x = np.array([[1,2],[3,4]])
+x>0
+
+#Transcendental functions:
+a = np.arange(5)
+np.sin(a)
+np.log(a)
+np.exp(a)
+#Shape mismatches
+a = np.arange(4)
+a + np.array([1, 2]) 
+
+help(np.triu)
+
+#   Transposition:
+a = np.triu(np.ones((3, 3)), 1)   # see help(np.triu)
+a
+a.T
+
+
+#Computing sums
+import numpy as np
+from numpy import matrix
+from numpy import linalg
+
+x = np.array([[1, 1], [2, 2]])
+x
+x.sum(axis=0)   # columns (first dimension)
+x[:, 0].sum(), x[:, 1].sum()
+x.sum(axis=1)   # rows (second dimension)
+x[0, :].sum(), x[1, :].sum()
+
+x = np.random.rand(2, 2, 2);y=3
+x
+x.sum(axis=2)[0, 1]     
+
+x[0, 1, :].sum() 
+
+
+
+#Logical operations:
+a = np.zeros((100, 100))
+np.any(a != 0)
+
+np.all(a == a)
+
+
+a = np.array([10, 100, 300, 211])
+b = np.array([2, 2, 3, 2])
+c = np.array([6, 4, 4, 5])
+((a <= b) & (b <= c)).all()
+
+
+
+#statistics
+x = np.array([1, 2, 3, 1])
+y = np.array([[1, 2, 3], [5, 6, 1]])
+x.mean()
+np.median(x)
+np.mean(y, axis=-1) # last axis
+x.std()          # full population standard dev.
+
+#Worked Example: data statistics
+data = np.loadtxt('populations.txt')
+year, hares, lynxes, carrots = data.T  # trick: columns to variables
+from matplotlib import pyplot as plt
+plt.axes([0.2, 0.1, 0.5, 0.8]) 
+plt.plot(year, hares, year, lynxes, year, carrots) 
+plt.legend(('Hare', 'Lynx'), loc=(1.05, 0.5)) 
+
+populations = data[:, 1:]
+populations.mean(axis=0)
+populations.std(axis=0)
+
+help(plt.legend)
+
+
+#Worked Example: diffusion using a random walk algorithm
+n_stories = 1000 # number of walkers
+t_max = 200      # time during which we follow the walker
+#We randomly choose all the steps 1 or -1 of the walk:
+t = np.arange(t_max)
+steps = 2 * np.random.random_integers(0, 1, (n_stories, t_max)) - 1
+np.unique(steps) # Verification: all steps are 1 or -1
+
+#We build the walks by summing steps along the time:
+
+positions = np.cumsum(steps, axis=1) # axis = 1: dimension of time
+sq_distance = positions**2
+
+#We get the mean in the axis of the stories:
+
+mean_sq_distance = np.mean(sq_distance, axis=0)
+#Plot the results:
+
+plt.figure(figsize=(4, 3)) 
+
+plt.plot(t, np.sqrt(mean_sq_distance), 'g.', t, np.sqrt(t), 'y-') 
+
+plt.xlabel(r"$t$") 
+
+plt.ylabel(r"$\sqrt{\langle (\delta x)^2 \rangle}$") 
+
+
+#Broadcasting
+help(np.tile)
+a = np.tile(np.arange(0, 40, 10), (3, 1)).T
+a
+b = np.array([0, 1, 2])
+a + b
+
+a = np.arange(0, 40, 10)
+a.shape
+a = a[:, np.newaxis]  # adds a new axis -> 2D array
+a.shape
+a
+a + b
+#Worked Example: Broadcasting
+mileposts = np.array([0, 198, 303, 736, 871, 1175, 1475, 1544,1913, 2448])
+distance_array = np.abs(mileposts - mileposts[:, np.newaxis])
+distance_array
+
+x, y = np.arange(5), np.arange(5)[:, np.newaxis]
+distance = np.sqrt(x ** 2 + y ** 2)
+distance
+plt.pcolor(distance)    
+plt.colorbar()
+
+
+x, y = np.mgrid[0:4, 0:4]
+x
+y
+
+#Flattening
+a = np.array([[1, 2, 3], [4, 5, 6]])
+a.ravel()
+a.T
+a.T.ravel()
+
+
+a = np.arange(4*3*2).reshape(4, 3, 2)
+a.shape
+a[0, 2, 1]
+b = a.transpose(1, 2, 0)
+b.shape
+b[2, 1, 0]
+
+
+#Sorting data
+#Sorting along an axis:
+a = np.array([[4, 3, 5], [1, 2, 1]])
+b = np.sort(a, axis=0)
+b
+#Note Sorts each row separately!
+#In-place sort:
+a.sort(axis=1)
+a
+
+
+#Sorting with fancy indexing:
+a = np.array([4, 3, 1, 2])
+j = np.argsort(a)
+j
+a[j]
+#Finding minima and maxima:
+a = np.array([4, 3, 1, 2])
+j_max = np.argmax(a)
+j_min = np.argmin(a)
+j_max, j_min
+
+
+
+#1.3.3. More elaborate arrays
+
+
+import numpy as np
+a = np.array([1, 2, 3])
+a.dtype
+
+a[0] = 1.9     # <-- float is truncated to integer
+a
+
+
+#Forced casts:
+a = np.array([1.7, 1.2, 1.6])
+b = a.astype(int)  # <-- truncates to integer
+b
+
+#Rounding:
+a = np.array([1.2, 1.5, 1.6, 2.5, 3.5, 4.5])
+b = np.around(a)
+b                    # still floating-point
+
+c = np.around(a).astype(int)
+
+
+
+
+
+############################
+############################
+############################
+############################
+############################
+######good use #######
+############################
+############################
+############################
+############################
+############################
+
+
+#Import Data
+from pandas import read_excel
+data = read_excel('train.xlsx','Sheet1')
+data2 = read_excel('train2.xlsx','Sheet1')
+data['Gender'].ndim
+
+
+#https://www.analyticsvidhya.com/blog/2016/01/12-pandas-techniques-python-data-manipulation/
+
+d1=data.loc[(data["Gender"]=="F") & (data["Education"]=="Non-degree") & (data["Loan_Status"]=="Y"),
+          ["Gender","Education","Loan_Status"]]
+
+
+#Create a new function:
+def num_missing(x):
+  return sum(x.isnull())
+
+#Applying per column:
+print ("Missing values per column:")
+print (data.apply(num_missing, axis=0)) #axis=0 defines that function is to be applied on each column
+
+#Applying per row:
+print ("\nMissing values per row:")
+print (data.apply(num_missing, axis=1).head()) #axis=1 defines that function is to be applied on each row
+
+
+#First we import a function to determine the mode
+from scipy.stats import mode
+mode(data['Loan_Amount']).mode[0]
+     
+data['Gender'].fillna('F',inplace=True)
+
+data['Loan_Amount'].fillna(mode(data['Loan_Amount']).mode[0], inplace=True)
+
+
+
+#7 – Merge DataFrames
+
+merged_inner = pd.merge(left=data2,right=data,how='inner', left_on='Property_Area', right_on='Property_Area')
+merged_left = pd.merge(left=data2,right=data,how='left', left_on='Property_Area', right_on='Property_Area')
+merged_right = pd.merge(left=data2,right=data,how='right', left_on='Property_Area', right_on='Property_Area')
+
+merged_right['happy'].fillna('e', inplace=True)
+
+word=['alex','apple']
+key_lower=list(map(lambda x:x.upper(),word))
+
+a=[]
+a
+b=[1,2,5]*3
+b
+type([]*3)
+
+#class detail example
+#https://www.tutorialspoint.com/python/python_classes_objects.htm
+
+class Employee:
+   'Common base class for all employees'
+   empCount = 0 #empCount is a class variable whose value is shared among all instances of a this class
+#__init__() is a special method, which is called class constructor or initialization 
+#method that Python calls when you create a new instance of this class.
+   def __init__(self, name, salary):                         #attribute name are name and salary
+      self.name = name
+      self.salary = salary
+      Employee.empCount += 1
+   
+   def displayCount(self):                                   # method name is displaycount
+     print ("Total Employee %d" % Employee.empCount)
+
+   def displayEmployee(self):
+      print ("Name : ", self.name,  ", Salary: ", self.salary)
+
+
+Employee.empCount
+
+"This would create first object of Employee class"
+emp1 = Employee("Zara", 2000)
+"This would create second object of Employee class"
+emp2 = Employee("Manni", 5000)
+
+emp1.displayEmployee()
+emp1.displayCount()
+
+emp1.age = 7  # Add an 'age' attribute.
+emp1.age = 8  # Modify 'age' attribute.
+del emp1.age  # Delete 'age' attribute.
+
+emp1.displayEmployee() # return the value of the method
+emp1.displayEmployee  #only call the method
+
+emp1.displayEmployee()
+Employee.displayEmployee(emp1) #pass emp1 to employee class so need to include emp1 in()
+
+import class_sample as cs
+cc=cs.Employee
+emp3 = cc("alex", 2000)
+emp3.displayEmployee()
+
+
+
+hasattr(emp1, 'name')    # Returns true if 'age' attribute exists
+getattr(emp1, 'name')    # Returns value of 'age' attribute
+setattr(emp1, 'age', 8) # Set attribute 'age' at 8
+delattr(empl, 'age')    # Delete attribute 'age'
+
+#Built-In Class Attributes
+print ("Employee.__doc__:", Employee.__doc__)
+print ("Employee.__name__:", Employee.__name__)
+print "Employee.__module__:", Employee.__module__
+print "Employee.__bases__:", Employee.__bases__
+print "Employee.__dict__:", Employee.__dict__
+
+
+
+
+
+
+
+
+#Class Inheritance
+class Parent:        # define parent class
+   parentAttr = 100
+   def __init__(self):
+      print ("Calling parent constructor")
+
+   def parentMethod(self):
+      print ('Calling parent method')
+
+   def setAttr(self, attr):
+      Parent.parentAttr = attr
+
+   def getAttr(self):
+      print ("Parent attribute :", Parent.parentAttr)
+
+class Child(Parent): # define child class
+   def __init__(self):
+      print ("Calling child constructor")
+
+   def childMethod(self):
+      print ('Calling child method')
+
+c = Child()          # instance of child
+c.childMethod()      # child calls its method
+c.parentMethod()     # calls parent's method
+c.setAttr(200)       # again call parent's method
+c.getAttr()          # again call parent's method
+
+
+
+
+import pandas
+import numpy as np
+data = pandas.read_csv('demo.csv', sep=',', na_values=".")
+data['mean']=data['money'].groupby(data['name']).transform('mean')
+ee=data[['money']] #is dataframe
+ee=data['money'] #is series
+data['mean_2']=data.groupby(['name'])['money'].transform('mean')
+data['std_unbiased']=data['money'].groupby(data['name']).transform('std') #return unbiased std
+data['std_unbiased_2']=data.groupby(['name'])['money'].transform('std') #return unbiased std
+data['count']=data.groupby(['name'])['name'].transform('count')
+data['std_biased']=np.sqrt(np.square(data['std_unbiased'])*(data['count']-1)/data['count'])
+
+a=np.array([100,200,300])
+np.std(a)  # bias std
+np.std(a,ddof=1) #sample std or unbiased std
+
+
+http://www.shanelynn.ie/summarising-aggregation-and-grouping-data-in-python-pandas/
+
+
+
+#python loc
+http://pythonjourney.com/python-pandas-dataframe-loc-my-understanding-so-far/
+
+
+#chapter4 array and matrix
+import numpy as np
+x = [0.0, 1, 2, 3, 4]
+y = np.array(x)
+y
+z=asmatrix(y)
+
+type(y)
+y.dtype
+
+import numpy as np
+x=np.array([[2],[1,[2],[3,[3,[8,[[8,['p']]]],66,8]]],3])
+print(x)
+x.shape
+
+x=np.array([[2],['2q'],[3]])
+print(x)
+x.shape
+
+
+y=np.array([1,2,3])
+print(y)
+y.shape
+
+y=np.array([[1],2])
+print(y)
+y.shape
+
+y=np.array([[1,[2]],[3,[9]]])
+print(y)
+y.shape
+
+y=np.array([[[1], [2]], [[3], [4]]])
+print(y)
+y.shape
+
+
+y=np.array([[1,'p'],7,'p',3])
+print(y)
+y.shape
+y[0][1]
+
+
+
+help(np.randn())
+np.random.randn(2,2) #normal 0,1
+
+#Numbers which differ by less than 2.220410􀀀16 are numerically the same. to
+np.finfo(float).eps
+
+eps = np.finfo(float).eps
+x=1
+x = x+eps/2
+x==1
+
+x=4
+y=10
+np.allclose(x,y,atol=6) #absolute tolerant
+
+
+#tile replicates an array
+#according to a specified size vector.
+x = np.array([[1,2],[3,4]])
+x
+np.tile(x,(2,3))
+
+
+
+
+>>> x = np.random.randn(10,1)
+x
+>>> y = np.tile(x,2)
+y
+np.array_equal(x,y)
+
+#tests if two arrays are equivalent, even if they do not have the exact same shape. Equivalence
+#is defined as one array being broadcastable to produce the other.
+np.array_equiv(x,y)
+
+#numerical index
+import numpy as np
+x = np.arange(5)
+x.shape
+x.ndim
+x
+sel = np.array([[4,2],[3,1]]) # 2 by 2 array
+x[sel]
+
+sel = np.array([0.0,1]) # Floating point data
+x[sel] #error, coz index must be integet
+x[sel.astype(int)] # No error
+x[[1,2]]
+x[[0]]
+x[[0]].ndim  
+x[0].ndim  
+
+x[0:1]
+
+#ix_
+x = np.reshape(range(25),(5,5))
+x
+x[np.ix_([2,3],[0,1,2])] # Rows 2 & 3, cols 0, 1 and 2
+x[2:4,:3] # Same, standard slice
+
+  
+
+x = np.reshape(range(10), (2,5))
+x
+sel = np.array([0,1])
+>>> x[sel,sel] # 1dim, 0,1 and 0,1 so will choose 00,11 (direct pair)
+
+>>> x[sel, sel+1]#0,1 and 1,2 so will choose 01, 12
+np.array([ 1., 7.])
+
+sel_row = np.array([[0,0],[1,1]])
+sel_col = np.array([[0,1],[0,1]])
+>>> x[sel_row,sel_col] # 2 by 2, no broadcasting # will choose 00,01, 10,11
+
+>>> sel_row = array([[0],[1]])
+>>> sel_col = array([[0,1]])
+>>> x[sel_row,sel_col] # 2 by 1 and 1 by 2 difference
+shapes, broadcasted as 2 by 2
+
+#12.1.1 Mixing Numerical Indexing with Scalar Selection
+sel=np.array([[1],[2]]) # 2 by 1
+x[0,sel] # Row 0, elements sel
+
+#12.1.2 Mixing Numerical Indexing with Slicing
+x[:,[1]]
+x[:,[1]].shape #two dimensional 1x2
+
+x[[1],:]
+x[[1],:].shape #two dimensional 1x2
+#Note that the mixed numerical indexing and slicing uses a list ([1]) so that it is not a scalar. This is important
+#since using a scalar will result in dimension reduction.
+x[:,1] # 1dimensional
+
+x = np.reshape(np.arange(3**3), (3,3,3)) # 3d
+
+
+#12.1.3 Linear Numerical Indexing using flat
+x.flat[[[3,4,9],[1,5,3]]]
+
+#12.2 Logical Indexing
+x = np.arange(-3,3)
+x
+x < 0
+x[x < 0]
+
+x = np.reshape(np.arange(-8,8), (4,4))
+x[x < 0]
+
+x = np.reshape(np.arange(-8,8),(-4,4))
+cols = np.any(x < -6, 0)
+rows = np.any(x < 0, 1)
+x[np.ix_(cols,rows)] # Upper 2 by 2
+
+sum(x,0)
+x[0,sum(x,0)>0]
+
+np.extract(x>0,x)
+
+x = np.reshape(np.arange(-10,10),(4,5))
+x[np.sum(x,1)<0,:] = np.arange(5.0) # Replace rows w/ negative sum
+x
+
+x = np.reshape(np.arange(-10,10),(4,5))
+x[:,np.sum(x,1)<0] = np.arange(4) # Error array is 1 by 4 array,*************************
+
+x[:,np.sum(x,1)<0] = np.reshape(np.arange(4),(4,1)) # Correct col replacement
+x
+
+x = np.zeros((4,3))
+x
+np.size(x,0)
+np.size(x,1)
+help(np.size)
+
+x = np.linspace(0,100,11)
+enumerate(x)
+for i,y in enumerate(x):
+    print('i is :', i)
+    print('y is :', y)
+
+
+x = np.random.randn(1000)
+for i in x:
+    print(i)
+    if i > 2:
+        break
+x=np.arange(-2,10)
+for i in x:
+    if i >= 0:
+        continue
+    print(i)
+
+    
+    
+    
+    #13.6 List Comprehensions
+x = np.arange(5)
+y = []
+for i in x:
+    y.append(np.exp(x[i]))
+y
+
+
+z = [np.exp(x[i]) for i in x]
+z
+type(z)
+
+x = np.arange(5)
+z = [x[i]**2 for i in x if np.floor(i/2)==i/2]
+z
+
+x1 = np.arange(5.0)
+x1
+x2 = np.arange(3.0)
+x2
+z = [x1[i]*x2[j] for i in x1 for j in x2]
+z
+
+
+z_dict = {i:np.exp(i) for i in x}
+type(z_dict)
+z_dict.keys()
+z_dict.values()
+
+z_tuple = tuple(i**3 for i in x)
+
+
+
+
+
+
+
+
+
+#14.1 Creating Dates and Times
+import datetime as dt
+yr, mo, dd = 2012, 12, 21
+dt.date(yr, mo, dd)
+
+hr, mm, ss, ms= 12, 21, 12, 21
+dt.time(hr, mm, ss, ms)
+dt.time(12,21,12,21)
+
+d=dt.datetime(yr, mo, dd, hr, mm, ss, ms)
+
+d1 = dt.datetime(yr, mo, dd, hr, mm, ss, ms)
+d2 = dt.datetime(yr + 1, mo, dd, hr, mm, ss, ms)
+d2-d1
+d2
+d2 + dt.timedelta(30,0,0) #days
+dt.date(2012,12,21) + dt.timedelta(30,12,0)
+dt.date(2012,12,21) + dt.timedelta(30,0,0)
+
+#If times stamps are important, date types can be promoted to datetime using combine and a time.
+d3 = dt.date(2012,12,21)
+dt.datetime.combine(d3, dt.time(0))
+
+#Values in dates, times and datetimes can be modified using replace through keyword arguments.
+d3 = dt.datetime(2012,12,21,12,21,12,21)
+d3.replace(month=11,day=10,hour=9,minute=8,second=7,microsecond=6)
+
+#16.1 Mixed Arrays with Column Names
+x = np.zeros(4,[('date','int'),('ret','float')])
+x
+x = np.zeros(4,{'names': ('date','ret'), 'formats': ('int', 'float')})
+x.ndim
+x['date']
+x['ret']
+
+x[0] # Data tuple 0
+x[:3] # Data tuples 0, 1 and 2
+
+#import time data and try to subset
+from pandas import read_excel
+import datetime as dt
+data = read_excel('time_data.xlsx','Sheet1')
+data.dtypes
+data.loc[data['Date']>dt.date(2014,12,21),]
+
+
+
+#pandas
+#Series are the primary building block of the data structures in pandas, 
+#and in many ways a Series behaves similarly to a NumPy array. A Series
+# is initialized using a list or tupel, or directly from a NumPy array.
+from pandas import Series
+import numpy as np
+a = np.array([0.1, 1.2, 2.3, 3.4, 4.5])
+s = Series([0.1, 1.2, 2.3, 3.4, 4.5])
+s
+s.dtype
+type(s)
+s = Series(a) # NumPy array to Series
+s = Series([0.1, 1.2, 2.3, 3.4, 4.5], index = ['a','b','c','d','e'])
+s
+s['a']
+s[0]
+
+s[['a','c']]
+s[:2]
+
+s = Series([0.1, 1.2, 2.3, 3.4, 4.5], index = ['a','b','c','a','b'])
+s['a']
+
+#Series can also be initialized directly from dictionaries.
+s = Series({'a': 0.1, 'b': 1.2, 'c': 2.3})
+
+s1 = Series([1.0,2,3])
+s1.values
+s1.index
+
+s['a']
+s[0]
+s[['a','c']]
+s[:2]
+s[s>2]
+
+s1 = Series([1.0,2,3],index=['a']*3)
+
+s1 = Series(np.arange(10,20))
+s1.describe()
+summ = s1.describe()
+summ['mean']
+s1.unique()
+s1.nunique()
+
+>>> s1 = Series(np.arange(1,4),index=['a','b','c'])
+>>> s2 = Series(np.arange(1,4),index=['c','d','e'])
+>>> s3 = s1 + s2
+s3
+s3.dropna()
+
+# pandas dataframe
+#a DataFrame is composed of
+#Series and each Series has its own data type, and so not allDataFrames are representable as homogeneous
+#NumPy arrays.
+from pandas import DataFrame
+df = DataFrame(np.array([[1,2],[3,4]]),columns=['a','b'])
+
+df = DataFrame(np.array([[1,2],[3,4]]))
+df.columns = ['dogs','cats']
+#
+#Index values are similarly assigned using either the keyword 
+#argument index or by setting the index property. (row label)
+df = DataFrame(np.array([[1,2],[3,4]]), columns=['dogs','cats'], index=['Alice','Bob'])
+
+#DataFrames can also be created from NumPy arrays with structured data.
+import numpy as np
+import datetime
+x=np.array([(datetime.datetime(2013, 1, 1, 0, 0), 99.98999786376953)],dtype=[('datetime', 'O'), ('value', '<f4')])
+df=DataFrame(x)
+df.dtypes
+
+s1 = Series(np.arange(0.0,5))
+s2 = Series(np.arange(1.0,3))
+>>> DataFrame({'one': s1, 'two': s2}) #create a DataFrame uses a dictionary containing Series
+
+              
+              
+              
+from pandas import read_excel
+import pandas as pd
+data = read_excel('train.xlsx','Sheet1')
+data.head()
+data['Gender'].head() # Series
+type(data['Gender'])
+data['Gender'][0]
+data[['Gender']].head() # DataFrame
+key=data['Gender']=='M'
+key.ndim
+key.shape
+key2=np.array(key, dtype=pd.Series)
+key2.ndim
+key2.shape
+check1=data[key]   # so not much different between series and np array
+check2=data[key2]   # so not much different between series and np array
+
+#Selecting Rows and Columns
+#ix is the normal selector
+data3=data.ix[0:1,0]  # Select row 0,1 with column 0 and return a series
+data3=data.ix[1:2,:2]  # Select row 1,2 with column 0,1
+
+data.ix[key,'Gender']
+data.ix[0:3,'Credit_History']   #select row 0 to 3
+type(data.ix[0:3,'Credit_History']) #series
+data.loc[0:3,'Credit_History']  #select row 0 to 3
+type(data.loc[0:3,'Credit_History']) #series
+data['Credit_History'][0:3]     #select row 0 to 2
+type(data['Credit_History'])
+
+data3=data[1:3] #select row 1,2
+data3=data[1:2] #select row 1 and it is also a dataframe
+
+
+
+data.ix[key,0]
+data2=data[['Gender','Education','Self_Employed']]
+data2.insert(0,'Self_Employed_2',data2['Self_Employed'])   #move Self_Employed to the front and rename
+data2
+
+del data2['Self_Employed']  # drop Self_Employed
+data2
+
+data2.rename(columns = {'Self_Employed_2':'Self_Employed'}, inplace = True) #rename back to Self_Employed
+
+data2.head()
+
+
+del data2['Education']
+data2.head()
+
+data3=data2.drop('Gender',axis=1)
+data3.head()
+data4=data3.pop('Self_Employed')
+data3.head()
+data4.head()
+
+
+>>> df = DataFrame(np.array([[1, np.nan],[np.nan, 2],[3,4],[0,6]]))
+>>> df.columns = ['one','two']
+>>> replacements = {'one':1,'two':2}
+>>> df=df.fillna(value=replacements)
+df
+df.sort(columns=['one','two'],ascending=[0,1])
+
+import pandas as pd
+df1 = DataFrame([1,2,3],index=['a','b','c'],columns=['one'])
+df2 = DataFrame([4,5,6],index=['c','d','e'],columns=['two'])
+pd.concat((df1,df2), axis=1)
+pd.concat((df1,df2), axis=1, join='inner')
+
+
+#merge join
+from pandas import DataFrame
+import numpy as np
+import pandas as pd
+left = DataFrame([[1,2,np.nan],[3,4,np.nan],[5,6,2]],columns=['one','two','three'])
+left
+right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10]],columns=['one','alex','three'])
+right
+left.merge(right,on='one') # Same as how=’inner’
+left.merge(right,on='one', how='left')
+left.merge(right,on='one', how='outer')
+
+pd.merge(left,right,how='left',on=['one'])
+pd.merge(left,right,how='right',on=['one'])
+pd.merge(left,right,how='inner',on=['one'])
+pd.merge(left,right,how='outer',on=['one'])
+
+
+
+left = DataFrame([[1,2,np.nan],[3,4,np.nan],[5,6,2]],columns=['one','two','three'])
+left
+right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10],[1,10,10]],columns=['one','two','three'])
+right
+
+
+pd.merge(left,right[['one','two','three']],how='left',left_on=['one','two'],right_on=['one','two'])
+pd.merge(left,right[['one','two','three']],how='right',on=['one'])
+pd.merge(left,right[['one','two','three']],how='inner',on=['one'])
+pd.merge(left,right[['one','two','three']],how='outer',on=['one'])
+
+
+
+
+#cbind and rbind
+a=pd.concat([left,right],axis=1) #equivalent to R cbind, row name/index need to be equal
+a
+b=pd.concat([left,right],axis=0) #equivalent to R rbind, column name need to be equal
+b
+
+c=left.loc[2:2,]
+c
+d=right.loc[1:1,]
+d                             
+
+e=pd.concat([c,d],axis=1)  # concat column (axis=1)
+e
+e['one'] 
+
+c=c.reset_index(drop=True)
+c
+c=c.drop('index',axis=1)
+c
+
+d=d.reset_index()
+d
+d.drop('index',axis=1,inplace=True) # drop without haveing to reassign df
+d
+
+e=pd.concat([c,d],axis=1)  
+e                   
+
+
+
+
+test = DataFrame([[1,2,np.nan,3],[3,4,np.nan,np.nan],[5,6,2,4],[1,1,3,3]],columns=['one','two','three','four'])
+test
+test.dropna()
+test2=test.loc[test.three!=test.four]
+test2
+#note in np.isnan and pd.isnull are equivalent, null means nan, no Na in python
+test3=test2[~(np.isnan(test2.three) & np.isnan(test2.four))]  
+test3
+
+test3=test2[~(pd.isnull(test2.three) & pd.isnull(test2.four))]
+test3
+
+
+
+
+
+
+
+
+
+check= data.groupby(by='Gender')
+check.groups # Lists group names and index labels for group membership
+check.mean()
+check.std()
+
+data5=data[['Loan_Amount']]
+data5.apply(np.mean, axis=0).head()
+data.Gender.value_counts()
+
+
+from pandas import date_range
+date_range('20130103','20130105')
+date_range('20130103',periods=3)
+date_range('20130103',periods=4, freq='Q').values
+
+
+
+
+#Performance and Code Optimization
+import numpy as np
+x = np.random.randn(1000,1000)
+
+#%time simply runs the code
+#and reports the time needed. 
+#%timeit is smarter in that it will vary the number of iterations to increase
+#the accuracy of the timing.
+%timeit np.linalg.inv(np.dot(x.T,x))
+%time np.linalg.inv(np.dot(x.T,x))
+
+
+#profiling
+#Profiling provides detailed information about the number of times a line is executed as well as the execution
+#time spent on each line
+
+
+
+#python equivalent to dyplr in R
+import pandas as pd
+data = pd.DataFrame(
+    {'col1':[1,1,1,1,1,2,2,2,2,2],
+    'col2':[1,2,3,4,5,6,7,8,9,0],
+     'col3':[-1,-2,-3,-4,-5,-6,-7,-8,-9,0]
+    }
+)
+data
+data[1:2]
+
+data
+data.groupby('col1').agg({'col2': max, 'col3': min})
+data.groupby('col1').agg({'col2': max, 'col3': min}).reset_index()
+
+data.groupby('col1').agg({'col2': [max, min], 'col3': [min, 'count']})
+
+#If you want to label each returning output you can use a dictionary of dictionaries:
+
+data.groupby('col1').agg({'col2': {'col2_max': max, 'col2_min': min}, 
+                            'col3': {'col3_min': min, 'col3_count': 'count'}})
+
+#If the operation involves multiple columns (maximum of col2 * col3),
+# you can assign a new column and use groupby agg:
+
+data2=data.assign(col2_col3 = lambda x: x.col2 * x.col3)
+data2.groupby('col1')['col2_col3'].agg(max)
+
+data.groupby('col1').apply(lambda x: (x.col2 * x.col3).max())
+
+
+
+
+
+
+import pandas as pd
+from pandas import DataFrame
+data = pd.DataFrame(
+    {'horse':['alex','alex','alex','tom','tom','tom','sam','sam'],
+    'col2':[1,1,1,2,2,1,3,4],
+     'col3':[-1,-2,-3,-4,-5,-6,-7,-8]
+    }
+)
+type(data)
+data
+col=data.columns.tolist();print(type(col));print(col)
+a=data.columns.get_loc("horse")
+
+a1=[col[a]] #chnage a single string to list
+
+col=[col[a]]+col[0:a]
+data=data[col]
+
+def find_no_unique(y,name):
+    out=y[name].unique()  #array
+    out2=len(out)         #int
+    output=DataFrame({'elements':out,
+                     'counts':out2})
+    return output
+
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m.columns = ['out']
+m.index.tolist()
+m.ix[[('sam',0),('sam',1)],]
+m.dtypes
+
+type(len(data.col2.unique()))
+
+
+def find_no_unique(y,name):
+    out=3
+    out2=len(y[name].unique())
+    df = DataFrame(np.array([[out,out2]]), columns=['elements','counts'])
+    return df
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+
+
+def find_no_unique(y,name):
+    out=3  
+    out2=len(y[name].unique())         
+    output=DataFrame({'elements':[out],
+                     'counts':[out2]})
+    return output
+
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m
+
+
+
+def find_no_unique(y,name):    
+    out2=y[name]  
+    out=y['col3'] 
+    output=DataFrame({'col3':out,
+                      'col2':out2})    
+    return output
+
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
+m
+
+new=DataFrame(data.horse.unique())
+new.columns=['name']
+new
+
+
+
+
+
+
+import scipy.stats
+scipy.stats.norm(4.2, 1.04).cdf(3.5)
+
+          
+
+23.2 Timing Code
+import numpy as np
+np.random.randn(2,2) #normal 0,1
+x = np.random.randn(1000,1000)
+%timeit np.linalg.inv(np.dot(x.T,x))
+%time np.linalg.inv(np.dot(x.T,x))
+
+x = np.zeros(1000000)
+x += 0.0
+
+
+
+
+
+#24.1 map and related functions
+#map is a built-in method to apply a function to a generic iterable. 
+#It is used as map( function , iterable ),
+#and returns a list containing the results of applying function to each
+# item of iterable. The list returned can
+#be either a simple list if the function returns a single item, or a list 
+#of tuples if the function returns more
+#than 1 value.
+def powers(x):
+    return x**2, x**3, x**4
+y = [1.0, 2.0, 3.0, 4.0]
+x=list(map(powers, y))
+x
+
+def powers(x,y):
+    if x is None or y is None:
+        return None
+    else:
+        return x**2, x*y, y**2
+
+x = [10.0, 20.0, 30.0]
+y = [1.0, 2.0, 3.0, 4.0]
+list(map(powers, x, y))
+
+#A related function is zip which combines two or more lists into a single list of tuples
+list(zip(x,y))
+
+
+
+
+a=datetime.datetime.strptime('2005-06-15','%Y-%m-%d')  # parse (convert) string to datetime object.
+type(a)
+
+a1=datetime.datetime.strptime('2006-06-15','%Y-%m-%d')  # parse (convert) string to datetime object.
+type(a1)
+a1>a
+
+c=datetime.datetime.strptime('2005-06-20','%Y-%m-%d')
+c-a
+c>a
+
+#strftime(format) method, to create a string representing 
+#the time under the control of an explicit format string
+b=a.strftime('%d-%m-%Y') 
+type(b)
+b1=a1.strftime('%d-%m-%Y') 
+b>b1
+
+d="2016-03-21"
+d1="2017-03-22"
+d<d1
+
+import py_compile                     #create pyc file
+py_compile.compile('xxxx.py')
+
+
+#python logging
+#http://yu-liang.logdown.com/posts/195882/python-logging-module
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logging.basicConfig(filename='C:\\Users\\notebook\\file.log',filemode='w')
+
+logging.warning('Hello world!')
+logging.info('Hello world again!')
+
+
+
+
+
+def fake(elem,lt=[]):
+    lt=[]
+    lt.insert(0,elem)
+    return lt
+fake(0,lt=[])
+fake(1)
+fake(6)
+
+
+lt=[]
+lt.insert(0,1)
+lt
+lt.insert(0,2)
+lt
+
+a=fake(1)
+b=fake(1)
+c=1
+a=c
+c=3
+
+
+
+#python pip Fatal error in launcher: Unable to create process using '"'
+#go to python.exe page, open cmd
+#python -m pip install selenium
+#http://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path
+#download geckodriver from https://github.com/mozilla/geckodriver/releases for firefox (suggest now use firefox, use chrome)
+#download https://sites.google.com/a/chromium.org/chromedriver/downloads for chromedriver
+#download selectorgadget https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb
+#note that for selecting button, use both xpath and ccs selector also ok. for xpath need to download selectorgadget
+#for ccs selector, need to look at html code
+import os
+os.chdir(r'C:\Users\\Desktop\python\WinPython-64bit-3.5.2.3Qt5\notebooks')
+print (os.getcwd())
+
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+driver = webdriver.Firefox(executable_path=r'C:\Users\\Desktop\python\geckodriver.exe')
+driver.get(r"file:///C:/Users//Desktop/python/testhtml.html")
+element = driver.find_element_by_xpath(".//a[@id='gb_23']")
+element.click()
+
+#search in google using firefox
+browser = webdriver.Firefox(executable_path=r'C:\Users\\Desktop\python\geckodriver.exe')
+browser.get('http://www.google.com')
+search = browser.find_element_by_name('q')
+search = browser.find_element_by_xpath('//*[(@id = "lst-ib")]')
+search.send_keys("google search through python")
+search.send_keys(Keys.RETURN) # hit return after you enter search text
+time.sleep(5) # sleep for 5 seconds so you can see the results
+browser.quit()
+
+
+#example in elit trader
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('https://www.elitetrader.com/et/forums/programming.65/')
+search = browser.find_element_by_xpath('//*[(@id = "QuickSearchQuery")]')
+search.send_keys(" search through python")
+search.send_keys(Keys.RETURN)
+
+browser.get('https://www.elitetrader.com/et/forums/programming.65/')
+browser.find_element_by_css_selector('dl[class="choosers"]').click()
+
+browser.get('https://www.elitetrader.com/et/forums/programming.65/')
+browser.find_element_by_css_selector('li[class="navTab nodetab69 PopupClosed"]').click()
+#click on commission button
+browser.find_element_by_css_selector('a[href="http://ninjatrader.com/Futures?utm_source=EliteTrader&utm_medium=cpc&utm_content=brokersponsor&utm_campaign=Commissions"]').click()
+
+
+browser.get('https://www.elitetrader.com/et/forums/programming.65/')
+search = browser.find_element_by_xpath('//*[contains(concat( " ", @class, " " ), concat( " ", "nodetab71", " " ))]//*[contains(concat( " ", @class, " " ), concat( " ", "navLink", " " ))]')
+search.click()
+browser.quit()
+
+
+#example in CQG
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-free-trial')
+search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-first-name")]')
+search.send_keys("alex lau")
+search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-last-name")]')
+search.send_keys("lei wai")
+#click check-box
+search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-00n60000002gqco")]') #check box for energy
+search.click()
+#click dropdown menu (proprietary firm)
+search=browser.find_element_by_xpath("//select[@name='submitted[00N60000002Gk5o]']/option[text()='Proprietary Firm']")
+search.click()
+#click "submit"
+search = browser.find_element_by_xpath('//*[contains(concat( " ", @class, " " ), concat( " ", "form-submit", " " ))]')
+search.click()
+
+
+#get all items in a dropdown menu
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+import selenium.webdriver as webdriver
+import selenium.webdriver.support.ui as UI
+import contextlib
+
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-free-trial')
+items=[]
+select = UI.Select(browser.find_element_by_xpath('//select[@name="submitted[00N60000002Gk5o]"]'))
+for i in range(len(select.options)):
+    items.append(select.options[i].get_attribute('value'))
+items
+
+
+
+
+
+
+
+#upload file to a upload button
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('https://smallpdf.com/word-to-pdf')
+browser.find_element_by_css_selector('input[type="file"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+
+
+
+
+
+#upload file to multiple upload button
+#html exampl below
+#<input type="file" class="file" name="files" size="40" tabindex="1" accept="application/pdf" onmousedown="gaTracker.choosefile()">
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('https://www.pdfmerge.com/')
+
+browser.find_element_by_css_selector('input[tabindex="1"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="2"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="3"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="4"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[id="btnSubmit"]').click()   #click merge button
+
+                                     
+                             
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+                                     
+
+
+#upload file to a upload button
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
+browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser.get('http://bet.hkjc.com/football/default.aspx')
+search = browser.find_element_by_xpath('//*[(@id = "leftTxtFBHIL")]') #Hilo
+search.click()
+
+
+
+
+#multi process
+from joblib import Parallel, delayed
+import numpy as np
+import numpy as np
+import os
+
+
+from adhot import happy,happy2, f
+
+
+b=1
+res = Parallel(n_jobs=4,verbose=5)(delayed(happy)(a) for a in range(2)) #verbose for output progress
+res
+
+
+
+
+
+
+
+
+# multiprocessing_example
+import multiprocessing as mp
+import matplotlib.pyplot as plt
+import numpy as np
+from adhot import supf_wrapper
+if __name__ == '__main__':
+    reps = 1000
+    T = 200
+    setup = []
+    for i in range(reps):
+        y = np.random.standard_normal(T)
+        x = np.random.standard_normal((T, 1))
+        p = 0.2
+        setup.append((y, x, p))
+# Non parallel map
+# res = map(surf_wrapper, setup)
+# Parallel map
+    po = mp.Pool(processes=2)
+    res = po.map(supf_wrapper, setup)
+    print(len(res))
+    po.close()
+    ax = plt.hist(res)
+    ax = ax[2]
+    fig = ax[0].get_figure()
+    fig.savefig('multiprocessing.pdf')
+
+
+
+    
+#multi process on apply group
+import pandas as pd
+from joblib import Parallel, delayed
+import multiprocessing
+from adhot import tmpFunc
+from adhot import applyParallel
+
+if __name__ == '__main__':
+    df = pd.DataFrame({'a': [6, 2, 2], 'b': [4, 5, 6]},index= ['g1', 'g1', 'g2'])
+    print (applyParallel(df.groupby(df.a), tmpFunc))
+
+for group in df.groupby(df.a):
+    print (group)
+for name in df.groupby(df.a):
+    print (name)
+for key in df.groupby(df.a):
+    print (key)
+    
+    
+df = pd.DataFrame({'a': ['alex', 'alex', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df
+d=df
+d['a'][0]='ee'
+df #note that it will change df, so need to use d=df.copy
+
+
+a=[2,3] 
+y=a.copy #list is also mutable so need to use copy
+y[1]=4
+a
+    
+b=3,4,'t'
+b
+bb=b
+bb[0]=2   #tuple is immutable
+
+
+
+#In short , use this 'if __name__ == "main" ' block to prevent (certain) 
+#code from being run when the module is imported.
+
+
+
+
+
+import pandas as pd
+df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+def mo(x):
+    yes=x.loc[:,'c']
+    return yes
+    
+newcol=df.groupby(['a']).apply(lambda x:mo(x)) #after groupby the index is tuple with level 0 = group name, level1=index
+df['new']=newcol.reset_index(level=0, drop=True) #error occure
+
+newcol2=newcol
+newcol2.reset_index(drop=True)
+
+%timeit -n100 -r20 df.groupby(['a']).apply(lambda x:mo(x)) #100 loop best 20
+
+
+
+
+
+
+
+
+
+
+import pandas as pd
+x=hkdb_with_track_work=hkdb_with_track_work.head(1)
+period1='2016-06-12';field1='TW_P';field2='TW_T';test1=0;test2=4
+def DBA(x):
+    period=x.loc[:,'Date'];field1='TW_P';field2='TW_T'
+    test1=x.loc[:,'TW_P']
+    test2=x.loc[:,'TW_T']
+    dataset_copy=trackwork_use.copy()
+    dataset_copy=dataset_copy[(dataset_copy['Date'].apply(lambda x: datetime.datetime.strftime(x, '%Y-%m-%d')) < period1)]
+    dataset_copy['test1']=test1.values[0]
+    dataset_copy['test2']=test2.values[0]
+    dataset_copy['distance']=np.sqrt(pow(dataset_copy['TW_P']-dataset_copy['test1'],2)+pow(dataset_copy['TW_T']-dataset_copy['test2'],2))
+    output=dataset_copy.loc[dataset_copy['distance']<=2,'nfp_c'].mean()
+    ave_fp=output if ~np.isnan(output) else dataset_copy.loc[dataset_copy['distance']<=3,'nfp_c'].mean()
+    ave_fp_out=pd.DataFrame({'ave_fp':[ave_fp]})
+    return ave_fp_out
+
+%timeit DBA(period1='2016-01-31',field1='TW_P',field2='TW_T',test1=0,test2=4)
+
+hkdb_with_track_work=hkdb_with_track_work.head(1)
+hkdb_with_track_work.sort_index(inplace=True)
+
+hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey','horse_no','Date']).apply(lambda x:DBA(x))
+
+%timeit DBA(x)
+
+    
+df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+
+def mo(x):
+    yes=x.loc[:,'c']
+    return yes
+    
+newcol=df.groupby(['a']).apply(lambda x:mo(x)) #after groupby the index is tuple with level 0 = group name, level1=index
+df['new']=newcol.reset_index(level=0, drop=True)
+
+df.index
+
+
+
+
+#pip issue
+#put python.exe to envirnment path
+#reopen computer
+#go to C:\Users\\Desktop\python\get-pip, open cmd, python get-pip.py (install latest pip)
+#go to python.exe folder, open cmd, type "python -m pip install xxxx"
+
+#or
+#add pip.exe to environment variable
+#reopen computer
+
+#if package cannot be install, go to python package index, download whl file, unzip it, then
+#import the file name, for example like below "constraint" package
+
+
+#constraint optimization
+#https://labix.org/python-constraint
+import os
+os.chdir(r'C:\Users\\Desktop\python\constraint')
+import constraint
+
+
+import os
+os.chdir(r'C:\Users\\Desktop\python\WinPython-64bit-3.4.4.5Qt5\notebooks')
+
+
+from constraint import *
+problem = Problem()
+problem.addVariable("a", [1,2,3])
+problem.addVariable("b", [4,5,6])
+problem.getSolutions()
+
+
+problem.addConstraint(lambda a, b: a*2 == b,("a", "b"))
+problem.getSolutions()
+
+
+
+
+
+
+
+
+
+
+#hsi
+import pandas as pd
+import os
+#hsi_path =r"C:\Users\alex.lau\Desktop\adhot\hsi\HSI.csv"
+#data = pd.read_csv(hsi_path)
+ 
+import fix_yahoo_finance as yf
+data = yf.download('^HSI', start = '2014-01-01', end='2018-06-26')
+ 
+ 
+import stockstats
+from stockstats import StockDataFrame as Sdf
+import numpy as np
+ 
+#convert’ a pandas dataframe to a stockstats dataframe
+#hsi2=hsi.copy()
+stock_df = Sdf.retype(data)
+data['rsi']=stock_df['rsi_14']
+del data['close_-1_s']
+del data['close_-1_d']
+del data['rs_14']
+del data['rsi_14']
+ 
+#replicate rsi
+x=data.copy()
+parameter=20
+def rsi(x,parameter):
+    x['change']=x['close']-x['open']
+    x.loc[x['change']>=0,'gain']=x['change'];x.loc[x['change']<0,'gain']=0
+    x.loc[x['change']<0,'loss']=-1*x['change'];x.loc[x['change']>=0,'loss']=0
+    x['ave_gain']=x.gain.rolling(window=parameter).mean()
+    x['ave_loss']=x.loss.rolling(window=parameter).mean()
+    x['RS']=x['ave_gain']/x['ave_loss']
+    x.loc[x['RS']==0,'RSI']=100;x.loc[x['RS']>0,'RSI']=100-100/(1+x['RS'])
+    x=x.fillna(0)
+    x['RSI_shift1']=x['RSI'].shift(1)
+    x['RSI_shift1']=x['RSI_shift1'].fillna(0)
+    x['RSI_shift2']=x['RSI'].shift(2)
+    x['RSI_shift2']=x['RSI_shift2'].fillna(0)
+    x['RSI_change']=x['RSI_shift1']-x['RSI_shift2']
+    return x#pd.Series((x['RSI_change'].values,x['RSI_shift1'].values))
+ 
+data_new=rsi(data,80)
+ 
+data_new['change_sign']=np.sign(data_new['change'])
+data_new['RSI_change_sign']=np.sign(data_new['RSI_change'])
+data_new['same?']=data_new['change_sign']==data_new['RSI_change_sign']
+ 
+data_new=data_new.loc[~(data_new['RSI_change_sign']==0),:]
+ 
+sum(data_new['same?'])/data_new.shape[0]
+
+
+
+
+
+import time
+log_name=os.path.join('log','log_data_part_'+time.strftime("%Y%m%d")+'_'+time.strftime("%H%M%S")+'.log')
+import logging
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+# create a file handler
+handler = logging.FileHandler(log_name)
+handler.setLevel(logging.INFO)
+# create a logging format
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+# add the handlers to the logger
+logger.addHandler(handler)
+logger.info('Hello baby')
+
+logger.info('date in '+data.Name_use_python[i]+' not distinct')
+logger.info(output)
+
+
+
+logging.shutdown()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import requests
+
+
+TWILIO_SID = "AC15cb8d527aad95bca1bf6b0a3b21dd21"
+TWILIO_AUTHTOKEN = "04f77bd53a489c51fe587e0541935bc4"
+TWILIO_MESSAGE_ENDPOINT = "https://api.twilio.com/2010-04-01/Accounts/{TWILIO_SID}/Messages.json".format(TWILIO_SID=TWILIO_SID)
+
+TWILIO_NUMBER = "whatsapp:+447754279265"
+
+def send_whatsapp_message(to, message):
+
+    message_data = {
+        "To": to,
+        "From": TWILIO_NUMBER,
+        "Body": message,
+    }
+    response = requests.post(TWILIO_MESSAGE_ENDPOINT, data=message_data, auth=(TWILIO_SID, TWILIO_AUTHTOKEN))
+    
+    response_json = response.json()
+    
+    
+    return response_json
+
+
+to_number = "whatsapp:+447754279265"   
+appointment_msg = """Your appointment is coming up on August 20th at 6:00PM""" 
+msg = send_whatsapp_message(to_number, appointment_msg)
+
+print(msg['sid']) # SM5xxxafa561e34b1e84c9d22351ae08a0
+print(msg['status']) # queued
+
+
+
+
+
+
+
+import os
+os.chdir(r'C:\Users\\Desktop\python\twilio')
+import twilio
+# Download the helper library from https://www.twilio.com/docs/python/install
+from twilio.rest import Client
+
+# Your Account Sid and Auth Token from twilio.com/console
+account_sid = 'AC15cb8d527aad95bca1bf6b0a3b21dd21'
+auth_token = '04f77bd53a489c51fe587e0541935bc4'
+client = Client(account_sid, auth_token)
+
+message = client.messages.create(
+                              body='Hello there!',
+                              from_='whatsapp:+85255480236',
+                              to='whatsapp:+447754279265'
+                          )
+
+print(message.sid)
+
+
+
+
+
+
+
+
+
+
+
+
+import smtplib
+ 
+server = smtplib.SMTP('smtp.gmail.com', 565)
+server.starttls()
+server.login("random9522@gmail.com", "95229522")
+ 
+msg = "YOUR MESSAGE!"
+server.sendmail("alex.leiwai@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
+server.quit()
+
+
+
+
+import smtplib
+
+server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+server.login("random9522@gmail.com", "95229522")
+server.sendmail(
+  "random9522@gmail.com", 
+  "alex.leiwai@gmail.com", 
+  "this message is from python")
+server.quit()
+
+
+
+
+
+
+
+
+
+#python send email
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+mail_content = "test python"
+#The mail addresses and password
+sender_address = 'random9522@gmail.com'
+sender_pass = '95229522'
+receiver_address = 'lei.alex2016@gmail.com'
+#Setup the MIME
+message = MIMEMultipart()
+message['From'] = sender_address
+message['To'] = receiver_address
+message['Subject'] = 'A test mail sent by Python'   #The subject line
+#The body and the attachments for the mail
+message.attach(MIMEText(mail_content, 'plain'))
+#Create SMTP session for sending the mail
+session = smtplib.SMTP('smtp.gmail.com', 587) #use gmail with port
+session.starttls() #enable security
+session.login(sender_address, sender_pass) #login with mail_id and password
+text = message.as_string()
+session.sendmail(sender_address, receiver_address, text)
+session.quit()
+print('Mail Sent')
+
+
+
+
+
+
+
+
+#python regular expression
+#https://www.analyticsvidhya.com/blog/2015/06/regular-expression-python/
+import re
+#Use “r” at the start of the pattern string, it designates a python raw string.
+result = re.match(r'AV', 'AV Analytics Vidhya AV')
+result.group(0)
+
+result = re.match(r'Analytics', 'AV Analytics Vidhya AV')
+print (result) 
+
+
+#There are methods like start() and end() to know the start and end position of matching pattern in the string.
+result = re.match(r'AV', 'AV Analytics Vidhya AV')
+print (result.start())
+print (result.end())
+
+
+# Return words starts with alphabets (using [])
+result=re.findall(r'[aeiouAEIOU]\w+','AV is largest Analytics community of India 3749 eru 309')
+print (result)
+
+#“\b” for word boundary.
+result=re.findall(r'\b[aeiouAEIOU]\w+','AV is largest Analytics community of India 3749 eruabcd 309 &3apple')
+print (result) 
+
+
+#In similar ways, we can extract words those starts with constant using “^” within square bracket.
+result=re.findall(r'\b[^aeiouAEIOU]\w+','AV is largest Analytics community of India 3749 eruabcd 309')
+print (result) 
+
+
+import re
+s = 'I love book()'
+result = re.search(r'\(\)',s)
+print (result.group())
+s1 = 'I love book(s)'
+result2 = re.sub(r'[\(\)]','',s1)
+print (result2)
+
+
+
+
+
+
+
+
+
+fill_example="Fill(contract=Stock(conId=4875668, symbol='HSBC', exchange='SMART', primaryExchange='NYSE', currency='USD', localSymbol='HSBC', tradingClass='HSBC'), execution=Execution(execId='00012ec5.5c5ade3e.01.01', time=datetime.datetime(2019, 2, 6, 17, 57, 6, tzinfo=datetime.timezone.utc), acctNumber='DU1349023', exchange='NYSE', side='BOT', shares=100.0, price=42.18, permId=1433082775, clientId=1, orderId=85, cumQty=200.0, avgPrice=42.18, lastLiquidity=2), commissionReport=CommissionReport(execId='00012ec5.5c5ade3e.01.01', currency='USD'), time=datetime.datetime(2019, 2, 6, 18, 0, 56, 105886, tzinfo=datetime.timezone.utc))"
+
+#find string between "Execution"
+#\( because there is really ( symbol in the string, cannot use ( directly
+#() is python syntac to find substring between()
+#.* is to find all substring between()
+#? is to find the first occurance of substring
+find_Execution=re.findall(r'execution=Execution\((.*?), tzinfo',fill_example)
+time_is=re.findall(r'time=datetime.datetime\((.*)',find_Execution[0])[0]
+time_is=time_is.split(',')
+time_is=[int(i.strip()) for i in time_is]
+
+execution_time_is=dt(time_is[0],time_is[1],time_is[2],time_is[3],time_is[4],time_is[5])
+
+#datatime default is 'naive, so assign UTC to it'
+execution_time_is_utc = execution_time_is.replace(tzinfo=tz.gettz('UTC'))
+
+#convert time hong kong
+to_zone = tz.gettz('Asia/Hong_Kong')
+execution_time_is_hk=execution_time_is_utc.astimezone(to_zone)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+side=[i for i in fill_report_list if "side" in i][0].strip().replace("side=","").replace("'","")
+side
+
+
+
+from datetime import datetime as dt
+from dateutil import tz
+
+# METHOD 1: Hardcode zones:
+from_zone = tz.gettz('UTC')
+to_zone = tz.gettz('Asia/Hong_Kong')
+
+# utc = datetime.utcnow()
+utc = dt.strptime('2011-01-21 02:37:21', '%Y-%m-%d %H:%M:%S')
+
+# Tell the datetime object that it's in UTC time zone since 
+# datetime objects are 'naive' by default
+utc = utc.replace(tzinfo=from_zone)
+
+# Convert time zone
+central = utc.astimezone(to_zone)
+
+
+
+
+
+
+
+
+
+#GBM
+
+#https://github.com/h2oai/h2o-3/blob/master/h2o-docs/src/product/tutorials/gbm/gbmTuning.ipynb
+import sys
+sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
+sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
+sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
+#sys.path.append(r'C:\Users\\Desktop\python\six\dist\six-1.12.0')
+
+import h2o
+import numpy as np
+import math
+from h2o.estimators.gbm import H2OGradientBoostingEstimator
+from h2o.grid.grid_search import H2OGridSearch
+
+#h2o.cluster().shutdown()
+h2o.init(nthreads=-1, strict_version_check=True)
+
+## pick a response for the supervised problem
+response = "survived"
+
+
+### 'path' can point to a local file, hdfs, s3, nfs, Hive, directories, etc.
+#df = h2o.import_file(path = "http://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
+#print (df.dim)
+#print (df.head)
+#print (df.tail)
+#print (df.describe)
+### the response variable is an integer, we will turn it into a categorical/factor for binary classification
+#df[response] = df[response].asfactor()           
+#
+### use all other columns (except for the name & the response column ("survived")) as predictors
+#predictors = df.columns
+#del predictors[1:3]
+#print (predictors)
+##split data
+#train, valid, test = df.split_frame(
+#    ratios=[0.6,0.2], 
+#    seed=1234, 
+#    destination_frames=['train.hex','valid.hex','test.hex'])
+
+
+
+import pandas as pd
+#h2o.import_file(path = "http://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
+df=pd.read_csv(r"C:\Users\\Dropbox\notebooks\gbm\titanic.csv")
+train= h2o.H2OFrame(df)
+train[response] = train[response].asfactor()  
+predictors = train.columns
+del predictors[1:3]
+print (predictors)
+
+test=h2o.H2OFrame(df.loc[:,df.columns!=response])
+#test[response] = test[response].asfactor() 
+
+ 
+valid=h2o.H2OFrame(df)
+valid[response] = valid[response].asfactor()  
+
+
+
+
+
+
+
+
+
+
+#We only provide the required parameters, everything else is default
+gbm = H2OGradientBoostingEstimator(seed = 0xDECAF,max_depth=4,score_tree_interval = 1)
+gbm.train(x=predictors, y=response, training_frame=train)
+
+## Show a detailed model summary
+#https://docs.h2o.ai/h2o/latest-stable/h2o-docs/performance-and-prediction.html
+a=gbm
+
+
+
+train_pred = gbm.predict(train).as_data_frame()
+train_pred['actual']=df[response]
+
+
+train_pred.loc[train_pred['p1']>=0.5182773621503548,'pred_threshold']=1
+train_pred=train_pred.fillna(0)
+
+sum(train_pred['actual']==train_pred['pred_threshold'])/train_pred.shape[0]
+
+
+train_pred_model_perf=gbm.model_performance(train)
+train_pred_model_perf.accuracy()
+
+[[0.5182773621503548, 0.9900687547746372]] #first number is thresdhold
+
+
+
+print (gbm)
+help(gbm.train)
+gbm.accuracy()
+gbm.confusion_matrix()
+
+perf = gbm.model_performance(train)
+perf.accuracy()
+
+## Get the AUC on the validation set
+perf = gbm.model_performance(valid)
+print (perf.auc())
+
+perf.accuracy()
+perf.mse()
+perf.confusion_matrix()
+perf.plot(type = "roc")
+
+help(perf)
+
+#importancy plot
+gbm.varimp_plot()
+
+#get prediction
+preds = gbm.predict(test).as_data_frame()
+
+
+
+
+
+
+gbm.params
+
+
+
+gbm = H2OGradientBoostingEstimator(ntrees=10,seed = 0xDECAF,max_depth=4,score_tree_interval = 1)
+gbm.train(x=predictors, y=response, training_frame=train,validation_frame=valid)
+
+#plot scoring history
+import pandas as pd
+sh = gbm.score_history()
+sh = pd.DataFrame(sh)
+print(sh.columns)
+
+import matplotlib.pyplot as plt
+#%matplotlib inline 
+# plot training logloss and auc
+sh.plot(x='number_of_trees',y = ['validation_logloss', 'training_logloss'])
+sh.plot(x='number_of_trees',y = ['validation_auc', 'training_auc'])
+
+0.997933
+#it use last epho to predict
+perf = gbm.model_performance(train)
+print (perf.auc())
+
+
+
+
+
+
+
+
+#https://www.oreilly.com/library/view/practical-machine-learning/9781491964590/ch04.html
+#check point, model b will continue from a
+gbm = H2OGradientBoostingEstimator(model_id='a',ntrees=10,seed = 0xDECAF,max_depth=4,score_tree_interval = 1)
+gbm.train(x=predictors, y=response, training_frame=train)
+
+gbm.scoring_history()
+
+gbm2 = H2OGradientBoostingEstimator(model_id='b',checkpoint='a',ntrees=20,seed = 0xDECAF,max_depth=4,score_tree_interval = 1)
+gbm2.train(x=predictors, y=response, training_frame=train)
+
+gbm2.scoring_history()
+
+
+help(gbm.score_history(valid))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# save the model
+model_path = h2o.save_model(gbm,r"C:\Users\\Dropbox\notebooks\gbm\gbm_output1", force=True)
+print(model_path)
+
+
+# load the model
+saved_model = h2o.load_model(model_path)
+
+
+
+
+
+#below is to visualize tree
+from IPython.display import Image
+import subprocess
+import os
+
+gbm_dir=r"C:\Users\''\Dropbox\notebooks\gbm"
+#download from http://h2o-release.s3.amazonaws.com/h2o/rel-zahradnik/3/index.html
+h2o_jar_path= r'C:\Users\''\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\''\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
+gbm_model_name='saved_model' #'gbm'
+tree_id=3
+
+mojo_full_path = os.path.join(gbm_dir,gbm_model_name+'_mojo.zip')
+#download mojo and save as zip file
+gbm_cv3 = vars()[gbm_model_name].download_mojo(path=mojo_full_path)#, get_genmodel_jar=True)
+print("Model saved to " + gbm_cv3)
+
+#save as gv file (Graphviz Dot File)
+gv_file_path = os.path.join(gbm_dir,gbm_model_name+'_'+str(tree_id)+'.gv')
+subprocess.call(["java", "-cp", h2o_jar_path, "hex.genmodel.tools.PrintMojo", "--tree",
+                 str(tree_id), "-i", mojo_full_path , "-o", gv_file_path ], shell=False)
+
+#copy gv file content to below and get png
+https://dreampuf.github.io/GraphvizOnline/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+0.9995883807169346
+
+
+#remember, cross validation only give you more information
+#on differenthold-out data. trained estimates are the same
+
+cv_gbm = H2OGradientBoostingEstimator(nfolds = 4, seed = 0xDECAF)
+cv_gbm.train(x = predictors, y = response, training_frame = train)
+perf = cv_gbm.model_performance(valid)
+print (perf.auc())
+
+#get prediction
+preds1 = cv_gbm.predict(test).as_data_frame()
+
+
+cv_gbm = H2OGradientBoostingEstimator(seed = 0xDECAF)
+cv_gbm.train(x = predictors, y = response, training_frame = train)
+perf = cv_gbm.model_performance(valid)
+print (perf.auc())
+
+#get prediction
+preds2 = cv_gbm.predict(test).as_data_frame()
+
+
+#The second model is another default GBM, but trained on 80%
+# of the data (here, we combine the training and validation splits
+# to get more training data), and cross-validated using 4 folds.
+# Note that cross-validation takes longer and is not usually done for really large datasets.
+## rbind() makes a copy here, so it's better to use split_frame with `ratios = c(0.8)` instead above
+cv_gbm = H2OGradientBoostingEstimator(nfolds = 4, seed = 0xDECAF)
+cv_gbm.train(x = predictors, y = response, training_frame = train.rbind(valid))
+
+cv_gbm.auc()
+
+perf = cv_gbm.model_performance(train.rbind(valid))
+print (perf.auc())
+
+
+
+
+## Show a detailed summary of the cross validation metrics
+## This gives you an idea of the variance between the folds
+cv_summary = cv_gbm.cross_validation_metrics_summary().as_data_frame()
+A=cv_summary ## Full summary of all metrics
+print(cv_summary.iloc[4]) ## get the row with just the AUCs
+
+## Get the cross-validated AUC by scoring the combined holdout predictions.
+## (Instead of taking the average of the metrics across the folds)
+help(cv_gbm.model_performance)
+perf_cv = cv_gbm.model_performance(xval=True)
+print (perf_cv.auc())
+
+perf_cv = cv_gbm.model_performance(train.rbind(valid))
+print (perf_cv.auc())
+
+
+
+
+from IPython.display import Image
+import subprocess
+import os
+
+gbm_dir=r"C:\Users\''\Dropbox\notebooks\gbm"
+h2o_jar_path= r'C:\Users\''\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\''\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
+gbm_model_name='cv_gbm' #'gbm'
+tree_id=3
+
+mojo_full_path = os.path.join(gbm_dir,gbm_model_name+'_mojo.zip')
+#download mojo and save as zip file
+gbm_cv3 = vars()[gbm_model_name].download_mojo(path=mojo_full_path)#, get_genmodel_jar=True)
+print("Model saved to " + gbm_cv3)
+
+#save as gv file (Graphviz Dot File)
+gv_file_path = os.path.join(gbm_dir,gbm_model_name+'_'+str(tree_id)+'.gv')
+subprocess.call(["java", "-cp", h2o_jar_path, "hex.genmodel.tools.PrintMojo", "--tree",
+                 str(tree_id), "-i", mojo_full_path , "-o", gv_file_path ], shell=False)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#no of tree ntrees default 50
+
+#max_depth default: 5
+    
+
+#col_sample_rate_per_tree, initial portion of columns to form the tree at beginning
+it is multiplicative with col_sample_rate, so setting both parameters to 0.8,
+for example, results in 64% of columns being considered at any given node to split.
+Note that this method is sample without replacement.   
+#col_sample_rate, portion of columns in later split
+    
+ 
+    
+
+#https://docs.h2o.ai/h2o/latest-stable/h2o-docs/data-science/gbm-faq/splitting.html
+#min_split_improvement
+This option specifies the minimum relative improvement 
+in squared error reduction in order for a split to occur
+min_split_improvement turned ON by default (0.00001)
+
+#When does the algo stop splitting on an internal node?
+when there are no more splits that satisfy the minimum rows parameter,
+ if it reaches max_depth, or if there are no splits that satisfy the min_split_improvement parameter.    
+    
+#How does the minimum rows parameter work?
+min_rows specifies the minimum number of observations for a leaf. 
+If a user specifies min_rows = 500, and they still have 500 TRUEs and 400 FALSEs,
+ we won’t split because we need 500 on both sides. 
+ The default for min_rows is 10, so this option rarely affects the GBM splits 
+ because GBMs are typically shallow, but the concept still applies.
+    
+
+#How does GBM decide which feature to split on?
+It splits on the column and level that results in the greatest reduction in 
+residual sum of the squares (RSS) in the subtree at that point. It considers all 
+fields available from the algorithm.
+
+
+#bin in historgram
+In a histogram, the total range of data set (i.e from minimum value to maximum value) 
+is divided into 8 to 15 equal parts. These equal parts are known as bins or class intervals.
+
+
+
+#bins, default is 20
+#nbins_cats for categoricals, 
+
+#nbins_top_level
+is the number of bins to use at the top of each tree. 
+It then divides by 2 at each ensuing level to find a new number.
+This option defaults to 1024 and is used with nbins, which controls when the algorithm stops dividing by 2.
+
+To make a model more general, decrease nbins_top_level and nbins_cats.
+To make a model more specific, increase nbins and/or nbins_top_level and 
+nbins_cats. Keep in mind that increasing nbins_cats can lead to in overfitting on the training set.
+
+
+
+
+
+
+
+
+
+
+
+
+#Next, we train a GBM with "I feel lucky" parameters. 
+#We'll use early stopping to automatically tune the 
+#number of trees using the validation AUC.
+gbm_lucky = H2OGradientBoostingEstimator(
+  ## more trees is better if the learning rate is small enough 
+  ## here, use "more than enough" trees - we have early stopping
+  ntrees = 10000,                                                            
+
+  ## smaller learning rate is better (this is a good value for most datasets, but see below for annealing)
+  learn_rate = 0.01,                                                         
+
+  ## early stopping once the validation AUC doesn't improve by at least 0.01% for 5 consecutive scoring events
+  stopping_rounds = 5, stopping_tolerance = 1e-4, stopping_metric = "AUC", 
+
+  ## sample 80% of rows per tree
+  sample_rate = 0.8,                                                       
+
+  ## sample 80% of columns per split
+  col_sample_rate = 0.8,                                                   
+
+  ## fix a random number generator seed for reproducibility
+  seed = 1234,                                                             
+
+  ## score every 10 trees to make early stopping reproducible (it depends on the scoring interval)
+  score_tree_interval = 10)
+
+gbm_lucky.train(x=predictors, y=response, training_frame=train, validation_frame=valid)
+
+perf_lucky = gbm_lucky.model_performance(valid)
+print (perf_lucky.auc())
+
+
+#Hyper-Parameter Search
+#Next, we'll do real hyper-parameter optimization to see if we can beat the best AUC so far (around 94%).
+
+
+## Depth 10 is usually plenty of depth for most datasets, but you never know
+hyper_params = {'max_depth' : [1,3,5,11,12,13,14,20]}
+                #'ntrees': [200,400,600,800,1000]}
+#hyper_params = {max_depth = [4,6,8,12,16,20]} ##faster for larger datasets
+
+#Build initial GBM Model
+gbm_grid = H2OGradientBoostingEstimator(
+        ## more trees is better if the learning rate is small enough 
+        ## here, use "more than enough" trees - we have early stopping
+        ntrees=10000,
+        ## smaller learning rate is better
+        ## since we have learning_rate_annealing, we can afford to start with a 
+        #bigger learning rate
+        learn_rate=0.05,
+        ## learning rate annealing: learning_rate shrinks by 1% after every tree 
+        ## (use 1.00 to disable, but then lower the learning_rate)
+        learn_rate_annealing = 0.99,
+        ## sample 80% of rows per tree
+        sample_rate = 0.8,
+        ## sample 80% of columns per split
+        col_sample_rate = 0.8,
+        ## fix a random number generator seed for reproducibility
+        seed = 1234,
+        ## score every 10 trees to make early stopping reproducible 
+        #(it depends on the scoring interval)
+        score_tree_interval = 10, 
+        ## early stopping once the validation AUC doesn't improve by at least 0.01% for 
+        #5 consecutive scoring events
+        stopping_rounds = 5,
+        stopping_metric = "AUC",
+        stopping_tolerance = 1e-4)
+
+#Build grid search with previously made GBM and hyper parameters
+grid = H2OGridSearch(gbm_grid,hyper_params,
+                         grid_id = 'depth_grid',
+                         search_criteria = {'strategy': "Cartesian"})
+#Train grid search
+grid.train(x=predictors, 
+           y=response,
+           training_frame = train,
+           validation_frame = valid)
+
+
+
+
+
+
+## by default, display the grid search results sorted by increasing logloss (since this is a classification task)
+print (grid)
+## sort the grid models by decreasing AUC or below metric
+#logloss","residual_deviance"``, ``"mse"``, ``"auc"``, ``"r2"``, ``"accuracy"``, ``"precision"``, ``"recall"`
+
+sorted_grid = grid.get_grid(sort_by='auc',decreasing=True)
+print(sorted_grid)
+
+
+m1 = h2o.get_model(sorted_grid.sorted_metric_table()['model_ids'][0])
+m1.model_performance(valid).auc()  #so grid auc is on validation data
+
+
+
+sorted_grid = grid.get_grid(sort_by='accuracy',decreasing=True)
+print(sorted_grid)
+
+
+
+help(grid.get_grid)
+
+#It appears that max_depth values of 9 to 27 are best suited for this dataset, which is unusally deep!
+
+#In [13]:
+max_depths = sorted_grid.sorted_metric_table()['max_depth'][0:5]
+new_max = int(max(max_depths, key=int))
+new_min = int(min(max_depths, key=int))
+
+print ("MaxDepth", new_max)
+print ("MinDepth", new_min)
+
+new_min=2
+new_max=5
+
+
+#Now that we know a good range for max_depth, we can tune all other parameters
+# in more detail. Since we don't know what combinations of hyper-parameters 
+#will result in the best model, we'll use random hyper-parameter search to 
+#"let the machine get luckier than a best guess of any human".
+
+
+
+
+
+
+
+
+
+#GBM grid search
+
+#https://github.com/h2oai/h2o-3/blob/master/h2o-docs/src/product/tutorials/gbm/gbmTuning.ipynb
+import sys
+sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
+sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
+sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
+#sys.path.append(r'C:\Users\''\Desktop\python\six\dist\six-1.12.0')
+
+import h2o
+import numpy as np
+import math
+from h2o.estimators.gbm import H2OGradientBoostingEstimator
+from h2o.grid.grid_search import H2OGridSearch
+
+h2o.cluster().shutdown()
+h2o.init(nthreads=-1, strict_version_check=True)
+## pick a response for the supervised problem
+response = "survived"
+import pandas as pd
+#h2o.import_file(path = "http://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
+df=pd.read_csv(r"C:\Users\''\Dropbox\notebooks\gbm\titanic.csv")
+train= h2o.H2OFrame(df)
+train[response] = train[response].asfactor()  
+predictors = train.columns
+del predictors[1:3]
+print (predictors)
+test=h2o.H2OFrame(df.loc[:,df.columns!=response])
+#test[response] = test[response].asfactor() 
+valid=h2o.H2OFrame(df)
+valid[response] = valid[response].asfactor() 
+
+
+
+
+
+
+
+# create hyperameter and search criteria lists (ranges are inclusive..exclusive))
+hyper_params_tune = {'max_depth' : list(range(5,16,7))
+                     #'sample_rate': [x/100. for x in range(20,101)],
+                     #'col_sample_rate' : [x/100. for x in range(20,101)],
+                     #'col_sample_rate_per_tree': [x/100. for x in range(20,101)],
+                     #'col_sample_rate_change_per_level': [x/100. for x in range(90,111)],
+                     #'min_rows': [2**x for x in range(0,int(math.log(train.nrow,2)-1)+1)],
+                     #'nbins': [2**x for x in range(4,11)],
+                     #'nbins_cats': [2**x for x in range(4,13)],
+                     #'min_split_improvement': [0,1e-8,1e-6,1e-4],
+                     #'histogram_type': ["UniformAdaptive","QuantilesGlobal","RoundRobin"]
+                     }
+search_criteria_tune = {'strategy': "RandomDiscrete",
+                   'max_runtime_secs': 3600,  ## limit the runtime to 60 minutes
+                   'max_models': 100,  ## build no more than 100 models
+                   'seed' : 1234,
+                   'stopping_rounds' : 5,
+                   'stopping_metric' : "AUC",
+                   'stopping_tolerance': 1e-3
+                   }
+#In [15]:
+gbm_final_grid = H2OGradientBoostingEstimator(distribution='bernoulli',
+                    ## more trees is better if the learning rate is small enough 
+                    ## here, use "more than enough" trees - we have early stopping
+                    ntrees=10000,
+                    ## smaller learning rate is better
+                    ## since we have learning_rate_annealing, we can afford to start with a 
+                    #bigger learning rate
+                    learn_rate=0.05,
+                    ## learning rate annealing: learning_rate shrinks by 1% after every tree 
+                    ## (use 1.00 to disable, but then lower the learning_rate)
+                    learn_rate_annealing = 0.99,
+                    ## score every 10 trees to make early stopping reproducible 
+                    #(it depends on the scoring interval)
+                    score_tree_interval = 10,
+                    ## fix a random number generator seed for reproducibility
+                    seed = 1234,
+                    ## early stopping once the validation AUC doesn't improve by at least 0.01% for 
+                    #5 consecutive scoring events
+                    stopping_rounds = 5,
+                    stopping_metric = "AUC",
+                    stopping_tolerance = 1e-4)
+            
+#Build grid search with previously made GBM and hyper parameters
+final_grid = H2OGridSearch(gbm_final_grid, hyper_params = hyper_params_tune,
+                                    grid_id = 'final_grid',
+                                    search_criteria = search_criteria_tune)
+                                    
+                                    
+                                    
+help(H2OGridSearch)
+#Train grid search
+final_grid.train(x=predictors,#nfolds=1,
+           y=response,
+           ## early stopping based on timeout (no model should take more than 1 hour - modify as needed)
+           max_runtime_secs = 3600, 
+           training_frame = train,#train,
+           validation_frame = valid
+           )
+
+print (final_grid)
+
+
+
+0          12  final_grid_model_2  0.025229576546583022  #this logloss is on validation data
+1           5  final_grid_model_1  0.034057970495574165
+
+
+#even now use 6 fold, 0.02522 also in output, so 6 fold must include one fold valid, 5 folds in train
+final_grid.train(x=predictors,nfolds=6,
+           y=response,
+           ## early stopping based on timeout (no model should take more than 1 hour - modify as needed)
+           max_runtime_secs = 3600, 
+           training_frame = train,#train,
+           validation_frame = valid
+           )
+
+print (final_grid)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+dir(final_grid)
+
+a=final_grid.get_grid()
+a1=final_grid.model_performance()
+
+a1=final_grid.sorted_metric_table()
+a1=final_grid.summary()
+
+a1=final_grid.get_grid()
+
+
+
+
+
+
+
+#python may be condused, so need to close and reopen cluster
+#h2o.cluster().shutdown()
+
+## Sort the grid models by AUC
+sorted_final_grid = final_grid.get_grid(sort_by='auc',decreasing=True)
+
+print (sorted_final_grid)
+
+
+
+#look at what is in sorted_final_grid
+dir(sorted_final_grid)
+
+a=sorted_final_grid.sorted_metric_table()
+
+
+#Let's see how well the best model of the grid search 
+#(as judged by validation set AUC) does on the held out test set:
+
+
+#Get the best model from the list (the model name listed at the top of the table)
+best_model = h2o.get_model(sorted_final_grid.sorted_metric_table()['model_ids'][0])
+performance_best_model = best_model.model_performance(test)
+print (performance_best_model.auc())
+
+
+
+
+#plot scoring history
+import pandas as pd
+sh =best_model.score_history()
+sh = pd.DataFrame(sh)
+print(sh.columns)
+
+import matplotlib.pyplot as plt
+#%matplotlib inline 
+# plot training logloss and auc
+sh.plot(x='number_of_trees',y = ['training_auc','validation_auc'])
+
+sh.plot(x='number_of_trees',y = ['training_logloss','validation_logloss'])
+
+
+
+
+
+
+
+#We can inspect the winning model's parameters:
+
+
+params_list = []
+for key, value in best_model.params.items():
+    params_list.append(str(key)+" = "+str(value['actual']))
+params_list
+
+
+
+#Keeping the same "best" model, we can make test set predictions as follows:
+
+#In [23]:
+preds = best_model.predict(test).as_data_frame()
+
+
+best_model.model_performance(valid)
+
+
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+# write-html.py
+
+f = open(r'C:\Users\''\Dropbox\notebooks\index_analysis\mis\helloworld.html','w')
+
+message = """<html>
+<head></head>
+<body><p>Hello World!</p></body>
+</html>"""
+
+f.write(message)
+f.close()
+    
+
+
+
+
+
+
+from sqlalchemy import create_engine
+import configparser
+import re
+#import MySQLdb as mdb
+import pandas as pd
+import numpy as np
+import pymysql
+
+connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/test1")
+
+x=pd.DataFrame(np.array([[1,2],[3,4]]),columns=['a','b'])
+
+x.to_sql('try9',connection,if_exists='replace',chunksize=1000,index=False)
+
+
+
+
+import numpy as np
+initialInvestment   = -100; # Negative, since it results in an outflow of cash
+
+cashFlows           = [-49800,-49800,-49800,-49800,-49800, 0,0,0,0,300000];
+
+# Calculate the IRR
+irr = round(np.irr(cashFlows),4);
+    
+
+
+
+
+https://kknews.cc/zh-hk/code/qbklego.html
+Numba是python的即時編譯器，也就是說，每當您調用python函數時，您的全部或部分代碼都將轉換為機器代碼「即時」執行，然後它將在您的本機代碼速度上運行
+加快所有的計算重點和計算繁重的python函數(如循環)。它還支持numpy庫
+為什麼選擇Numba？
+當有很多其他編譯器時，比如cython，或者pypy，或者任何類似的編譯器。
+原因很簡單，在這裏您不必離開使用python編寫代碼的舒適區。你根本不需要改變你的代碼來實現基本的加速
+numba使用LLVM compiler infrastructure從純python代碼生成優化的機器碼。使用numba運行的代碼速度與使用C、c++或Fortran的類似代碼的速度相當
+
+
+
+
+
+
+
+http://zhaoxuhui.top/blog/2019/01/17/PythonNumba.html
+Numba, a Python compiler from Anaconda that can compile Python code for execution on CUDA-capable GPUs, 
+provides Python developers with an easy entry into GPU-accelerated computing and a path for using 
+increasingly sophisticated CUDA code with a minimum of new syntax and jargon. 
+
+With Numba, it is now possible to write standard Python functions and run them on a CUDA-capable GPU. 
+Numba is designed for array-oriented computing tasks, much like the widely used NumPy library. 
+The data parallelism in array-oriented computing tasks is a natural fit for accelerators like GPUs.
+
+
+
+nopython模式会完全编译这个被修饰的函数，函数的运行与Python解释器完全无关，不会调用Python的C语言API。如果想获得最佳性能
+推荐使用此种模式。同时由于@jit(nopython=True)太常用了，Numba提供了@njit修饰符，
+
+
+# coding=utf-8
+from numba import jit
+from numpy import arange
+
+
+@jit(nopython=True)
+def sum2d(arr):
+    M, N = arr.shape
+    result = 0.0
+    for i in range(M):
+        for j in range(N):
+            result += arr[i, j]
+    return result
+
+
+a = arange(9).reshape(3, 3)
+def try1():
+    for i in range(100):
+        sum2d(a)
+
+%timeit -n100 -r10 try1()
+
+
+Numba对于jit也提供了参数，叫做function signature
+@jit(float64(int32, int32))
+def f(x, y):
+    # A somewhat trivial example
+    return (x + y) / 3.14
+float64表示输出数据类型，int32表示输入数据类型。如果嫌太麻烦还可以简写成@jit(f8(i4,i4))
+
+
+Numba在第一次运行你写的代码时会即时编译，编译会消耗一定的时间。编译好之后Numba会将机器码先缓存起来，
+第二次再调用的时候就不会再编译而是直接运行了。这与Numba的运行原理有关
+
+
+from numba import jit
+import numpy as np
+import time
+
+x = np.arange(100).reshape(10, 10)
+
+
+@jit(nopython=True)
+#@jit(parallel=True)
+def go_fast(a):  # Function is compiled and runs in machine code
+    trace = 0
+    for i in range(a.shape[0]):
+        trace += np.tanh(a[i, i])
+    return a + trace
+
+
+# DO NOT REPORT THIS... COMPILATION TIME IS INCLUDED IN THE EXECUTION TIME!
+start = time.time()
+go_fast(x)
+end = time.time()
+print("Elapsed (with compilation) = %s" % (end - start))
+
+# NOW THE FUNCTION IS COMPILED, RE-TIME IT EXECUTING FROM CACHE
+start = time.time()
+go_fast(x)
+end = time.time()
+print("Elapsed (after compilation) = %s" % (end - start))
+
+#A universal function (or ufunc for short) is a function that operates on NumPy arrays (ndarrays) in 
+an element-by-element fashion. 
+type(np.sin)
+
+
+
+
+
+
+
+
+
+
+#https://zhuanlan.zhihu.com/p/72789048
+已经提到计算机只能执行二进制的机器码，C、C++等编译型语言依靠编译器将源代码转化为可执行文件后才能运行，Python
+Java等解释型语言使用解释器将源代码翻译后在虚拟机上执行。对于Python，由于解释器的存在，其执行效率比C语言慢几倍甚至几十倍。
+C语言经过几十年的发展，优化已经达到了极致。以C语言为基准，大多数解释语言，如Python、R会慢十倍甚至一
+百倍。Julia这个解释语言是个“奇葩”，因为它采用了JIT编译技术。
+
+reason why python slow
+1)python source code --> bytecode complier to virtual machine
+
+jit complier direclty to mahcine code
+Just-In-Time（JIT）技术为解释语言提供了一种优化，它能克服上述效率问题
+，极大提升代码执行速度，同时保留Python语言的易用性。使用JIT技术时，JIT编译器将Python源代码编译
+成机器直接可以执行的机器语言，并可以直接在CPU等硬件上运行。这样就跳过了原来的虚拟机，执行速度几乎与用C语言编程速度并无二致。
+
+Numba真正牛逼之处在于其nopython模式。将装饰器改为@jit(nopython=True)或者@njit，Numba会假设你已经
+对所加速的函数非常了解，强制使用加速的方式，不会进入object模式
+
+Numba使用了LLVM和NVVM技术，这个技术可以将Python、Julia这样的解释语言直接翻译成CPU或GPU可执行的机器码。
+
+
+
+
+above is numba in CPU. 
+
+
+
+
+
+#numba in GPU
+https://devblogs.nvidia.com/numba-python-cuda-acceleration/
+import numpy as np
+from numba import vectorize
+import numpy as np
+
+@vectorize(['float32(float32, float32)'], target='cuda')
+def Add(a, b):
+  return a + b
+
+# Initialize arrays
+N = 100000
+A = np.ones(N, dtype=np.float32)
+B = np.ones(A.shape, dtype=A.dtype)
+C = np.empty_like(A, dtype=A.dtype)
+
+# Add arrays on GPU
+C = Add(A, B)
+
+
+
+dx=2000
+dy=500000
+x=np.random.uniform(0,1,(dx,dy))
+
+
+
+import tensorflow as tf
+x=tf.random.uniform((dx,dy), minval=0, maxval=None, dtype=tf.dtypes.float32)
+
+
+
+#GPU-Accelerated Libraries for Python
+import numpy as np
+from pyculib import rand as curand
+
+prng = curand.PRNG(rndtype=curand.PRNG.XORWOW)
+rand = np.empty(100000)
+prng.uniform(rand)
+print rand[:10]
+
+
+
+
+
+
+
+
+
+
+
+import time
+from numba import cuda
+@cuda.jit(device=True)
+def mandel(x, y, max_iters):
+  """
+  Given the real and imaginary parts of a complex number,
+  determine if it is a candidate for membership in the Mandelbrot
+  set given a fixed number of iterations.
+  """
+  c = complex(x, y)
+  z = 0.0j
+  for i in range(max_iters):
+    z = z*z + c
+    if (z.real*z.real + z.imag*z.imag) >= 4:
+      return i
+
+  return max_iters
+
+@cuda.jit
+def mandel_kernel(min_x, max_x, min_y, max_y, image, iters):
+  height = image.shape[0]
+  width = image.shape[1]
+
+  pixel_size_x = (max_x - min_x) / width
+  pixel_size_y = (max_y - min_y) / height
+
+  startX = cuda.blockDim.x * cuda.blockIdx.x + cuda.threadIdx.x
+  startY = cuda.blockDim.y * cuda.blockIdx.y + cuda.threadIdx.y
+  gridX = cuda.gridDim.x * cuda.blockDim.x;
+  gridY = cuda.gridDim.y * cuda.blockDim.y;
+
+  for x in range(startX, width, gridX):
+    real = min_x + x * pixel_size_x
+    for y in range(startY, height, gridY):
+      imag = min_y + y * pixel_size_y 
+      image[y, x] = mandel(real, imag, iters)
+
+gimage = np.zeros((1024, 1536), dtype = np.uint8)
+blockdim = (32, 8)
+griddim = (32,16)
+
+start = time.time()
+d_image = cuda.to_device(gimage)
+mandel_kernel[griddim, blockdim](-2.0, 1.0, -1.0, 1.0, d_image, 20) 
+d_image.to_host()
+dt =time.time() - start
+
+print ("Mandelbrot created on GPU in %f s" % dt)
+
+imshow(gimage)
+
+
+
+
+
+
+
+
+if numba in GPU, need to use cuda inside numba like below
+
+but remember cuda is another concept
+初始化，并将必要的数据拷贝到GPU设备的显存上。
+CPU调用GPU函数，启动GPU多个核心同时进行计算。
+CPU与GPU异步计算。
+将GPU计算结果拷贝回主机端，得到计算结果。
+
+
+https://zhuanlan.zhihu.com/p/77307505
+
+
+
+
+from numba import cuda
+print(cuda.gpus)
+
+def cpu_print():
+    print("print by cpu.")
+
+@cuda.jit
+def gpu_print():
+    # GPU核函数
+    print("print by gpu.")
+
+def main():
+    gpu_print[1, 2]()
+    cuda.synchronize()
+    cpu_print()
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+from numba import cuda
+
+def cpu_print(N):
+    for i in range(0, N):
+        print(i)
+
+@cuda.jit
+def gpu_print(N):
+    idx = cuda.threadIdx.x + cuda.blockIdx.x * cuda.blockDim.x 
+    if (idx < N):
+        print(idx)
+
+def main():
+    print("gpu print:")
+    gpu_print[2, 4](8)
+    cuda.synchronize()
+    print("cpu print:")
+    cpu_print(8)
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+from numba import cuda
+import numpy as np
+import math
+from time import time
+
+@cuda.jit
+def gpu_add(a, b, result, n):
+    idx = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x   #this is for index only so that can locate every index
+    if idx < n:
+        result[idx] = a[idx] + b[idx]
+
+def main():
+    n = 200000
+    x = np.arange(n).astype(np.int32)
+    y = 2 * x
+
+    gpu_result = np.zeros(n)
+    cpu_result = np.zeros(n)
+
+    threads_per_block = 1024
+    blocks_per_grid = math.ceil(n / threads_per_block)
+    start = time()
+    gpu_add[blocks_per_grid, threads_per_block](x, y, gpu_result, n)   #output is in gpu_result
+    cuda.synchronize()
+    print("gpu vector add time " + str(time() - start))
+    start = time()
+    cpu_result = np.add(x, y)
+    print("cpu vector add time " + str(time() - start))
+
+    if (np.array_equal(cpu_result, gpu_result)):
+        print("result correct")
+
+if __name__ == "__main__":
+    main()
+
+
+运行结果，GPU代码竟然比CPU代码慢10+倍！
+
+说好的GPU比CPU快几十倍上百倍呢？这里GPU比CPU慢很多原因主要在于：
+
+向量加法的这个计算比较简单，CPU的numpy已经优化到了极致，无法突出GPU的优势，我们要解决实际问题往往比这个复杂得多，当解决复杂问题时，优化后的GPU代码将远快于CPU代码。
+
+这份代码使用CUDA默认的统一内存管理机制，没有对数据的拷贝做优化。CUDA的统一内存系统是当GPU运行到某块数据发现不在设备端时，再去主机端中将数据拷贝过来，当执行完核函数后
+，又将所有的内存拷贝回主存。在上面的代码中，输入的两个向量是只读的，没必要再拷贝回主存。
+
+这份代码没有做流水线优化。CUDA并非同时计算2千万个数据，一般分批流水线工作：一边对2000万中的某批数据进行计算，一边将下一批数据从
+主存拷贝过来。计算占用的是CUDA核心，数据拷贝占用的是总线，所需资源不同，互相不存在竞争关系。这种机制被称为流水线。这部分内容将在下篇文章中讨论。
+
+
+from numba import cuda
+import numpy as np
+import math
+from time import time
+
+@cuda.jit
+def gpu_add(a, b, result, n):
+    idx = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x
+    if idx < n :
+        result[idx] = a[idx] + b[idx]
+
+def main():
+    n = 20000000
+    x = np.arange(n).astype(np.int32)
+    y = 2 * x
+
+    # 拷贝数据到设备端
+    x_device = cuda.to_device(x)
+    y_device = cuda.to_device(y)
+    # 在显卡设备上初始化一块用于存放GPU计算结果的空间
+    gpu_result = cuda.device_array(n)
+    cpu_result = np.empty(n)
+
+    threads_per_block = 1024
+    blocks_per_grid = math.ceil(n / threads_per_block)
+    start = time()
+    gpu_add[blocks_per_grid, threads_per_block](x_device, y_device, gpu_result, n)
+    cuda.synchronize()
+    print("gpu vector add time " + str(time() - start))
+    start = time()
+    cpu_result = np.add(x, y)
+    print("cpu vector add time " + str(time() - start))
+
+    if (np.array_equal(cpu_result, gpu_result.copy_to_host())):
+        print("result correct!")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+#https://zhuanlan.zhihu.com/p/78557104
+在上一篇文章中，我曾提到，CUDA的执行配置：[gridDim, blockDim]中的blockDim最大只能是1024，
+但是并没提到gridDim的最大限制。英伟达给出的官方回复是gridDim最大为一个32位整数的最大值，也就是2,147,483,648，大约二十亿。
+
+
+from numba import cuda
+
+@cuda.jit
+def gpu_print(N):
+    idxWithinGrid = cuda.threadIdx.x + cuda.blockIdx.x * cuda.blockDim.x 
+    gridStride = cuda.gridDim.x * cuda.blockDim.x
+    # 从 idxWithinGrid 开始
+    # 每次以整个网格线程总数为跨步数
+    x=[0]*100
+    for i in range(idxWithinGrid, N, gridStride):
+        x[i]=i
+        print(i)
+
+def main():
+    gpu_print[2, 4](32)
+    cuda.synchronize()
+
+if __name__ == "__main__":
+    main()
+
+
+
+for i in range(1,5,2):
+    print(i)
+
+
+from numba import cuda
+import numpy as np
+import math
+from time import time
+
+@cuda.jit
+def gpu_add(a, b, result, n):
+    idx = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x
+    if idx < n :
+        result[idx] = a[idx] + b[idx]
+
+def main():
+    n = 20000000
+    x = np.arange(n).astype(np.int32)
+    y = 2 * x
+
+    start = time()
+    x_device = cuda.to_device(x)
+    y_device = cuda.to_device(y)
+    out_device = cuda.device_array(n)
+
+    threads_per_block = 1024
+    blocks_per_grid = math.ceil(n / threads_per_block)
+
+    # 使用默认流
+    gpu_add[blocks_per_grid, threads_per_block](x_device, y_device, out_device, n)
+    gpu_result = out_device.copy_to_host()
+    cuda.synchronize()
+    print("gpu vector add time " + str(time() - start))
+
+    start = time()
+
+    # 使用5个stream
+    number_of_streams = 5
+    # 每个stream处理的数据量为原来的 1/5
+    # 符号//得到一个整数结果
+    segment_size = n // number_of_streams
+
+    # 创建5个cuda stream
+    stream_list = list()
+    for i in range (0, number_of_streams):
+        stream = cuda.stream()
+        stream_list.append(stream)
+
+    threads_per_block = 1024
+    # 每个stream的处理的数据变为原来的1/5
+    blocks_per_grid = math.ceil(segment_size / threads_per_block)
+    streams_out_device = cuda.device_array(segment_size)
+    streams_gpu_result = np.empty(n)
+
+    # 启动多个stream
+    for i in range(0, number_of_streams):
+        # 传入不同的参数，让函数在不同的流执行
+        x_i_device = cuda.to_device(x[i * segment_size : (i + 1) * segment_size], stream=stream_list[i])
+        y_i_device = cuda.to_device(y[i * segment_size : (i + 1) * segment_size], stream=stream_list[i])
+
+        gpu_add[blocks_per_grid, threads_per_block, stream_list[i]](
+                x_i_device, 
+                y_i_device, 
+                streams_out_device,
+                segment_size)
+
+        streams_gpu_result[i * segment_size : (i + 1) * segment_size] = streams_out_device.copy_to_host(stream=stream_list[i])
+
+    cuda.synchronize()
+    print("gpu streams vector add time " + str(time() - start))
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+from numba import cuda
+import numpy as np
+import math
+from time import time
+
+@cuda.jit
+def matmul(A, B, C):
+    """  矩阵乘法 C = A * B
+    """
+    # Numba库提供了更简易的计算方法
+    # x, y = cuda.grid(2)
+    # 具体计算公式如下
+    row = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x
+    col = cuda.threadIdx.y + cuda.blockDim.y * cuda.blockIdx.y
+
+
+    if row < C.shape[0] and col < C.shape[1]:
+        tmp = 0.
+        for k in range(A.shape[1]):
+            tmp += A[row, k] * B[k, col]
+        C[row, col] = tmp
+
+def main():
+    # 初始化矩阵
+    M = 6000
+    N = 4800
+    P = 4000
+    A = np.random.random((M, N)) # 随机生成的 [M x N] 矩阵
+    B = np.random.random((N, P)) # 随机生成的 [N x P] 矩阵
+
+    start = time()
+    A = cuda.to_device(A)
+    B = cuda.to_device(B)
+    C_gpu = cuda.device_array((M, P))
+
+    # 执行配置
+    threads_per_block = (16, 16)
+    blocks_per_grid_x = int(math.ceil(A.shape[0] / threads_per_block[0]))
+    blocks_per_grid_y = int(math.ceil(B.shape[1] / threads_per_block[1]))
+    blocksPerGrid = (blocks_per_grid_x, blocks_per_grid_y)
+
+    # 启动核函数
+    matmul[blocksPerGrid, threads_per_block](A, B, C_gpu)
+
+    # 数据拷贝
+    C = C_gpu.copy_to_host()
+    cuda.synchronize()
+
+    print("gpu matmul time :" + str(time() - start))
+
+    start = time()
+    C_cpu = np.empty((M, P), np.float)
+    np.matmul(A, B, C_cpu)
+    print("cpu matmul time :" + str(time() - start))
+
+    # 验证正确性
+    if np.allclose(C_cpu, C):
+        print("gpu result correct")
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+from numba import cuda, float32
+import numpy as np
+import math
+from time import time
+
+# thread per block
+# 每个block有 BLOCK_SIZE x BLOCK_SIZE 个元素
+BLOCK_SIZE = 16
+
+@cuda.jit
+def matmul(A, B, C):
+    """  矩阵乘法 C = A * B
+    """
+    row = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x
+    col = cuda.threadIdx.y + cuda.blockDim.y * cuda.blockIdx.y
+
+    if row < C.shape[0] and col < C.shape[1]:
+        tmp = 0.
+        for k in range(A.shape[1]):
+            tmp += A[row, k] * B[k, col]
+        C[row, col] = tmp
+
+@cuda.jit
+def matmul_shared_memory(A, B, C):
+    """
+    使用Shared Memory的矩阵乘法 C = A * B
+    """
+    # 在Shared Memory中定义向量
+    # 向量可被整个Block的所有Thread共享
+    # 必须声明向量大小和数据类型
+    sA = cuda.shared.array(shape=(BLOCK_SIZE, BLOCK_SIZE), dtype=float32)
+    sB = cuda.shared.array(shape=(BLOCK_SIZE, BLOCK_SIZE), dtype=float32)
+
+    tx = cuda.threadIdx.x
+    ty = cuda.threadIdx.y
+    row = cuda.threadIdx.x + cuda.blockDim.x * cuda.blockIdx.x
+    col = cuda.threadIdx.y + cuda.blockDim.y * cuda.blockIdx.y
+
+    if row >= C.shape[0] and col >= C.shape[1]:
+        # 当(x, y)越界时退出
+        return
+
+    tmp = 0.
+    # 以一个 BLOCK_SIZE x BLOCK_SIZE 为单位
+    for m in range(math.ceil(A.shape[1] / BLOCK_SIZE)):
+        sA[tx, ty] = A[row, ty + m * BLOCK_SIZE]
+        sB[tx, ty] = B[tx + m * BLOCK_SIZE, col]
+        # 线程同步，等待Block中所有Thread预加载结束
+        # 该函数会等待所有Thread执行完之后才执行下一步
+        cuda.syncthreads()
+        # 此时已经将A和B的子矩阵拷贝到了sA和sB
+
+        # 计算Shared Memory中的向量点积
+        # 直接从Shard Memory中读取数据的延迟很低
+        for n in range(BLOCK_SIZE):
+            tmp += sA[tx, n] * sB[n, ty]
+
+        # 线程同步，等待Block中所有Thread计算结束
+        cuda.syncthreads()
+
+    # 循环后得到每个BLOCK的点积之和
+    C[row, col] = tmp
+
+def main():
+    # 初始化矩阵
+    M = 6000
+    N = 4800
+    P = 4000
+    A = np.random.random((M, N)) # 随机生成的 [M x N] 矩阵
+    B = np.random.random((N, P)) # 随机生成的 [N x P] 矩阵
+
+    A_device = cuda.to_device(A)
+    B_device = cuda.to_device(B)
+    C_device = cuda.device_array((M, P)) # [M x P] 矩阵
+
+    # 执行配置
+    threads_per_block = (BLOCK_SIZE, BLOCK_SIZE)
+    blocks_per_grid_x = int(math.ceil(A.shape[0] / BLOCK_SIZE))
+    blocks_per_grid_y = int(math.ceil(B.shape[1] / BLOCK_SIZE))
+    blocks_per_grid = (blocks_per_grid_x, blocks_per_grid_y)
+
+    start = time()
+    matmul[blocks_per_grid, threads_per_block](A_device, B_device, C_device)
+    cuda.synchronize()
+    print("matmul time :" + str(time() - start))
+
+    start = time()
+    matmul_shared_memory[blocks_per_grid, threads_per_block](A_device, B_device, C_device)
+    cuda.synchronize()
+    print("matmul with shared memory time :" + str(time() - start))
+    C = C_device.copy_to_host()
+
+if __name__ == "__main__":
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+https://blog.csdn.net/huyaoyu/article/details/89742577
+numba可以在没有CUDA支持时使用CPU进行加速，而这里我只感兴趣CUDA的部分。
+@cuda.jit(device=True)   #device means using GPU
+
+
+#https://stackoverflow.com/questions/23119413/how-do-i-install-python-opencv-through-conda
+#anaconda install opencv
+conda install --channel https://conda.anaconda.org/menpo opencv3
+    
+
+
+from __future__ import print_function
+
+import cv2
+import math
+import matplotlib.pyplot as plt
+import numpy as np
+from numba import cuda
+import time
+
+@cuda.jit(device=True)
+def d_radius_validate(cx, cy, R, width, x, y):
+    x = x - cx
+    y = y - cy
+
+    r = math.sqrt( x * x + y * y )
+
+    if ( r >= R - width and r <= R + width ):
+        return 255
+    else:
+        return 0
+
+@cuda.jit(device=True)
+def d_polar_line_segment_validate(cx, cy, theta, length, width, x, y):
+    n0 = length * math.cos(theta) / length
+    n1 = length * math.sin(theta) / length
+
+    v0 = x - cx
+    v1 = y - cy
+
+    proj = n0 * v0 + n1 * v1
+
+    if ( proj < 0 ):
+        return 0
+    elif ( proj > length ):
+        return 0
+    
+    oth0 = v0 - proj*n0
+    oth1 = v1 - proj*n1
+
+    d = math.sqrt( oth0 * oth0 + oth1 * oth1 )
+
+    if ( d <= width ):
+        return 255
+    else:
+        return 0
+
+@cuda.jit
+def k_validate(imgOut):
+    tx = cuda.blockIdx.x*cuda.blockDim.x + cuda.threadIdx.x
+    ty = cuda.blockIdx.y*cuda.blockDim.y + cuda.threadIdx.y
+
+    xStride = cuda.blockDim.x * cuda.gridDim.x
+    yStride = cuda.blockDim.y * cuda.gridDim.y
+
+    cx, cy = 2056, 1504
+    R = 1504*0.75
+    halfWidth = 10.0
+
+    for y in range( ty, imgOut.shape[0], yStride ):
+        for x in range( tx, imgOut.shape[1], xStride ):
+            flag = d_radius_validate( cx, cy, R, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+
+            flag = d_polar_line_segment_validate( cx, cy, -math.pi/2, R, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+
+            flag = d_polar_line_segment_validate( cx, cy, -math.pi/4, R, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+            
+            flag = d_polar_line_segment_validate( cx-halfWidth, cy, 0.0, R + halfWidth, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+            
+            flag = d_polar_line_segment_validate( cx, cy, math.pi/4, R, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+            
+            flag = d_polar_line_segment_validate( cx, cy, math.pi/2, R, halfWidth, 1.0*x, 1.0*y )
+            if ( 0 != flag ):
+                imgOut[y, x] = flag
+
+if __name__ == "__main__":
+    # Create an image.
+    img = np.zeros((3008, 4112), dtype=np.int32)
+
+    # Record the starting time.
+    start = time.time()
+
+    dImg = cuda.to_device(img)
+
+    cuda.synchronize()
+    k_validate[[100, 100, 1], [16, 16, 1]](dImg)
+    cuda.synchronize()
+
+    img = dImg.copy_to_host()
+
+    # Record the ending time.
+    end = time.time()
+
+    print(end - start)
+
+    # Save the image.
+    cv2.imwrite("ValidPixels_numba.png", img)
+
+    print("Done.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import time
+
+#numba
+import numpy as np
+def happy4(x):
+    for i in np.arange(x):
+        y=i
+%timeit -n100 -r10 happy4(10000)
+
+
+from numba import jit
+@jit
+def happy5(x):
+    for i in np.arange(x):
+        y=i
+
+%timeit -n100 -r10 happy5(10000)  #should be faster using numba
+    
+
+
+
+
+
+
+
+from pandas import read_excel
+data = read_excel('train.xlsx','Sheet1')
+
+def happy6(x):
+    y=x.copy()
+    z=y[y['Loan_ID']>3]
+
+@jit
+def happy7(x):
+    y=x.copy()
+    z=y[y['Loan_ID']>3]
+
+%timeit -n100 -r10 happy6(data) 
+%timeit -n100 -r10 happy7(data) 
+
+
+
+
+
+
+
+
+import numpy as np
+from timeit import default_timer as timer
+from numba import vectorize
+ 
+# This should be a substantially high value. On my test machine, this took
+# 33 seconds to run via the CPU and just over 3 seconds on the GPU.
+NUM_ELEMENTS = 100000000
+ 
+# This is the CPU version.
+def vector_add_cpu(a, b):
+  c = np.zeros(NUM_ELEMENTS, dtype=np.float32)
+  for i in range(NUM_ELEMENTS):
+    c[i] = a[i] + b[i]
+  return c
+ 
+# This is the GPU version. Note the @vectorize decorator. This tells
+# numba to turn this into a GPU vectorized function.
+@vectorize(["float32(float32, float32)"], target='cuda')
+def vector_add_gpu(a, b):
+  return a + b;
+ 
+def main():
+  a_source = np.ones(NUM_ELEMENTS, dtype=np.float32)
+  b_source = np.ones(NUM_ELEMENTS, dtype=np.float32)
+ 
+  # Time the CPU function
+  start = timer()
+  vector_add_cpu(a_source, b_source)
+  vector_add_cpu_time = timer() - start
+ 
+  # Time the GPU function
+  start = timer()
+  vector_add_gpu(a_source, b_source)
+  vector_add_gpu_time = timer() - start
+ 
+  # Report times
+  print("CPU function took %f seconds." % vector_add_cpu_time)
+  print("GPU function took %f seconds." % vector_add_gpu_time)
+ 
+  return 0
+ 
+if __name__ == "__main__":
+  main()
+
+
+
+
+
+#url redirection/redirect
+  #https://subscription.packtpub.com/book/networking_and_servers/9781784395414/1/ch01lvl1sec18/tracking-redirection-of-the-request-using-request-history
+import requests
+r = requests.get('http:google.com')
+r.url #u'http://www.google.co.in/?gfe_rd=cr&ei=rgMSVOjiFKnV8ge37YGgCA'
+>>> r.status_code
+200
+>>> r.history
+
+
+#ROTATING PROXY
+from lxml.html import fromstring
+import requests
+from itertools import cycle
+import traceback
+
+def get_proxies():
+    url = 'https://free-proxy-list.net/'
+    response = requests.get(url)
+    parser = fromstring(response.text)
+    proxies = set()
+    for i in parser.xpath('//tbody/tr'): #within tbody, there are many tr
+        if i.xpath('.//td[7][contains(text(),"yes")]'):  #td7 is yes/no indicator
+            proxy = ":".join([i.xpath('.//td[1]/text()')[0], i.xpath('.//td[2]/text()')[0]])
+            proxies.add(proxy)  #in set, only unique element allowed
+    return proxies
+
+
+proxies = get_proxies()
+
+proxy_pool = cycle(proxies)
+
+url = 'https://httpbin.org/ip'
+for i in range(1,11):
+    #Get a proxy from the pool
+    proxy = next(proxy_pool)
+    print("Request #%d"%i)
+    try:
+        response = requests.get(url,proxies={"http": proxy, "https": proxy})
+        print(response.json())
+    except:
+        #Most free proxies will often get connection errors. You will have retry the entire request using another proxy to work. 
+        #We will just skip retries as its beyond the scope of this tutorial and we are only downloading a single url 
+        print("Skipping. Connnection error")
+
+
+x=cycle(['2','5','8','90','3'])
+
+next(x)
+
+
+
+import requests
+url_use='https://bet.hkjc.com/racing/getJSON.aspx?type=win&date=2019-09-21&venue=ST&raceno=1'
+try:
+    proxy = next(proxy_pool)
+    output=requests.post(url_use, allow_redirects=False,proxies={"http": proxy, "https": proxy},timeout=3).json()
+    print("ok ",proxy)
+except:
+    print(sys.exc_info()[0])
+
+output=requests.post(url_use, allow_redirects=False).json()
+
+
+
+
+
+
+
+
+
+
+
+
+
+#multi process on dataframe apply
+data=main_data.loc[(main_data['Date']=='2019-10-20')&(main_data['Horse_Brand']=="i'm the conquist_B155"),:]
+def trackwork_swim_extract(data):
+    data_index=data.index
+    #data=data.reset_index(drop=True)
+    target_horse=data['Horse_Brand'].values[0]
+    
+    target_date=data['Date'].values[0]
+    target_date_lag_two=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=2)
+    target_date_lag_two=target_date_lag_two.strftime("%Y-%m-%d")
+    
+    target_date_lag_14=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=14)
+    target_date_lag_14=target_date_lag_14.strftime("%Y-%m-%d")
+
+    target_date_lag_22=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=22)
+    target_date_lag_22=target_date_lag_22.strftime("%Y-%m-%d")    
+
+    target_date_lag_30=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=30)
+    target_date_lag_30=target_date_lag_30.strftime("%Y-%m-%d") 
+
+    #count_14=count_22=count_30=0
+    key_horse=trackwork_swim[:,1]==target_horse
+    trackwork_swim_temp=trackwork_swim[key_horse]
+    trackwork_swim_use=trackwork_swim_temp[(trackwork_swim_temp[:,0]<=target_date_lag_two)&(trackwork_swim_temp[:,0]>=target_date_lag_14)]
+    count_14=np.shape(trackwork_swim_use)[0]
+
+    trackwork_swim_use=trackwork_swim_temp[(trackwork_swim_temp[:,0]<=target_date_lag_two)&(trackwork_swim_temp[:,0]>=target_date_lag_22)]
+    count_22=np.shape(trackwork_swim_use)[0]
+
+    trackwork_swim_use=trackwork_swim_temp[(trackwork_swim_temp[:,0]<=target_date_lag_two)&(trackwork_swim_temp[:,0]>=target_date_lag_30)]
+    count_30=np.shape(trackwork_swim_use)[0]    
+    
+    output=pd.DataFrame({'swim_14':[count_14],'swim_22':[count_22],'swim_30':[count_30]},index=data_index)
+    return output
+
+
+    
+out=main_data[['Date','Horse_Brand']][0:1000].groupby(['Date','Horse_Brand'],group_keys=False).apply(lambda x:trackwork_swim_extract(x))
+
+i=0
+all_out=pd.DataFrame([])
+for i in range(0,main_data[0:30].shape[0]):
+    out=trackwork_swim_extract(main_data[['Date','Horse_Brand']][i:i+1])
+    all_out=all_out.append(out)
+    print(i)
+
+
+from multiprocessing import Pool, cpu_count
+
+def applyParallel(dfGrouped, func):
+    with Pool(cpu_count()) as p:
+        ret_list = p.map(func, [group for name, group in dfGrouped])
+    return pd.concat(ret_list)
+
+out=applyParallel(main_data[['Date','Horse_Brand']][0:10000].groupby(['Date','Horse_Brand'],group_keys=False), trackwork_swim_extract)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#below is an example to use dark
+
+
+#below is an example to use dark
+
+#data_temp=main_data.loc[(main_data['Date']=='2019-09-01')&(main_data['RaceNo']==1),:]
+def DNF_UR_FE_TNP_PU_treat_last(data_temp):
+    index_out=data_temp.index
+    data_temp=data_temp.reset_index(drop=True)
+    if data_temp['DNF_UR_FE_TNP_PU_race'].values[0]==1:
+        all_fp=list(data_temp.FP.values)
+        all_fp_old=all_fp.copy()
+        #remove text in all_fp
+        for k in all_fp_old:
+            if any(x==k for x in ['DNF','UR','FE','TNP','PU','WXNR', 'WV-A', 'WX-A','WV','WX','WR']):#note that till to now no data is WR
+                    all_fp.remove(k)
+        #convert to integer
+        all_fp=[int(x) for x in all_fp]
+        fp_max=max(all_fp)
+        fp_start=fp_max+1
+        #i=0
+        for i in range(0,data_temp.shape[0]):
+            if data_temp[i:i+1]['FP'].values[0] in DNF_UR_FE_TNP_PU:
+                data_temp.loc[i,'FP']=str(fp_start)
+                fp_start=fp_start+1
+    output=pd.DataFrame({'FP':data_temp['FP'].values},index=index_out)   #output must be a dataframe with name specified in meta
+    return output
+
+from dask import dataframe as dd
+from dask.multiprocessing import get 
+from dask.distributed import Client
+
+
+
+#client = Client(n_workers=8, threads_per_worker=8)
+client = Client()
+
+ddf = dd.from_pandas(main_data[['Date','RaceNo','FP','DNF_UR_FE_TNP_PU_race']].copy(), npartitions=5)
+
+meta = [("FP", str)]
+g=ddf.groupby(['Date','RaceNo'],group_keys=False).apply(lambda x:DNF_UR_FE_TNP_PU_treat_last(x),meta=meta)
+
+out=g.compute()
+
+main_data['FP']=out
+
+
+
+
+
+
+#use cuda in python for parallel
+#https://weeraman.com/put-that-gpu-to-good-use-with-python-e5a437168c01
+
+#step to install cuda
+# ./conda update conda
+#./conda install accerate
+#./conda install cudatoolkit
+#./conda install numba
+
+#without using GPT the time is 31s
+import numpy as np
+from timeit import default_timer as timer
+
+def pow(a, b, c):
+    for i in range(a.size):
+         c[i] = a[i] ** b[i]
+
+def main():
+    vec_size = 50000000
+
+    a = b = np.array(np.random.sample(vec_size), dtype=np.float32)
+    c = np.zeros(vec_size, dtype=np.float32)
+
+    start = timer()
+    pow(a, b, c)
+    duration = timer() - start
+
+    print(duration)
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+#after installing accerate, use below to perform parallel using GPU
+import numpy as np
+from timeit import default_timer as timer
+from numba import vectorize
+
+#@vectorize(['float32(float32, float32)'], target='cuda')
+def pow(a, b):
+    return a ** b
+
+def main():
+    vec_size = 100000000
+
+    a = b = np.array(np.random.sample(vec_size), dtype=np.float32)
+    c = np.zeros(vec_size, dtype=np.float32)
+
+    start = timer()
+    pow(a, b)
+    duration = timer() - start
+
+    print(duration)
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+#https://www.geeksforgeeks.org/running-python-script-on-gpu/
+from numba import jit, cuda 
+import numpy as np 
+# to measure exec time 
+from timeit import default_timer as timer    
+
+
+# normal function to run on cpu 
+def func(a):                                 
+    for i in range(n): 
+        b[i]+= 1      
+  
+# function optimized to run on gpu  
+@jit(target ="cuda")                          
+def func2(a): 
+    for i in range(n): 
+        a[i]+= 1
+        #print('5')
+
+n=5000000
+if __name__=="__main__":                          
+    a = np.ones(n, dtype = np.float64) 
+    b = np.ones(n, dtype = np.float32) 
+      
+    start = timer() 
+    func(a) 
+    print("without GPU:", timer()-start)     
+      
+    start = timer() 
+    func2(a) 
+    print("with GPU:", timer()-start) 
+
+
+
+
+import random
+from time import sleep
+
+
+# normal function to run on cpu 
+def func(a):                                 
+    for i in range(n): 
+        b[i]+= 1      
+  
+# function optimized to run on gpu  
+@jit(target ="cuda")                          
+def func2(a):
+    for i in range(n):
+        sleep(random.randint(2,5))
+        print(i)
+
+n=20
+
+if __name__=="__main__":                          
+    a = np.ones(n, dtype = np.float64) 
+    b = np.ones(n, dtype = np.float32) 
+      
+    start = timer() 
+    func(a) 
+    print("without GPU:", timer()-start)     
+      
+    start = timer() 
+    func2(a) 
+    print("with GPU:", timer()-start) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import os
+import threading
+
+lock = threading.Lock()
+
+def synchronized_open_file(*args, **kwargs):
+    with lock:
+        return tb.open_file(*args, **kwargs)
+
+def synchronized_close_file(self, *args, **kwargs):
+    with lock:
+        return self.close(*args, **kwargs)
+
+import numpy as np
+import tables as tb
+
+
+
+
+
+filename='simple_threading.h5'
+path='/array'
+inqueue=queue.Queue()
+outqueue=queue.Queue()
+
+def run(filename, path, inqueue, outqueue):
+    try:
+        yslice = inqueue.get()
+        h5file = synchronized_open_file(filename, mode='r')
+        h5array = h5file.get_node(path)
+        data = h5array[yslice, ...]
+        psum = np.sum(data)
+    except Exception as e:
+        outqueue.put(e)
+    else:
+        outqueue.put(psum)
+    finally:
+        synchronized_close_file(h5file)
+
+os.chdir('/home/''/Dropbox/notebooks/horse/model')
+
+import os
+import queue
+import threading
+
+import numpy as np
+import tables as tb
+
+SIZE = 10
+NTHREADS = 5
+FILENAME = 'simple_threading.h5'
+H5PATH = '/array'
+
+def create_test_file(filename):
+    data = np.random.rand(SIZE, SIZE)
+
+    with tb.open_file(filename, 'w') as h5file:
+        h5file.create_array('/', 'array', title="Test Array", obj=data)
+
+def chunk_generator(data_size, nchunks):
+    chunk_size = int(np.ceil(data_size / nchunks))
+    for start in range(0, data_size, chunk_size):
+        yield slice(start, start + chunk_size)
+
+def main():
+    # generate the test data
+    if not os.path.exists(FILENAME):
+        create_test_file(FILENAME)
+
+    threads = []
+    inqueue = queue.Queue()
+    outqueue = queue.Queue()
+
+    # start all threads
+    for i in range(NTHREADS):
+        thread = threading.Thread(
+            target=run, args=(FILENAME, H5PATH, inqueue, outqueue))
+        thread.start()
+        threads.append(thread)
+
+    # push requests in the input queue
+    for yslice in chunk_generator(SIZE, len(threads)):
+        inqueue.put(yslice)
+
+    # collect results
+    try:
+        mean_ = 0.
+
+        for i in range(len(threads)):
+            out = outqueue.get()
+            if isinstance(out, Exception):
+                raise out
+            else:
+                mean_ += out
+
+        mean_ /= SIZE * SIZE
+
+    finally:
+        for thread in threads:
+            thread.join()
+
+    # print results
+    print('Mean: {}'.format(mean_))
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+values=[1,2,3,4]
+
+import numpy as np
+
+from math import sqrt
+
+def min_max_scaler(values):
+    values_normalized=(values-np.mean(values))/np.std(values)
+    return values_normalized
+
+
+
+def standardize(values):
+    length_values = len(values)
+    diffs = [value - min(values) for value in values]
+    std = sqrt(sum([diff**2 for diff in diffs]) / length_values)
+    meanvalue = sum(values)/length_values
+    values_standardized = []
+    for value in values:
+        values_standardized.append((value - meanvalue) / std)
+    return values_standardized
+
+    (np.array(values)-min(values))/(max(values)-min(values))
+
+
+
+
+from stop_words import get_stop_words
+from collections import namedtuple
+import numpy as np
+
+stopwords = get_stop_words('en')
+
+
+sentence = "Repeating a word, any word in English is incorrect syntactically."
+
+
+a=('a',0.25)
+
+def find_frequent_words(sentence):
+    # Your code goes here
+    return []
+
+
+
+sentence= "Repeating a word, any word in English is is incorrect syntactically."
+sentence=sentence.split()
+
+sentence_unique=list(set(sentence))
+
+word_freq = []
+for w in sentence_unique:
+    word_freq.append(sentence.count(w))
+word_freq_count=sum(word_freq)
+output=[i/word_freq_count for i in word_freq]
+
+list(zip(sentence_unique,output))
+
+
+
+
+
+from collections import namedtuple
+
+Dimensions = namedtuple("Dimensions", "columns rows")
+
+matrixA=np.array([[1,2],[3,4],[5,6]])
+matrixB=np.array([[1,2],[3,4]])
+
+def compute_product(matrixA, matrixB):
+    matrixA_dim = Dimensions(len(matrixA[0]), len(matrixA))
+    matrixB_dim = Dimensions(len(matrixB[0]), len(matrixB))
+    product = []
+    for col in range(matrixA_dim.columns):
+        product.append([0 for row in range(matrixB_dim.rows)])
+    for i in range(matrixA_dim.rows):
+        for j in range(matrixB_dim.columns):
+            product[i][j] += matrixA[i][j] * matrixB[j][j]
+    return product
+
+
+
+
+
+
+
+
+
+#my sql example
+from math import cos, pi, floor
+import requests
+
+Employee = pd.DataFrame({'EmployeeId': [11,12,13,14],
+                         'FirstName': ['lei wai','lung sing','wai man','mei yan'],
+                         'LastName': ['lau','lam','wong','chan']},index=False)
+
+Address = pd.DataFrame({'AddressId': [1,2,3,4],'EmployeeId': [11,12,13,14],
+                        'Street': ['aa','bb','cc',None],
+                        'District': ['tsuen wan','central','wan chai',None]},index=False)
+
+
+Bank = pd.DataFrame({'Id': [1,2,3],'AssetSize':[100,200,300]})
+    
+    
+    
+connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/sql_learning")
+    
+Employee.to_sql('Employee',connection,if_exists='replace',chunksize=1000,index=False)
+Address.to_sql('Address',connection,if_exists='replace',chunksize=1000,index=False)
+Employee.to_sql('Employee',connection,if_exists='replace',chunksize=1000,index=False)
+Bank.to_sql('Bank',connection,if_exists='replace',chunksize=1000,index=False)
+
+    
+
+
+
+
+
+
+
+
+
+
+
+import paramiko
+from scp import SCPClient
+source = r'C:\Users\''\Dropbox\notebooks\index_analysis\IB_live_trade\client_everything\try.txt'
+dest = r'/home/customer/www/poseidontech.org/public_html/client_use_daily/version1/try.txt'
+# web site link is http://poseidontech.org/client_use_daily/version1/try.txt
+hostname = 'gsgpm1029.siteground.biz'
+port = 18765 # default port for SSH
+username = 'u427-3uutm94zey9v'
+password = '36467323'
+
+
+
+def createSSHClient(server, port, user, password):
+    client = paramiko.SSHClient()
+    client.load_system_host_keys()
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    client.connect(server, port, user, password)
+    return client
+
+ssh = createSSHClient(hostname, port, username, password)
+
+scp = SCPClient(ssh.get_transport())
+
+#copy file to destination without asking existenct
+scp.put(source,dest)
+
+
+
+
+#execute linux command
+command='pwd'
+std_in, std_out, std_err = ssh.exec_command(command)
+stdout=std_out.readlines()[0]
+stdout
+
+
+ssh.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#telegram send message
+#find botfather to set a bot first, my bot is PoseidonTech_bot
+#https://zaoldyeck.medium.com/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E6%80%8E%E9%BA%BC%E6%89%93%E9%80%A0-telegram-bot-a7b539c3402a
+
+#pip install python-telegram-bot
+https://blog.csdn.net/yiqiushi4748/article/details/103994364
+
+
+
+
+#if you're looking to simply send a message to a specific user, you need to provide your
+#bot with the user's ID. To get the user's ID, use @userinfobot in telegram client for that user
+#  所以要叫對方search userinfobot, 再俾個id 我
+# then need to ask 55480236 to chat with PoseidonTech_bot first then PoseidonTech_bot can send message to him
+
+poseidon_admin user id is 1404242736
+55480236 user id is 1164425261
+
+
+#code for send message
+https://github.com/SaltNego/telegram_python_bot/blob/master/telegram_bot.py
+
+import telegram
+bot = telegram.Bot(token='1354258543:AAFOdEGomqwHu3n9u_qjxBALKOn2doUseNo')
+print (bot.get_me())
+info = bot.get_webhook_info()
+#print (info)
+bot.send_message(chat_id='1404242736', text=str(bot.get_me())) # id of poseidon_admin
+
+
+bot.send_message(chat_id='1164425261', text='你好嗎')# id of 55480236
+
+
+href = "https://baidu.com"
+title = "嘿嘿嘿马"
+#发送带标题网址链接
+bot.send_message(chat_id='@poseidon_admin',
+    text='<a href="http://slowread.net/monitor-hostloc/">HOSTLOC 交易贴提醒</a>.',
+    parse_mode=telegram.ParseMode.HTML)
+#发送无预览带标题网址链接
+bot.send_message(chat_id='@testonet',
+    text='<a href="' + href + '">' + title + '</a>.',
+    parse_mode=telegram.ParseMode.HTML,
+    disable_web_page_preview=True)
+chat_id = '@testonet'
+#其它文字样式
+bot.send_message(chat_id=chat_id,
+    text='<b>bold</b> <i>italic</i> <a href="http://google.com">link</a>.',
+    parse_mode=telegram.ParseMode.HTML)
+#发送图片
+bot.send_photo(chat_id=chat_id,
+    photo=open("115171338.png",'rb'))
+
+bot.sendPhoto(chat_id = chat_id,
+    photo=open("115171339.png",'rb'),
+    caption="Sample photo Done")
+
+
+
+
+
+.\python -m pip install telethon
+
+telegram get api_hash
+https://docs.telethon.dev/en/latest/basic/signing-in.html
+
+
+
+#55480236
+api_id = '6166311'
+api_hash = '6d6e7f24e14f3ccc98f89480b441381a'
+
+#horse quant
+api_id = '6864164'
+api_hash = '061fb4bb81d3fddf29103693a2c7d091'
+
+#poseidon_admin
+api_id_p='6486098'
+api_hash_p='b2e4642b0071334fcc076a83d6a85095'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#####################
+#####################
+#install all packages
+#####################
+#####################
+
+#install quandl
+.\python -m pip install quandl
+
+#install selenium
+.\python -m pip install selenium
+
+
+#if fail to install pip, use below
+.\python C:\Users\''\Desktop\python\get-pip\get-pip.py
+
+
+#when install python 3.6.7 edward already at 
+#C:\Users\''\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
+
+# install tensorflow version
+#it will install at C:\Users\''\AppData\Roaming\Python\Python36\site-packages
+.\pip install --user tensorflow==1.2.1
+
+##*****very important******
+#if in case need to reinstall python, go to 
+#delete C:\Users\''\AppData\Roaming\Python first
+#then normally install and also install tensorflow==1.2.1 otherwise edward may have error
+
+
+
+#install mysql
+.\pip install pymysql
+
+#for h5 file need to use numpy version less than numpy=1.15.4 (python 3.6.7 use 1.14.6)
+numpy version
+https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
+    
+.\pip install --user C:\Users\''\Desktop\python\numpymkl\numpy-1.15.4+mkl-cp36-cp36m-win_amd64.whl
+
+
+#install ib_insync version 0.9.64
+.\python -m pip install ib_insync==   
+.\python -m pip install ib_insync==0.9.64  #this can use multiple clients id to login    
+
+#also neeed to install dataclasses
+.\python -m pip install dataclasses
+
+use .\python -m pip install -U ib_insync
+it will update to latest package version
+
+
+
+#note
+#note that when using python 3.6.7, ib API fail, error occure "RuntimeError: This event loop is already running"
+so need to use util.patchAsyncio()
+    
+#convert csv to xlsx
+https://stackoverflow.com/questions/17684610/python-convert-csv-to-xlsx
+.\pip install pyexcel pyexcel-xlsx
+
+
+#install telegram
+#need to close python becasue sometime may not be installed and have alert in cmd
+.\pip install python-telegram-bot
+
+#install talib in window in python 3.6, not python 3.7
+#becasue talib need to use numpy 1.19.4 but python 3.7 is using numpy 1.14.6 in order to use hdf5
+pip install C:\Users\''\Desktop\python\talib\TA_Lib-0.4.19-cp36-cp36m-win_amd64.whl
+
+
+
+#in index_price, below append the path, so if change python version , need to update this
+#add pyexcel.cookbook to python search path
+import sys
+sys.path
+sys.path.append("C:\\Users\\''\\Desktop\\python\\WPy-3670\\python-3.6.7.amd64\\lib\\site-packages")
+
+
+
+
+
+#concept
+#if add --user, it will be installed at (A) C:\Users\''\AppData\Roaming\Python\Python36\site-packages
+.\pip install --user xxxx
+#if not adding --user, it will install normally at (B) C:\Users\''\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
+
+#if already at A cannot install at B
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#########
+##install package in linux (in default environment )
+
+##install older version python
+./conda update conda
+./conda install python=3.6.7
+
+
+
+#install mysql
+./pip install pymysql
+
+
+#if need to use import mysql.connector
+./pip install mysql-connector-python
+
+
+#install crontab
+python -m pip install python-crontab
+
+#python -m pip install --upgrade tensorflow-gpu
+#
+##install tensorflow probability
+##https://github.com/tensorflow/probability
+#python -m pip install pip --upgrade --user
+#python -m pip install tf-nightly-2.0-preview tfp-nightly --upgrade --user
+
+    
+
+
+
+ 
+
+#https://tf.wiki/zh/basic/installation.html
+#在安装 GPU 版本的 TensorFlow 前，你需要具有一块不太旧的 NVIDIA 显卡，以及正确安装 NVIDIA 显卡驱动程序、CUDA Toolkit 和 cuDNN。
+#在安装前，可使用 conda search cudatoolkit 和 conda search cudnn 搜索 conda 源中可用的版本号。
+./conda install cudatoolkit=10.2
+./conda install cudnn=7.6.5
+
+#install edward
+#edward is moved to tensorflow-probability   (not sure whether need to install below, if not exist then install below)
+./pip install --upgrade tensorflow-probability  
+
+##########
+#install tensorflow 2.1, for edward 2, at least 2.1  (for horse, not using edward 2, so not necessary use 2.1)
+
+./pip install tensorflow-gpu==2.1   
+
+#current using 2.4
+./pip install tensorflow-gpu==2.4  
+
+#for safety, use spyder 3.2.8 not 4.0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#in linux, if need to use tensorflow 1.2.1, need to create another environment
+#for linux anaconda, if use two environment, firstanaconda-navigator then create new environment called old1
+conda create --name old1 python=3.6.7   #note that installed packages is in /root/anaconda3/envs/old1/lib/python3.6/site-packages
+then in terminal type  "anaconda-navigator", install spyder in this environment
+
+#then for everytime open the computer
+#need to activate the enirnment
+1) in terminal     "conda activate old1"       #(this is old tensorflow 1.2.1)
+2)then type "spyder"
+
+
+if want to switch to default envirnment, use "conda deactivate"
+
+
+
+#install tensorflow in environment "old1"
+1) in terminal     "conda activate old1"
+2_ cd /root/anaconda3/envs/old1/bin
+
+3)./pip install tensorflow==1.2.1
+
+
+#install quandl
+./pip -m pip install quandl
+
+
+
+
+#install mysql
+./pip install pymysql
+
+#install matplotlib 1.0.3 to avoid the error "normed" deprerciated need to use "density"
+./pip install matplotlib==1.0.3
+
+
+#read_excel may not work in pandas so need to use  xlrd==1.2.0
+./pip install xlrd==1.2.0
+
+#hdf5 may not work, need to use
+./pip install --upgrade tables
+
+#pandas use 0.23.4 to aviod the error KeyError: 'Passing list-likes to .loc or [] with any missing labels is no longer supported, see https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#deprecate-loc-reindex-listlike'
+./pip install pandas==0.23.4
+
+
+#as degraded pandas to 0.23.4, need to instrall openpyxl and xlsxwriter before using pd.ExcelWriter
+./pip install openpyxl
+./pip install xlsxwriter
+
+#us joblib
+./pip install joblib==0.12.5
+
+
+
+#beautiful soup
+./pip install BeautifulSoup4==4.6.3
+
+#install pyexcel for doenloading hkex FHSI report
+./pip install pyexcel==0.6.6
+./pip install pyexcel-xlsx==0.6.0
+
+
+#download yahoo need
+./pip install pandas_datareader
+
+
+#install ta-lib
+wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz \
+  && sudo tar -xzf ta-lib-0.4.0-src.tar.gz \
+  && sudo rm ta-lib-0.4.0-src.tar.gz \
+  && cd ta-lib/ \
+  && sudo ./configure --prefix=/usr \
+  && sudo make \
+  && sudo make install \
+  && pip install ta-lib
+
+make, make install (explanation)
+https://www.cnblogs.com/tinywan/p/7230039.html
+
+
+
+
+
+
+
+
+
+
+######## (currently not using inferpy)
+#install inferpy  #https://readthedocs.org/projects/inferpy/downloads/pdf/develop/  #2020-jan-15 version
+#./pip install inferpy
+#note that 
+./pip install inferpy[all]  #this will install both cpu and gpu version. note that it will downgrade tensorflow to suitable version say 1.15
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ssh connect to siteground
+Follow https://www.siteground.com/tutorials/ssh/putty/
+Bear in mind that Hostname: gsgpm1029.siteground.biz  , never use Poseidon_admin
+Hostname: gsgpm1029.siteground.biz
+Username: u427-3uutm94zey9v
+Port: 18765
+Password is 36467323
+
+#python ssh
+./python -m pip install --user paramiko
+./python -m pip install --user scp
+
+
+
+
+
+
+
+
+
+
+
+
