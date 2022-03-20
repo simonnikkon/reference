@@ -244,7 +244,7 @@ else:
     print ("3 state")
     print ("none of above")
 
-my_list=['alex','apple','anna']
+my_list=['ww','apple','anna']
 for i in my_list:      #for(i=0;i<my_list.length();i++)
     print (i)          #cout<<my_list[i]
 
@@ -289,7 +289,7 @@ import os
 print (os.getcwd()) # Prints the working directory
 
 
-#os.chdir(r'C:\Users\Ava Lau\Desktop\python\test_new')
+#os.chdir(r'C:\Users\Ava kkk\Desktop\python\test_new')
 #print (os.getcwd())
 #import test4
 #a=test4.f(3)
@@ -489,9 +489,9 @@ d.keys()
 d.values()
 
 d['a']
-d['alex']='hand'
+d['ww']='hand'
 d
-del d['alex']
+del d['ww']
 
 #Tuples are basically immutable lists. The elements of a tuple are written between parentheses, or just separated by commas:
 t = 12345, 54321, 'hello!'
@@ -1382,7 +1382,7 @@ merged_right = pd.merge(left=data2,right=data,how='right', left_on='Property_Are
 
 merged_right['happy'].fillna('e', inplace=True)
 
-word=['alex','apple']
+word=['ww','apple']
 key_lower=list(map(lambda x:x.upper(),word))
 
 a=[]
@@ -1433,7 +1433,7 @@ Employee.displayEmployee(emp1) #pass emp1 to employee class so need to include e
 
 import class_sample as cs
 cc=cs.Employee
-emp3 = cc("alex", 2000)
+emp3 = cc("ww", 2000)
 emp3.displayEmployee()
 
 
@@ -1955,7 +1955,7 @@ import numpy as np
 import pandas as pd
 left = DataFrame([[1,2,np.nan],[3,4,np.nan],[5,6,2]],columns=['one','two','three'])
 left
-right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10]],columns=['one','alex','three'])
+right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10]],columns=['one','ww','three'])
 right
 left.merge(right,on='one') # Same as how=’inner’
 left.merge(right,on='one', how='left')
@@ -2107,7 +2107,7 @@ data.groupby('col1').apply(lambda x: (x.col2 * x.col3).max())
 import pandas as pd
 from pandas import DataFrame
 data = pd.DataFrame(
-    {'horse':['alex','alex','alex','tom','tom','tom','sam','sam'],
+    {'horse':['ww','ww','ww','tom','tom','tom','sam','sam'],
     'col2':[1,1,1,2,2,1,3,4],
      'col3':[-1,-2,-3,-4,-5,-6,-7,-8]
     }
@@ -2289,7 +2289,7 @@ c=3
 
 
 
-#python pip Fatal error in launcher: Unable to create process using '"'
+#python pip Fatal error in kkkncher: Unable to create process using '"'
 #go to python.exe page, open cmd
 #python -m pip install selenium
 #http://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path
@@ -2354,7 +2354,7 @@ import time
 browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
 browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-free-trial')
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-first-name")]')
-search.send_keys("alex lau")
+search.send_keys("ww kkk")
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-last-name")]')
 search.send_keys("lei wai")
 #click check-box
@@ -2512,7 +2512,7 @@ for key in df.groupby(df.a):
     print (key)
     
     
-df = pd.DataFrame({'a': ['alex', 'alex', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['ww', 'ww', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 df
 d=df
 d['a'][0]='ee'
@@ -2539,7 +2539,7 @@ bb[0]=2   #tuple is immutable
 
 
 import pandas as pd
-df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['ww', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 def mo(x):
     yes=x.loc[:,'c']
     return yes
@@ -2588,7 +2588,7 @@ hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey
 %timeit DBA(x)
 
     
-df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['ww', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 
 def mo(x):
     yes=x.loc[:,'c']
@@ -2649,7 +2649,7 @@ problem.getSolutions()
 #hsi
 import pandas as pd
 import os
-#hsi_path =r"C:\Users\alex.lau\Desktop\adhot\hsi\HSI.csv"
+#hsi_path =r"C:\Users\ww.kkk\Desktop\adhot\hsi\HSI.csv"
 #data = pd.read_csv(hsi_path)
  
 import fix_yahoo_finance as yf
@@ -2790,8 +2790,8 @@ client = Client(account_sid, auth_token)
 
 message = client.messages.create(
                               body='Hello there!',
-                              from_='whatsapp:+85255480236',
-                              to='whatsapp:+447754279265'
+                              from_='whatsapp:+852234',
+                              to='whatsapp:+4'
                           )
 
 print(message.sid)
@@ -2814,7 +2814,7 @@ server.starttls()
 server.login("random9522@gmail.com", "95229522")
  
 msg = "YOUR MESSAGE!"
-server.sendmail("alex.leiwai@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
+server.sendmail("ww.leiwai@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
 server.quit()
 
 
@@ -2826,7 +2826,7 @@ server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 server.login("random9522@gmail.com", "95229522")
 server.sendmail(
   "random9522@gmail.com", 
-  "alex.leiwai@gmail.com", 
+  "ww.leiwai@gmail.com", 
   "this message is from python")
 server.quit()
 
@@ -2846,7 +2846,7 @@ mail_content = "test python"
 #The mail addresses and password
 sender_address = 'random9522@gmail.com'
 sender_pass = '95229522'
-receiver_address = 'lei.alex2016@gmail.com'
+receiver_address = 'lei.ww2016@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
@@ -3801,7 +3801,7 @@ import pandas as pd
 import numpy as np
 import pymysql
 
-connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/test1")
+connection=create_engine("mysql+pymysql://ww:12345678@localhost:3306/test1")
 
 x=pd.DataFrame(np.array([[1,2],[3,4]]),columns=['a','b'])
 
@@ -5330,7 +5330,7 @@ import requests
 
 Employee = pd.DataFrame({'EmployeeId': [11,12,13,14],
                          'FirstName': ['lei wai','lung sing','wai man','mei yan'],
-                         'LastName': ['lau','lam','wong','chan']},index=False)
+                         'LastName': ['kkk','lam','wong','chan']},index=False)
 
 Address = pd.DataFrame({'AddressId': [1,2,3,4],'EmployeeId': [11,12,13,14],
                         'Street': ['aa','bb','cc',None],
@@ -5341,7 +5341,7 @@ Bank = pd.DataFrame({'Id': [1,2,3],'AssetSize':[100,200,300]})
     
     
     
-connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/sql_learning")
+connection=create_engine("mysql+pymysql://ww:12345678@localhost:3306/sql_learning")
     
 Employee.to_sql('Employee',connection,if_exists='replace',chunksize=1000,index=False)
 Address.to_sql('Address',connection,if_exists='replace',chunksize=1000,index=False)
@@ -5363,12 +5363,12 @@ Bank.to_sql('Bank',connection,if_exists='replace',chunksize=1000,index=False)
 import paramiko
 from scp import SCPClient
 source = r'C:\Users\''\Dropbox\notebooks\index_analysis\IB_live_trade\client_everything\try.txt'
-dest = r'/home/customer/www/poseidontech.org/public_html/client_use_daily/version1/try.txt'
-# web site link is http://poseidontech.org/client_use_daily/version1/try.txt
+dest = r'/home/customer/www/pptech.org/public_html/client_use_daily/version1/try.txt'
+# web site link is http://pptech.org/client_use_daily/version1/try.txt
 hostname = 'gsgpm1029.siteground.biz'
 port = 18765 # default port for SSH
 username = 'u427-3uutm94zey9v'
-password = '36467323'
+password = '4567'
 
 
 
@@ -5428,7 +5428,7 @@ ssh.close()
 
 
 #telegram send message
-#find botfather to set a bot first, my bot is PoseidonTech_bot
+#find botfather to set a bot first, my bot is ppTech_bot
 #https://zaoldyeck.medium.com/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E6%80%8E%E9%BA%BC%E6%89%93%E9%80%A0-telegram-bot-a7b539c3402a
 
 #pip install python-telegram-bot
@@ -5440,10 +5440,10 @@ https://blog.csdn.net/yiqiushi4748/article/details/103994364
 #if you're looking to simply send a message to a specific user, you need to provide your
 #bot with the user's ID. To get the user's ID, use @userinfobot in telegram client for that user
 #  所以要叫對方search userinfobot, 再俾個id 我
-# then need to ask 55480236 to chat with PoseidonTech_bot first then PoseidonTech_bot can send message to him
+# then need to ask 234 to chat with ppTech_bot first then ppTech_bot can send message to him
 
-poseidon_admin user id is 1404242736
-55480236 user id is 1164425261
+pp_admin user id is 1404242736
+234 user id is 1164425261
 
 
 #code for send message
@@ -5454,16 +5454,16 @@ bot = telegram.Bot(token='1354258543:AAFOdEGomqwHu3n9u_qjxBALKOn2doUseNo')
 print (bot.get_me())
 info = bot.get_webhook_info()
 #print (info)
-bot.send_message(chat_id='1404242736', text=str(bot.get_me())) # id of poseidon_admin
+bot.send_message(chat_id='1404242736', text=str(bot.get_me())) # id of pp_admin
 
 
-bot.send_message(chat_id='1164425261', text='你好嗎')# id of 55480236
+bot.send_message(chat_id='1164425261', text='你好嗎')# id of 234
 
 
 href = "https://baidu.com"
 title = "嘿嘿嘿马"
 #发送带标题网址链接
-bot.send_message(chat_id='@poseidon_admin',
+bot.send_message(chat_id='@pp_admin',
     text='<a href="http://slowread.net/monitor-hostloc/">HOSTLOC 交易贴提醒</a>.',
     parse_mode=telegram.ParseMode.HTML)
 #发送无预览带标题网址链接
@@ -5495,7 +5495,7 @@ https://docs.telethon.dev/en/latest/basic/signing-in.html
 
 
 
-#55480236
+#234
 api_id = '6166311'
 api_hash = '6d6e7f24e14f3ccc98f89480b441381a'
 
@@ -5503,7 +5503,7 @@ api_hash = '6d6e7f24e14f3ccc98f89480b441381a'
 api_id = '6864164'
 api_hash = '061fb4bb81d3fddf29103693a2c7d091'
 
-#poseidon_admin
+#pp_admin
 api_id_p='6486098'
 api_hash_p='b2e4642b0071334fcc076a83d6a85095'
 
@@ -5905,11 +5905,11 @@ https://www.cnblogs.com/tinywan/p/7230039.html
 
 Ssh connect to siteground
 Follow https://www.siteground.com/tutorials/ssh/putty/
-Bear in mind that Hostname: gsgpm1029.siteground.biz  , never use Poseidon_admin
+Bear in mind that Hostname: gsgpm1029.siteground.biz  , never use pp_admin
 Hostname: gsgpm1029.siteground.biz
 Username: u427-3uutm94zey9v
 Port: 18765
-Password is 36467323
+Password is 4567
 
 #python ssh
 ./python -m pip install --user paramiko
