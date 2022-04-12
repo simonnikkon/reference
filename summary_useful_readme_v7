@@ -5510,7 +5510,95 @@ api_hash_p='b2e4642b0071334fcc076a83d6a85095'
 
 
 
+#spark tutorial, spark learning
+#ry spark
 
+import os
+import sys
+
+os.chdir('/hometebooks/spark_learn')
+
+
+#https://cloud.tencent.com/developer/article/1604610?from=article.detail.1528360
+SPARK_HOME='/usr/software/spark/spark-3.2.1-bin-hadoop3.2'
+
+sys.path.append(SPARK_HOME+'/python')
+sys.path.append(SPARK_HOME+'/python/pyspark')
+sys.path.append(SPARK_HOME+'/python/lib/py4j-0.10.9.3-src.zip')
+
+
+    
+    
+
+import pyspark
+
+from pyspark import SparkConf,SparkContext
+conf=SparkConf().setMaster('local').setAppName('word_count')
+sc = SparkContext(conf=conf)
+d = ['a b c d', 'b c d e', 'c d e f']
+d_rdd = sc.parallelize(d)
+rdd_res = d_rdd.flatMap(lambda x: x.split(' ')).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a+b)
+print(rdd_res.collect())
+
+
+
+#read csv file
+from pyspark.sql import SparkSession
+# 创建一个Spark会话对象
+spark=SparkSession.builder.appName('data_processing').getOrCreate()
+# 加载csv数据集
+df=spark.read.csv('/homerDB_left.csv',inferSchema=True,header=True)
+
+print((df.count(), len(df.columns)))
+df.select('HorseName', 'HorseNo').show(10)
+df.describe().show()
+
+
+
+
+
+
+#read csv file
+from pyspark.sql import SparkSession
+
+appName = "Python Example - PySpark Read CSV"
+master = 'local'
+
+# Create Spark session
+spark = SparkSession.builder \
+    .master(master) \
+    .appName(appName) \
+    .getOrCreate()
+file_path='/home/actorDB_left.csv'
+# Convert list to data frame
+df = spark.read.format('csv') \
+                .option('header',True) \
+                .option('multiLine', True) \
+                .load(file_path)
+df.show()
+print(f'Record count is: {df.count()}')
+
+
+
+
+
+
+#save as parquet
+file_path='/homen/factorDB_left.csv'
+import pandas as pd
+df = pd.read_csv(file_path)
+df.to_parquet('factorDB_left.parquet')
+
+#read from aprquet
+df=pd.read_parquet('factorDB_left.parquet', engine='pyarrow')
+
+
+
+import numpy as np
+from pandas import HDFStore,DataFrame
+store = pd.HDFStore("factorDB.hdf5", "w", complib=str("zlib"), complevel=5)
+store.put("factorDB_dataframe",df, data_columns=df.columns)
+store.close()
 
 
 
