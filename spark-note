@@ -1,0 +1,1249 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu Apr 14 16:32:56 2022
+
+@author: root
+"""
+
+
+################################################################################ 
+################################################################################ 
+################################################################################ 
+                        #pyspark tutorial, spark learning
+                        #pyspark
+################################################################################ 
+################################################################################ 
+################################################################################  
+import os
+import sys
+ 
+os.chdir('/home/lau/Dropbox/notebooks/linux/spark_learn/spark-test')
+ 
+ 
+#https://cloud.tencent.com/developer/article/1604610?from=article.detail.1528360
+SPARK_HOME='/usr/software/spark/spark-3.2.1-bin-hadoop3.2'
+ 
+sys.path.append(SPARK_HOME+'/python')
+sys.path.append(SPARK_HOME+'/python/pyspark')
+sys.path.append(SPARK_HOME+'/python/lib/py4j-0.10.9.3-src.zip')
+ 
+ 
+ 
+ 
+ 
+import pyspark
+ 
+from pyspark import SparkConf,SparkContext
+conf=SparkConf().setMaster('local').setAppName('word_count')
+sc = SparkContext(conf=conf)
+d = ['a b c d', 'b c d e', 'c d e f']
+d_rdd = sc.parallelize(d)
+rdd_res = d_rdd.flatMap(lambda x: x.split(' ')).map(lambda word: (word, 1)).reduceByKey(lambda a, b: a+b)
+print(rdd_res.collect())
+ 
+ 
+ 
+#read csv file
+from pyspark.sql import SparkSession
+# 创建一个Spark会话对象
+spark=SparkSession.builder.appName('data_processing').getOrCreate()
+# 加载csv数据集
+df=spark.read.csv('/home/lau/Dropbox/notebooks/horse/factorDB_left.csv',inferSchema=True,header=True)
+ 
+print((df.count(), len(df.columns)))
+df.select('HorseName', 'HorseNo').show(10)
+df.describe().show()
+ 
+ 
+ 
+ 
+ 
+ 
+#read csv file
+from pyspark.sql import SparkSession
+ 
+appName = "Python Example - PySpark Read CSV"
+master = 'local'
+ 
+# Create Spark session
+spark = SparkSession.builder \
+    .master(master) \
+    .appName(appName) \
+    .getOrCreate()
+file_path='/home/factorDB_left.csv'
+# Convert list to data frame
+df = spark.read.format('csv') \
+                .option('header',True) \
+                .option('multiLine', True) \
+                .load(file_path)
+df.show()
+print(f'Record count is: {df.count()}')
+ 
+ 
+
+ 
+#read parquet
+from pyspark.sql import SparkSession
+ 
+appName = "Python Example - PySpark Read CSV"
+master = 'local'
+ 
+# Create Spark session
+spark = SparkSession.builder \
+    .master(master) \
+    .appName(appName) \
+    .getOrCreate()
+
+
+df = spark.read.parquet('factorDB_left.parquet')  #pyspark read parquet, columns name cannot have space
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+#pyspark tutorial
+#https://github.com/sumaniitm/complex-spark-transformations/blob/main/preprocessing.ipynb
+
+#read parquet
+from pyspark.sql import SparkSession
+ 
+appName = "Python Example - PySpark Read CSV"
+master = 'local'
+ 
+# Create Spark session
+spark = SparkSession.builder \
+    .master(master) \
+    .appName(appName) \
+    .getOrCreate()
+
+
+df = spark.read.parquet('factorDB_left.parquet')
+
+
+s_columns=("Date","Date_RaceNo","HorseName","Rtg","LBW_edit2","Wt","FP")
+df2=df.select(*s_columns)   #* helps unpack the list
+df2.show(5)
+df2.printSchema()
+
+
+from pyspark.sql import functions as func
+from pyspark.sql.types import IntegerType
+
+#df.unpersist()  #drop df
+
+df2.columns
+
+df2.select("Date_RaceNo","HorseName").filter(df2.HorseName.isNull()).show(10)
+
+df2.select("Date_RaceNo","HorseName").filter(func.isnan(df2.HorseName)).show(10)
+
+df2= df2.drop('Issue_Date')  #can drop multiple column
+
+df3= df2.withColumnRenamed('Wt','wt2')   #rename col
+
+
+df2.select([func.count(func.when(func.isnan(col) | func.col(col).isNull(), col)).alias('null_nan_count_'+ col) for col in ['Date_RaceNo','HorseName']]).show()
+
+df2.agg(func.min('Wt').alias('min_Wt'), func.max('Wt').alias('max_Wt')).show()
++------+------+
+|min_Wt|max_Wt|
++------+------+
+| 108.0| 133.0|
++------+------+
+df2.show(5)
+df2_temp = df2.filter(df2.HorseName == "star of glory")
+df2_temp.show(5)
+
+#substring
+df2_temp = df2.withColumn('year',func.substring(df2.Date,0,4).cast(IntegerType()))
+df2_temp.show(5)
+
+#write csv
+df2.write.csv(path='df2.csv', mode='overwrite', header=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+################################################################################ 
+################################################################################ 
+################################################################################
+##################################spark scala###################################
+################################################################################
+################################################################################
+################################################################################
+ 
+ 
+C:\Users\AVVL81738\spark\spark-3.0.3-bin-hadoop2.7\bin\spark-shell
+ 
+ 
+//read parguet  spark.read can read many type like csv, json...  
+val temp_df = spark.read.parquet("C:\\Users\\AVVL81738\\Desktop\\item2\\temp_df.parquet")
+ 
+val temp_df = spark.read.parquet("temp_df.parquet")
+
+
+ 
+//#write parquet, it will be a folder, but can read it back successfully
+temp_df.write.parquet("temp_df.parquet")
+ 
+//#when cd to a folder, open spark-shell, it will use this folder as working directory
+ 
+//#check current working directory
+System.getProperty("user.dir")
+ 
+//#change current working dir
+System.setProperty("user.dir", "C:\\Users\\AVVL81738\\Desktop\\item2")
+
+ 
+ 
+//#write csv
+temp_df.repartition(1)
+   .write.format("com.databricks.spark.csv")
+   .option("header", "true")
+   .save("mydata.csv")
+ 
+//#read it back in python
+tt=pd.read_csv('mydata.csv/part-00000-16d75603-d3fb-4a81-b648-ffe36cdca9e8-c000.csv')
+tt_check=tt.head(100)
+ 
+//#read csv or txt
+val df = spark.sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", ",").load("mydata.csv")
+ 
+//help
+spark.sqlContext. then press tab
+
+
+//read txt
+System.setProperty("user.dir", "/home/lau/Dropbox/notebooks/linux/spark_learn/spark-test")
+
+import scala.io.Source
+val inputFile = Source.fromFile("data_sample2.txt")
+var lines = inputFile.getLines	// 返回一個迭代器
+for (line <- lines) println(line)
+
+
+
+ 
+
+//execute spark-shell and output log using shell script
+//create spark_tey.scala with below 3 lines
+System.setProperty("user.dir", "/home/lau/Dropbox/notebooks/linux/spark_learn/spark-test")
+val temp_df = spark.sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", ",").load("data_sample.txt")
+temp_df.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("output.txt")
+
+//in termainal execute
+cd /home//Dropbox/notebooks/linux/spark_learn/spark-test
+sh spark_try.sh 2>&1 | tee temp.log
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+ 
+ 
+//use cat to execute scala
+//create spark_try2.scala with below code
+object HaiCoder2 {
+    def main() : Unit = {
+      println(System.getProperty("user.dir"))
+      System.setProperty("user.dir", "/home//Dropbox/notebooks/linux/spark_learn/spark-test")
+      
+            println(System.getProperty("user.dir"))
+      
+      val temp_df = spark.sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", ",").load("data_sample.txt")
+      temp_df.repartition(1).write.format("com.databricks.spark.csv").option("header", "true").save("output.txt")
+      
+      println("嗨客网(www.haicoder.net)!\n")
+	  var ret = addInt(10, 30)
+      printf( "ret = %d\n", ret)
+   }
+   def addInt( a:Int, b:Int ) : Int = {
+      var sum:Int = 0
+      sum = a + b
+      sum                         //last line is function return
+   }
+}
+
+HaiCoder2.main()
+ 
+ 
+cd /home//Dropbox/notebooks/linux/spark_learn/spark-test
+cat spark_try2.scala | /usr/software/spark/spark-3.2.1-bin-hadoop3.2/bin/spark-shell 2>&1 | tee temp2.log
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+ 
+ 
+ 
+//https://bigdataprogrammers.com/how-to-execute-scala-script-in-spark-submit-without-creating-jar/
+#create ReadTextFile.scala file with below content
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.{SparkConf, SparkContext}
+object ReadTextFile {
+  def main(args : Array[String]) : Unit = {
+    val textRDD = sc.textFile(args(0))
+    // Read RDD
+    textRDD.collect().foreach(println)
+    // Get Header of the File
+    val header = textRDD.first()
+    // Remove header
+    val filterRDD = textRDD.filter(row => row != header)
+    // Read RDD
+    filterRDD.collect().foreach(println)
+    // Data Count
+    filterRDD.count
+    //return the rdd, in scala, last line is the return object
+	}
+  def try_fun(args : Array[String]) : Unit = {
+    val textRDD = sc.textFile(args(0))
+    // Read RDD
+    textRDD.collect().foreach(println)
+    // Get Header of the File
+    val header = textRDD.first()
+    // Remove header
+    val filterRDD = textRDD.filter(row => row != header)
+    // Read RDD
+    filterRDD.collect().foreach(println)
+    // Data Count
+    filterRDD.count
+  }
+}
+ 
+//Approach 1: Script Execution Directly
+execute
+/usr/software/spark/spark-3.2.1-bin-hadoop3.2/bin/spark-shell -i /home//Dropbox/notebooks/linux/spark_learn/spark-test/ReadTextFile.scala
+ 
+in spark shell, run
+ReadTextFile.main(Array("/home//Dropbox/notebooks/linux/spark_learn/spark-test/data_sample.txt"))
+ 
+//Approach 2: Loading the Script in spark shell
+:load /home/lau/Dropbox/notebooks/linux/spark_learn/spark-test/ReadTextFile.scala
+
+ReadTextFile.try_fun(Array("/home/lau/Dropbox/notebooks/linux/spark_learn/spark-test/data_sample.txt"))
+ 
+//Approach 3
+cat /home/lau/Dropbox/notebooks/linux/spark_learn/spark-test/ReadTextFile.scala | /usr/software/spark/spark-3.2.1-bin-hadoop3.2/bin/spark-shell
+
+in spark shell, run
+ReadTextFile.main(Array("/home/lau/Dropbox/notebooks/linux/spark_learn/spark-test/data_sample.txt"))
+ 
+ 
+
+
+ 
+ 
+ 
+
+ 
+
+
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+################################################################################ 
+################################################################################ 
+################################################################################
+################(如何快速从Python栈过渡到Scala栈)##################################
+################################################################################
+################################################################################
+################################################################################
+https://cloud.tencent.com/developer/article/1723962
+(如何快速从Python栈过渡到Scala栈)
+
+https://www.modb.pro/db/119255  //大数据之Scala自学之路 many case here, could be a good reference
+
+import java.lang._	// 預設會匯入java.lang包裡所有的東西，scala裡不用*，用_
+//byte is a variable with type Byte
+val byte:Byte = 127 // -128 ~ 127
+val short:Short = 32767 // -32768 ~ 32767
+val int:Int = 123456
+val long:Long = 1234567890
+val float:Float = 123.45f
+val double:Double = 123.45d
+val char:Char = 'a'
+val string:String = "abc"
+val bool:Boolean = true
+val unit:Unit = () // unit一般用于函数不返回值时，也就是java的void
+val nil:Null = null // 空值
+// Nothing是所有其他类的子类 Any是所有其他类的超类 AnyRef是所有引用类的基类
+
+//val: （變數指向的內容）不可變，宣告必須初始化，不能再賦值
+//var:（變數指向的內容）可變，宣告需要初始化，可以再賦值
+var name = "helong"
+name = "nemo" // var才能赋值，val赋值会报错，可以不指定类型，会自动推断
+println(byte,short,int,long,float,double,char,string,bool,unit,nil,name)
+ 
+
+val name=""
+val age=12
+
+//S字符串，可以往字符串中传变量
+println(s"$name is so happy with age $age")
+
+//F字符串,传入的参数可以进行相应的格式的转化。例如：
+val height = 1.7348//声明了一个一位小数的常量身高。
+println(f"hi i am $height%.2f")
+
+//R字符串和Python中的raw字符串是一样的，在java中要原样输出一些带\的字符，
+//如\t、\n等需要在前面再加一个\转义，不然就会输出制表符、回车。比如\n就要写成\\n，才能原样输出\n，但是加上raw则不需要
+
+println(raw"a\nb")
+
+
+
+
+//if else
+ val x = 1
+println(if(x>0) x else 0) // 条件表达式类似三元运算符
+println(if(x>1) x) // 缺省else就等价于else ()
+println(if(x>1) x else if(x==1) "x:1" else ()) // 支持if、else if、else
+​
+// 块表达式类似把条件表达式拉直
+// 注意到当我们不指定类型时，就可以返回多种格式让编译器做运行时处理
+val y = {
+    if(x==0)
+        "x=0"
+    else if(x==1)
+        x
+    else
+        0
+}
+println(y)
+ 
+// while循环
+var n = 10
+while(n>0) {
+    println(n)
+    n-=1
+}
+ 
+//for loop
+println(1 to 10)
+println(1 until 10)
+for (i <- 1 to 10)
+    print(i+"\t")
+println()
+for (i <- 1 until 10)
+    print(i+"\t")
+println()
+// 遍历数组中的元素，类似java的增强for
+// 可以看到数组中元素可以不同类型
+for (arr <- Array('n',1,3.45,true,"nemo"))
+    print(arr+"\t")
+println()
+// for循环高级技巧：单个for中有多个变量，每个生成器都带过滤条件
+// 效果就是嵌套for循环
+for (i <- 1 to 10 if i%2==0; j <- Array("n","e","m","o") if j!="e")
+    print(i+":"+j+"\t")
+println()
+​
+// for推导式，循环体以yield开始会构建一个集合返回
+val vec = for (i <- 1 to 10) yield i*10
+println(vec)
+for (i <- vec)
+    print(i+"\t")
+res27: scala.collection.immutable.IndexedSeq[Int] = Vector(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)
+
+//遍歷完把結果儲存下來，生成一個新變數
+val r = for (i <- 1 to 5 if i % 2 == 0) yield {println(i); println(i);i}
+
+ 
+// 函数：一行函数，返回值类型可以不写，此时自动推断
+def func(x:Int, y:Int): Int = x+y
+println(func(2,3))
+// 但是递归函数的返回值类型必须手动指定
+def fib(f:Int): Int = if(f==0) 0 else if(f==1) 1 else if(f==2) 2 else fib(f-2)+fib(f-1)
+println(fib(1),fib(2),fib(3),fib(4),fib(5))
+// 在scala中，函数也是一种变量类型，因此也同样可以赋值为某个常量或者当作另一个函数的参数
+val f = (x:Int) => x*10 // 简易函数就是lambda表达式
+println(f)
+def ff(k:(Int) => Int,x:Int,y:Int): Int = k(x)+k(y)
+println(ff(f,3,5))
+// def的方法转函数
+println(fib _) // fib本身是def定义的方法，甚至不能直接print
+
+
+
+//function return
+object HaiCoder {
+    def main(args: Array[String]) : Unit = {
+      println("嗨客网(www.haicoder.net)!\n")
+	  var ret = addInt(10, 30)
+      printf( "ret = %d\n", ret)
+   }
+   def addInt( a:Int, b:Int ) : Int = {
+      var sum:Int = 0
+      sum = a + b
+      sum                         //last line is function return
+   }
+}
+
+//execute main function
+HaiCoder.main(Array("e"))
+//execute addInt function
+val x=HaiCoder.addInt(5,8)
+
+
+
+//类定义
+//一个最简的类的定义就是关键字class+标识符，类名首字母应大写。
+
+class User
+val user1 = new User                   //https://docs.scala-lang.org/zh-cn/tour/classes.html
+
+class Point(var x: Int, var y: Int) {
+
+  def move(dx: Int, dy: Int): Unit = {
+    x = x + dx
+    y = y + dy
+  }
+
+  override def toString: String =
+    s"($x, $y)"
+}
+
+val point1 = new Point(2, 3)
+point1.x  // 2
+println(point1)  // prints (2, 3)
+1) Point类有4个成员：变量x和y，方法move和toString
+2) move方法带有2个参数，返回无任何意义的Unit类型值() 这一点与Java这类语言中的void相当。
+3) toString方法不带任何参数但是返回一个String值。因为toString覆盖了AnyRef中的toString方法，所以用了override关键字标记
+
+
+
+ 
+ 
+val arr = new Array[Int](8) // 长度为8，全是0的不可变数组  use 'new' to define a new class
+println(arr) // 直接打印数组看不到其内部元素，只能看到它的地址
+println(arr.toBuffer) // 通过toBuffer方法转为数组缓冲区, so can see value
+val arr2 = Array[Int](8) // 注意这里没用new
+println(arr2)
+println(arr2.toBuffer)
+val arr3 = Array(0,1.2f,true,'h',"nemo") // 指定内容的定长数组
+println(arr3(0),arr3(1),arr3(3)) // 通过(n)访问数组元素，下标从0开始
+// 变长数组，不改变变量的前提下依然可以通过+=，++=来扩展数组
+import scala.collection.mutable.ArrayBuffer
+val marr = ArrayBuffer[Int]()
+marr += 1
+marr += (2,3,4)
+marr ++= Array(5,6,7)
+marr ++= ArrayBuffer(8,9)
+marr.insert(0,0)
+marr.remove(0)
+println(marr)
+// 使用for遍历
+for (item <- marr)
+    print(item+"\t")
+println()
+for (idx <- (0 until marr.length).reverse) // reverse可以反转Range内的元素
+    print(idx+":"+marr(idx)+"\t")
+println()
+// 对于数组，取出其全部偶数，再乘以10返回新数组
+// 写法1：也是一般的程序写法，这个过程中其实是将需求转换为程序思想
+var marr2 = Array(1,2,3,4,5,6,7,8,9,10)
+marr2 = for (i <- marr2 if i%2==0) yield i*10
+println(marr2.toBuffer)
+// 写法2：更加scala，面向函数，可读性更强，不需要维护那个i，循环会执行两次，先过滤，再映射
+marr2 = Array(1,2,3,4,5,6,7,8,9,10)
+marr2 = marr2.filter(_%2==0).map(_*10)
+println(marr2.toBuffer)
+// 数组的一些常用方法，注意scala中函数调用没有参数时可以不写()
+println(marr2.sum,marr2.max,marr2.sorted.toBuffer)
+ 
+从数组上看差异：
+ 
+首先一个小特点在于直接打印数组对象只能看到内存地址，要看到内容需要打印arr.toBuffer；
+数组内的元素可以是不同类型的；
+通过arr(n)访问元素，下标从0开始；
+ArrayBuffer是Array的变长版本
+
+#slice array
+val array = ('a' to 'f').toArray // Array('a','b','c','d','e','f')
+Then you can extract a sub-array from it in different ways:
+array.drop(2) // Array('c','d','e','f')
+array.take(4) // Array('a','b','c','d')
+array.slice(2,4) // Array('c','d')
+array.take(4).drop(2) // Array('c','d')
+array.dropRight(4) // Array('a','b')
+array.takeRight(4) // Array('c','d','e','f')
+
+
+
+
+ 
+ 
+//list
+val strList = ("BigData", "Hadoop", "Spark")
+val otherList = "Apache"::strList	//::代表在已有列表前端增加元素，右結合
+=> otherList = ("Apache", "BigData", "Hadoop", "Spark")
+ 
+val list_x = List(1,2,3)
+println(0::list_x) // 0插入到list_x的第一个位置
+println(0+:list_x) // 等价于::
+println(list_x.::(0))
+println(list_x.+:(0)) // 注意以上四种不管0在前还是后，都是插入到第一个位置
+println(list_x :+ 4)
+println(list_x.:+(4)) // 所以区别是到底是+:还是:+
+val list_y = List(4,5,6)
+println(list_x++list_y) // ++连接两个List
+println(list_x++:list_y) // ++:看起来跟++也是一样的嘛
+// 可变List
+import scala.collection.mutable.ListBuffer
+val blist = ListBuffer(1,2,3)
+val blist2 = new ListBuffer[Int]
+blist += 4
+blist.append(5)
+println(blist)
+blist2 ++= blist
+println(blist2)
+ 
+ 
+ 
+#dictionary
+val map1 = Map("k1"->10, 2->1.5, 3.3->"abc")
+println(map1)
+val map2 = Map((1,1),(2,2),(3,3))
+println(map2)
+// 获取值的方式类似数组用下标
+println(map1("k1"),map1(3.3),map1.get(2),map1.getOrElse(5,"default"))
+
+// Map默认是不可变的Map，也可以引入mutable包中的可变的Map
+import scala.collection.mutable.{Map=>MMap}   #use MMap to represent Map
+val mmap = MMap((1,1),(2,2))
+// map1(1) = 1 报错，Map不可变指的是其长度、元素都不能变
+mmap(1)=mmap(1)+1
+// map1 += (3 -> 3) 报错，因为原始Map不可变，+=会创建一个新的，但是map1又是常量
+mmap += (3->3,4->4)
+println(mmap)
+
+// Map默认是不可变的Map，也可以引入mutable包中的可变的Map
+import scala.collection.mutable.Map
+val university = Map("XMU" -> "Xiamen University")
+//新增元素
+university("FZU") = "Fuzhou"
+university += ("TJU" -> "Tianjin University", …)
+
+ 
+ 
+ 
+val set = Set(1,1,2)
+println(set)  #print unique element
+val arr_set = Array(1,1,2,2)
+println(arr_set.toSet)
+ 
+ 
+ 
+外部数据
+这里有一个很大的问题，如果你的数据中的列名有中文，那么建议全部重命名为英文，否
+在在构建SQL表达式等地方会报错，奇怪的是这部分在Python中倒是正常的，这个坑也填了好久。。。。
+ 
+建模
+这部分本身倒是没什么问题，但是我这部分最后会将结果写入到本地的parquet文件，
+以及保存模型文件，结果一直报错，错误信息也看不出具体原因，按常理来说我首先考虑是权限问题，
+折腾半天不行，又考虑是API用法问题，各种参数、用法都试了还是不行，最后发现又是windows的问题，
+缺了一些dll，哎哎，不说了，如果大家也遇到了ExitCodeException exitCode=-1073741515，
+那么不用怀疑，直接到这里下载程序安装dll即可；
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+https://colobu.com/2014/12/08/spark-quick-start/
+ 
+Resilient Distributed Dataset (RDD)
+ 
+val textFile = sc.textFile("hello.txt")
+ 
+textFile.count() // 此RDD中的item的数量
+ 
+textFile.first() // 此RDD第一个item
+ 
+val linesWithSpark = textFile.filter(line => line.contains("alan"))
+ 
+textFile.filter(line => line.contains("alan")).count()
+
+
+
+
+
+
+################################################################################ 
+################################################################################ 
+################################################################################
+##################################dataframe#####################################
+################################################################################
+################################################################################
+################################################################################
+//https://ithelp.ithome.com.tw/articles/10193622
+//https://blog.csdn.net/dabokele/article/details/52802150
+//scala dataframe operation
+val df = spark.sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", ",").load("data_sample.txt")
+
+// 顯示DataFrame資料內容：
+df.show()
+
+// 印出DataFrame的schema結構
+df.printSchema()
+
+// 只顯示"name"欄位
+df.select("name").show()
+
+// 選出"name"、"age"，並且將age欄位的值+1
+val x=df.select($"name", $"age" + 1)
+
+df.collect()  //return 2 dim array
+
+val x=df.collectAsList()
+x: java.util.List[org.apache.spark.sql.Row] = [[alex,18], [alex,100], [simon,30], [sam,45], [john,30]]
+
+df.describe().show()
+
+
+scala> df.filter("age > 25 and name='alex'").show()
++----+---+
+|name|age|
++----+---+
+|alex|100|
++----+---+
+
+val df2=df.select(df("age")+1,df("name"))
+df2: org.apache.spark.sql.DataFrame = [(age + 1): double, name: string]
+
+scala> df2.show()
++---------+-----+
+|(age + 1)| name|
++---------+-----+
+|     19.0| alex|
+|    101.0| alex|
+|     31.0|simon|
+|     46.0|  sam|
+|     31.0| john|
++---------+-----+
+
+scala> val df3=df.drop("name")
+df3: org.apache.spark.sql.DataFrame = [age: string]
+
+scala> df3.show()
++---+
+|age|
++---+
+| 18|
+|100|
+| 30|
+| 45|
+| 30|
++---+
+
+
+
+（2）selectExpr：可以对指定字段进行特殊处理
+scala> df.selectExpr("name","age","round(age,-1)").show()
++-----+---+--------------+
+| name|age|round(age, -1)|
++-----+---+--------------+
+| alex| 18|          20.0|
+| alex|100|         100.0|
+|simon| 30|          30.0|
+|  sam| 45|          50.0|
+| john| 30|          30.0|
++-----+---+--------------+
+
+//sort
+scala> df.sort(df("name")).show()
++-----+---+
+| name|age|
++-----+---+
+| alex| 18|
+| alex|100|
+| john| 30|
+|  sam| 45|
+|simon| 30|
++-----+---+
+
+
+scala> df.sort(df("name").desc).show()
++-----+---+
+| name|age|
++-----+---+
+|simon| 30|
+|  sam| 45|
+| john| 30|
+| alex| 18|
+| alex|100|
++-----+---+
+
+scala> df.groupBy("name").count().show()
++-----+-----+
+| name|count|
++-----+-----+
+|simon|    1|
+| john|    1|
+| alex|    2|
+|  sam|    1|
++-----+-----+
+
+df.distinct().show()
+
+scala> df.dropDuplicates(Seq("name")).show()
++-----+---+
+| name|age|
++-----+---+
+| alex| 18|
+| john| 30|
+|  sam| 45|
+|simon| 30|
++-----+---+
+
+
+13、操作字段名 rename column
+val df1=df.withColumnRenamed("name","name1")
+
+//add a new colmn named name2
+df.withColumn("name2",df("name")).show()
+
+//row to column (probably rubbish)
+scala> df.explode("name","name_"){x:String =>x.split("e")}.show()
+warning: one deprecation (since 2.0.0); for details, enable `:setting -deprecation' or `:replay -deprecation'
++-----+---+-----+
+| name|age|name_|
++-----+---+-----+
+| alex| 18|   al|
+| alex| 18|    x|
+| alex|100|   al|
+| alex|100|    x|
+|simon| 30|simon|
+|  sam| 45|  sam|
+| john| 30| john|
++-----+---+-----+
+
+
+// 選出age欄位值大於25的資料
+df.filter($"age" > 25).show()
+
+// 以name分群並計算數量
+df.groupBy("age").count().show()
+
+//使用Spark SQL進行查詢
+// 首先註冊一個DataFrame當作SQL語法會用到的暫存veiw："employee"
+df.createOrReplaceTempView("employee")
+
+val sqlDF = spark.sql("SELECT * FROM employee")
+sqlDF.show()
+
+df.where("name='alex'").show()
++----+---+
+|name|age|
++----+---+
+|alex| 18|
+|alex|100|
++----+---+
+
+#convert data type
+#string to integer
+val df = spark.sqlContext.read.format("com.databricks.spark.csv").option("header", "true").option("delimiter", ",").load("data_sample.txt")
+
+val df1=df.withColumn("age",col("age").cast("int"))
+
+//find levenshtein distance
+//https://mrpowers.medium.com/fuzzy-matching-in-spark-with-soundex-and-levenshtein-distance-6749f5af8f28
+import org.apache.spark.sql.functions.levenshtein
+df1.withColumn("levenshtein",levenshtein(levenshtein.col("age"),levenshtein.col("age")))
+
+
+
+
+
+
+//使用DataSet
+// 注意： case class 在 Scala 2.10 最多只支援22個欄位，請注意這個限制。
+case class Person(name: String, age: Long)
+
+// 將case clasee 進行編碼後再轉換成DataSet
+val caseClassDS = Seq(Person("Andy", 32)).toDS()
+caseClassDS.show()
+
+// DataFrames 可以透過指定case class轉換成DataSet。
+case class Person(name: String, age: String)
+val encoder = org.apache.spark.sql.Encoders.product[Person]
+val df_dataset = df.as(encoder)
+
+#create custom dataframe
+val simpleData = Seq(("James",34,"true","M","3000.6089"),
+         ("Michael",33,"true","F","3300.8067"),
+         ("Robert",37,"false","M","5000.5034"))
+
+import spark.implicits._
+val df = simpleData.toDF("firstname","age","isGraduated","gender","salary")
+df.printSchema()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+################################################################################ 
+################################################################################ 
+################################################################################
+################RDD Operation 巨量資料技術與應用操作講義-Spark操作###################
+################################################################################
+################################################################################
+################################################################################
+
+spark path
+/usr/software/spark/spark-3.2.1-bin-hadoop3.2/bin/spark-shell
+
+
+//http://debussy.im.nuu.edu.tw/sjchen/BigData/%E5%B7%A8%E9%87%8F%E8%B3%87%E6%96%99%E6%8A%80%E8%A1%93%E8%88%87%E6%87%89%E7%94%A8%E6%93%8D%E4%BD%9C%E8%AC%9B%E7%BE%A9-Spark%E6%93%8D%E4%BD%9C.html
+//巨量資料技術與應用操作講義-Spark操作
+#check current working directory
+System.getProperty("user.dir")
+ 
+System.setProperty("user.dir", "/ho/Dropbox/notebooks/linux/spark_learn/spark-test")
+
+
+//read as RDD
+val textFile = sc.textFile("README.md")
+
+textFile.foreach(println)
+
+
+val arrayrdd01=sc.parallelize(Array(1,2,3,4,5),5)  //5個partitions
+
+val arrayrdd02=sc.parallelize(Array(2,3,4,5,6))
+
+val arrayrdd03=sc.parallelize(Array(3,4,5,6,7),2)
+
+
+arrayrdd01.count()
+arrayrdd01.foreach(print) #print horizontal
+arrayrdd01.foreach(println) #print vertical
+
+如果要得知一個RDD的partition個數是多少，可使用以下指令
+arrayrdd01.partitions.size
+
+#如果想要得知RDD中每個partition的元素列表，可使用以下指令 and return an array
+arrayrdd01.collect()   #get the key and output in array form
+res7: Array[Int] = Array(1, 2, 3, 4, 5)
+
+arrayrdd02.collect()
+res2: Array[Int] = Array(2, 3, 4, 5, 6)
+
+arrayrdd03.collect()
+res3: Array[Int] = Array(3, 4, 5, 6, 7)
+
+
+//上述指令格式中的.glom()這個Transformation API會將RDD中相同partition的資料元素放到同一個array
+//，這樣每一個partition就可視為一個陣列元素，若一個RDD有多個partition，則會有多個array
+arrayrdd01.glom.collect() 
+res4: Array[Array[Int]] = Array(Array(1), Array(2), Array(3), Array(4), Array(5))
+
+arrayrdd02.glom.collect()
+res5: Array[Array[Int]] = Array(Array(), Array(2), Array(), Array(3), Array(4), Array(), Array(5), Array(6))
+
+arrayrdd03.glom.collect()
+res6: Array[Array[Int]] = Array(Array(3, 4), Array(5, 6, 7))
+
+
+
+
+val pairrdd01=sc.parallelize(Array(("復仇者聯盟","鋼鐵人"),("復仇者聯盟","美國隊長"),("復仇者聯盟","綠巨人浩克"),("復仇者聯盟","雷神索爾"),("復仇者聯盟","黑寡婦"),("復仇者聯盟","鷹眼"),("正義聯盟","超人"),("正義聯盟","神力女超人"),("正義聯盟","蝙蝠俠"),("正義聯盟","閃電俠"),("正義聯盟","鋼骨"),("正義聯盟","海神")))
+
+val pairrdd02=sc.parallelize(Array(("前3名成績", 100), ("前3名成績", 99), ("前3名成績", 97), ("後3名成績", 19), ("後3名成績", 10), ("後3名成績", 7)))
+
+
+val keyRDD=pairrdd01.keys
+val valueRDD=pairrdd01.values
+
+keyRDD.collect()   #get the key and output in array form
+valueRDD.collect()
+
+
+#【Transformation轉換指令】
+val linesWithSpark = textFile.filter(line => line.contains("Spark"))
+
+linesWithSpark.count()
+
+linesWithSpark.foreach(println)
+
+如果我們只想知道包含"Spark"的行數，而不需要了解這些行的具體內容，
+就可以不需要使用變數linesWithSpark保存這個中間結果。可以借助鏈式操作(即：
+同一條程式碼中同時使用多個API)，讓Spark連續進行運算，讓一個操作的輸出直接變成
+另一個操作的輸入。這種作法可以讓Spark程式碼更加簡潔，且由於不需要臨時變數儲存中間結果，也最佳化了計算過程
+
+val linesCountWithSpark = textFile.filter(line => line.contains("Spark")).count()
+
+
+// map
+這個Transformation API可以將RDD中的元素，透過某個映射函數1對1地轉換成另一個新RDD之對應元素
+val Ardd02 = arrayrdd02.map(x => x*10)
+
+Ardd02.foreach(println)
+
+此外，arrayrdd02.map(x => x*10)也可改寫成arrayrdd02.map(_*10)，
+底線"_"在此為佔位字元，相當於x => x，兩者同義。故上述Ardd02的新RDD建立指令可改為：
+
+val Ardd02 = arrayrdd02.map(_*10)
+
+val Ardd02 = arrayrdd02.map(_*10)
+
+
+//flatMap()
+//(map()回傳一個元素，flatMap()回傳一個list)
+flatMap()會將所有元素碾壓成位在同一層之串列值，
+即[1, 2, 3, [3.2, 3.5], 4, 5, [6.4, 6.8], 7] => [1, 2, 3, 3.2, 3.5, 4, 5, 6.4,  6.8, 7]
+
+val exrdd01=sc.parallelize(Array(1,2,3))
+exrdd01: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[13] at parallelize at <console>:23
+
+val result_map = exrdd01.map(x => Array(x, x*50, x*2.5))
+result_map: org.apache.spark.rdd.RDD[Array[Double]] = MapPartitionsRDD[14] at map at <console>:23
+
+result_map.glom.collect()
+res12: Array[Array[Array[Double]]] = Array(Array(), Array(), Array(Array(1.0, 50.0, 2.5)), Array(), Array(), Array(Array(2.0, 100.0, 5.0)), Array(), Array(Array(3.0, 150.0, 7.5)))
+
+result_map.collect()
+res13: Array[Array[Double]] = Array(Array(1.0, 50.0, 2.5), Array(2.0, 100.0, 5.0), Array(3.0, 150.0, 7.5))
+
+val result_flatmap = exrdd01.flatMap(x => Array(x, x*50, x*2.5))
+result_flatmap: org.apache.spark.rdd.RDD[Double] = MapPartitionsRDD[16] at flatMap at <console>:23
+
+result_flatmap.glom.collect()  //seems in spark 3.2, flatMap is failed to falt...
+res14: Array[Array[Double]] = Array(Array(), Array(), Array(1.0, 50.0, 2.5), Array(), Array(), Array(2.0, 100.0, 5.0), Array(), Array(3.0, 150.0, 7.5))
+
+
+
+
+//groupByKey()  output is still RDD
+val groupRDD=pairrdd01.groupByKey()
+groupRDD: org.apache.spark.rdd.RDD[(String, Iterable[String])] = ShuffledRDD[2] at groupByKey at <console>:23
+
+groupRDD.foreach(println)
+(正義聯盟,CompactBuffer(超人, 神力女超人, 蝙蝠俠, 閃電俠, 鋼骨, 海神)) + 8) / 8]
+(復仇者聯盟,CompactBuffer(鋼鐵人, 美國隊長, 綠巨人浩克, 雷神索爾, 黑寡婦, 鷹眼))
+
+//reduc by key  output is still RDD
+val reduceRDD=pairrdd02.reduceByKey((value1,value2)=>value1+value2)
+reduceRDD: org.apache.spark.rdd.RDD[(String, Int)] = ShuffledRDD[3] at reduceByKey at <console>:23
+
+reduceRDD.foreach(println)
+(後3名成績,36)
+(前3名成績,296)
+
+//reduce()  reduce()的執行結果是資料項，不是RDD
+
+val arrayrdd02=sc.parallelize(Array(2,3,4,5,6))
+arrayrdd02: org.apache.spark.rdd.RDD[Int] = ParallelCollectionRDD[4] at parallelize at <console>:23
+
+arrayrdd02.reduce((x,y)=>x+y)
+res3: Int = 20
+
+  val ar = List(1,2,3,4,5)
+  println( ar.reduce((x,y)=>x+y))  //15求和
+  println(ar.reduce((x,y)=>1*x-2*y)) //-27
+  println(ar.reduceLeft((x,y)=>x-y)) // -13
+  println(ar.reduceRight((x,y)=>x-y)) //3 特别注意reduceRight的计算逻辑 1-(2-(3-(4-5)))
+
+  // 第一个下划线表示第一个参数，就是历史的聚合数据结果
+  // 第二个下划线表示第二个参数，就是当前要聚合的数据元素
+  println(ar.reduce(_+_)) //求和 15
+  println(ar.reduceRight(_-_))   //3
+  println(ar.reduceLeft(_+_))   //15
+  println(ar.reduce(_*1-_*2)) //-27
+
+
+
+//first()：這個Action API可以取出RDD中的第一個元素
+
+textFile.first()
+
+//count()：這個Action API可以統計出一個RDD的元素個數
+textFile.count()
+
+//collect()：這個Action API可以將一個RDD內所有元素放到一個陣列中
+
+//take(n)：這個Action API可以將一個RDD內前n筆元素放到一個陣列中
+val pairrdd01=sc.parallelize(Array(("復仇者聯盟","鋼鐵人"),("復仇者聯盟","美國隊長"),("復仇者聯盟","綠巨人浩克"),("復仇者聯盟","雷神索爾"),("復仇者聯盟","黑寡婦"),("復仇者聯盟","鷹眼"),("正義聯盟","超人"),("正義聯盟","神力女超人"),("正義聯盟","蝙蝠俠"),("正義聯盟","閃電俠"),("正義聯盟","鋼骨"),("正義聯盟","海神")))
+
+val valueRDD=pairrdd01.values  //get dict's values
+
+valueRDD.take(4)
+res4: Array[String] = Array(鋼鐵人, 美國隊長, 綠巨人浩克, 雷神索爾)
+
+//foreach(fun)：這個Action API可以對RDD內每一個元素帶入函數fun進行處理
+valueRDD.foreach(print)
+
+
+
+
+//運用Spark撰寫字數統計程式
+val textFile = sc.textFile("data_sample.txt")
+name,age
+alex,18
+alex,100
+simon,30
+sam,45
+
+// (word,1) is a map/dict
+//reduceByKey mean group by key and sum 1
+
+
+textFile.flatMap(line => line.split(",")).map(word=>(word,1)).reduceByKey((a, b) => a + b).foreach(println)
+(alex,2)
+(simon,1)
+(sam,1)
+(name,1)
+(100,1)
+(18,1)
+(45,1)
+(age,1)
+(30,1)
+
+
+
+wordCount.collect()    #顯示結果
+
+
+textFile.foreach(println)
+
+
+
+
+//convert to RDD   //note that r1 and r3 are the same
+var t1=List(("I", "India"),("U", "USA"),("W", "West"))
+val r1 = sc.parallelize(t1)
+
+var t3=Array(("I", "India"),("U", "USA"),("W", "West"))
+val r3 = sc.parallelize(t3)
+
+r3.keys.foreach(println)
+r3.values.foreach(println)
+
+
+
+var t2 = Array(1,2,3,4,5,6,7,8,9,10)
+val r2 = sc.parallelize(t2)
+
+//set to RDD
+val s1 = Set(1,1,2)
+val s2=s1.toArray
+val r4 = sc.parallelize(s2)
+
+//map to RDD
+val map2 = Map((1,1),(2,2),(3,3))
+val map3=map2.toArray
+val r5 = sc.parallelize(map3)
+
+
+
+
+
+
