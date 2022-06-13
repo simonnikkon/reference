@@ -23975,8 +23975,2711 @@ sys.stderr = sys.__stderr__
 
 
 
+topic_main2
 
 
+#read FHSI_minute_20051201to20190326.hdf5
+
+
+
+import os
+import numpy as np
+from pandas import HDFStore,DataFrame
+import pandas as pd
+from datetime import datetime as dt
+import datetime
+from pandas import read_excel
+
+
+
+
+
+
+#main_dir=r'C:\Users\larrylau\Dropbox\notebooks\index_analysis'
+#folder_path='mis'
+#plot_path=os.path.join(main_dir,'plot')
+#calendar_path=os.path.join(main_dir,'daily_prediction_production')
+
+
+
+
+
+
+
+main_dir='/home/larrylau/Dropbox/notebooks/index_analysis'
+folder_path='mis'
+plot_path=os.path.join(main_dir,'backtest_linux/plot')
+calendar_path=os.path.join(main_dir,'daily_prediction_production')
+
+os.chdir(main_dir)
+
+
+
+
+
+
+
+
+
+
+fn = os.path.join(folder_path,"FHSI_minute_20051201to_cum.hdf5")
+
+#fn = os.path.join(folder_path,"FHSI_minute_20051201to20190326.hdf5")
+store = pd.HDFStore(fn)
+print(store)
+data_all_final= store.select('FHSI_minute')
+ 
+store.close()
+
+
+data_all_final_check=data_all_final.head(10)
+data=data_all_final[['date_ymd_hms','date_ymd','Open','High','Low','Close','TotalVolume']].copy()
+data=data.rename(columns={'date_ymd_hms':'Date1','date_ymd':'Date2'})
+
+#data=data.loc[~(data['Date2']=='2007-02-19'),:] #one row only
+#data=data.reset_index(drop=True)
+
+
+
+
+
+
+
+
+#read prediction
+
+
+from pandas import read_excel
+import pandas as pd
+from datetime import datetime as dt
+import os
+train_test_Setting = read_excel(os.path.join(main_dir,'index_table_v2_for_test_backtest.xlsx'),'Sheet2')
+train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='standard',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='guess_wrong',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='model_0_to_13',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='model_15_to_30',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='model_45_to_165',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='model_15_to_45',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='phase1',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='standard_oi',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='hhi_standard',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='use_10min_open_close',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='japan_0_to_60',:]
+#train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='japan_fullday',:]
+
+train_test_Setting=train_test_Setting.reset_index(drop=True)
+
+
+d0=pd.DataFrame([])
+all_number=train_test_Setting['Number'].values.tolist()
+i=0
+for i in range(0,train_test_Setting.shape[0]):
+    #file_name='20190517_test_2019.xlsx'
+    file_name=str(int(train_test_Setting['Number'][i]))+'_test_'+str(train_test_Setting['Test_start'][i].strftime("%Y"))+'.xlsx'
+    d1 = read_excel(os.path.join(plot_path,file_name),'daily_detail_summary')
+    d0=d0.append(d1)
+    print('finished ',i,' out of ',train_test_Setting.shape[0])
+
+#d0.to_csv(os.path.join(folder_path,"all_prediction.csv"))
+#d0.to_csv(os.path.join(folder_path,"all_prediction_guess_wrong.csv"))
+#d0.to_csv(os.path.join(folder_path,"all_prediction_phase1.csv"))
+#d0.to_csv(os.path.join(folder_path,"all_prediction_15_to_30.csv"))
+d0.to_csv(os.path.join(folder_path,"all_prediction_45_to_165.csv"))
+#d0.to_csv(os.path.join(folder_path,"all_prediction_japan_0_to_60.csv"))
+#d0.to_csv(os.path.join(folder_path,"all_prediction_japan_fullday.csv"))
+
+#in_sample_fitting_05_to_10=pd.read_excel(os.path.join(main_dir,"mis","30013_test_2005_to_2010_insample_model2021.xlsx"),'daily_detail_summary')
+#d0=d0.append(in_sample_fitting_05_to_10)
+#d0=d0.sort_values(by=['Date2'],ascending=True)
+#d0=d0.reset_index(drop=True)
+
+
+
+
+
+
+use_guess_wrong_mode=False
+#use_guess_wrong_mode=True
+
+if use_guess_wrong_mode==True:
+    full_day=pd.read_csv(os.path.join(main_dir,"mis","all_prediction_guess_wrong.csv"))
+    temp=full_day[['Date2','up_prediction_prob']].copy()
+    from pandas import read_excel
+    #this need to manually run all in sample fit for 2005 to 2010
+    #in_sample_fitting=pd.read_excel(r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\plot\30011_test_2005_to_2010_insample.xlsx",'daily_detail_summary')
+    in_sample_fitting=pd.read_excel(os.path.join(main_dir,"mis","30013_test_2005_guess_wrong.xlsx"),'daily_detail_summary')
+    
+    in_sample_fitting=in_sample_fitting[['Date2','up_prediction_prob']].copy()
+    
+    in_sample_fitting=in_sample_fitting.append(temp)  
+    d0_guess_wrong=in_sample_fitting.copy()
+    d0_guess_wrong=d0_guess_wrong.rename(columns={'up_prediction_prob':'guess_wrong_prob'})
+
+
+
+    d0_temp=d0[['Date2','up_prediction_prob','HSI_change']].copy()
+
+    #read fullmodel year 05 to 10
+    in_sample_fitting_05_to_10=pd.read_excel(os.path.join(main_dir,"mis","30013_test_2005_to_2010_insample_model2021.xlsx"),'daily_detail_summary')
+#    d0=d0.append(in_sample_fitting_05_to_10)
+#    d0=d0.sort_values(by=['Date2'],ascending=True)
+    
+    in_sample_fitting_05_to_10=in_sample_fitting_05_to_10[['Date2','up_prediction_prob','HSI_change']].copy()
+    d0_temp=d0_temp.append(in_sample_fitting_05_to_10)
+    d0_temp=d0_temp.sort_values(by=['Date2'],ascending=[True])
+
+    #read current year
+    today_morning_prediction_filename='20210331_test_2021.xlsx'
+    today_path=os.path.join(os.path.join(main_dir,"plot",today_morning_prediction_filename))
+    
+    today_morning_prediction=pd.read_excel(today_path,'daily_detail_summary')
+    temp=today_morning_prediction[['Date2','up_prediction_prob','HSI_change']].copy()
+    d0_temp=d0_temp.append(temp)
+    
+    d0_temp['Y_up']=(d0_temp['HSI_change']>=0)*1
+
+    d0_temp=pd.merge(d0_temp,d0_guess_wrong,how='left',on=['Date2'])
+
+    d0_temp.loc[d0_temp['up_prediction_prob']>=0.5,'guess_wrong_prob_revised']=1-d0_temp['guess_wrong_prob']
+    d0_temp.loc[d0_temp['up_prediction_prob']<0.5,'guess_wrong_prob_revised']=d0_temp['guess_wrong_prob']
+
+    #temp solution
+    d0_temp['up_prediction_prob2']=d0_temp['up_prediction_prob'].copy()
+    d0_temp.loc[(d0_temp['up_prediction_prob']>=0.5)&(d0_temp['guess_wrong_prob']>=0.99),'up_prediction_prob2']=0.1
+    d0_temp.loc[(d0_temp['up_prediction_prob']<0.5)&(d0_temp['guess_wrong_prob']>=0.99),'up_prediction_prob2']=0.9
+    
+    
+    
+    d0_temp.loc[d0_temp['up_prediction_prob2']>=0.5,'Y_up_predict2']=1
+    d0_temp.loc[d0_temp['up_prediction_prob2']<0.5,'Y_up_predict2']=0
+    d0_temp['bet2']=d0_temp['Y_up_predict2'].copy()
+    d0_temp.loc[d0_temp['bet2']==0,'bet2']=-1
+    
+    d0=pd.merge(d0,d0_temp[['Date2','Y_up_predict2','bet2']].copy(),how='left',on=['Date2'])
+    d0['Y_up_predict']=d0['Y_up_predict2'].copy()
+    d0['bet']=d0['bet2'].copy()
+
+
+    d0_guess_wrong.loc[d0_guess_wrong['guess_wrong_prob']<0.43,'use']=1
+    d0=pd.merge(d0,d0_guess_wrong[['Date2','use']].copy(),how='left',on=['Date2'])
+    d0=d0.loc[d0['use']==1,:]
+    d0=d0.reset_index(drop=True)
+
+
+
+
+
+
+
+combine_indicator=True
+if combine_indicator==True:
+#use_guess_wrong_mode=True
+
+
+    HSI_source=read_excel(os.path.join(main_dir,'HSI_with_tidy.xlsx'),'Sheet1')
+    #read data
+    fn = os.path.join(main_dir,'hsi_y_x.hdf5')
+    store = pd.HDFStore(fn, 'r')
+    print(store)
+    hsi_y_x= store.select('hsi_y_x_dataframe')
+    list(hsi_y_x.columns.values)
+    store.close()
+    
+    d0=pd.merge(d0,hsi_y_x[['Date2','sar_talib_modified_original_percentile']].copy(),how='left',on=['Date2'])
+
+    d0.loc[(d0['up_prediction_prob']>=0.5)&(d0['sar_talib_modified_original_percentile']>0),'up_prediction_prob2']=0.9
+    d0.loc[(d0['up_prediction_prob']<0.5)&(d0['sar_talib_modified_original_percentile']<0),'up_prediction_prob2']=0.1
+#    d0.loc[(d0['up_prediction_prob']>=0.5)&(d0['sar_talib_modified_original_percentile']>0),'up_prediction_prob2']=0.9
+#    d0.loc[(d0['up_prediction_prob']<0.5)&(d0['sar_talib_modified_original_percentile']<0),'up_prediction_prob2']=0.1
+
+    d0=d0.loc[~pd.isnull(d0['up_prediction_prob2']),:]
+
+    d0.loc[d0['up_prediction_prob2']>=0.5,'Y_up_predict2']=1
+    d0.loc[d0['up_prediction_prob2']<0.5,'Y_up_predict2']=0
+    d0['bet2']=d0['Y_up_predict2'].copy()
+    d0.loc[d0['bet2']==0,'bet2']=-1
+
+    d0['Y_up_predict']=d0['Y_up_predict2'].copy()
+    d0['bet']=d0['bet2'].copy()
+
+
+
+
+
+#create afternoon prediction
+train_test_Setting = read_excel(os.path.join(main_dir,'index_table_v2_for_test_backtest.xlsx'),'Sheet2')
+train_test_Setting=train_test_Setting.loc[train_test_Setting['run_yes']=='afternoon',:]
+train_test_Setting=train_test_Setting.reset_index(drop=True)
+
+d0_afternoon=pd.DataFrame([])
+all_number=train_test_Setting['Number'].values.tolist()
+i=0
+for i in range(0,train_test_Setting.shape[0]):
+    #file_name='20190517_test_2019.xlsx'
+    file_name=str(int(train_test_Setting['Number'][i]))+'_test_'+str(train_test_Setting['Test_start'][i].strftime("%Y"))+'.xlsx'
+    d1 = read_excel(os.path.join(plot_path,file_name),'daily_detail_summary')
+    d0_afternoon=d0_afternoon.append(d1)
+    print('finished ',i,' out of ',train_test_Setting.shape[0])
+
+d0_afternoon.to_csv(os.path.join(folder_path,"all_prediction_afternoon.csv"))
+
+
+
+
+
+##if need to use HSI prediction to apply to HHI and find pnl, replace d0 file as below
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction.csv"))
+#d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet']].copy()
+#
+#hhif=pd.read_excel(r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\data\hhi_20051103_to_cum.xlsx")
+#
+#
+##check between hsi hhi
+#hhif_check=pd.merge(hhif,d0[['Date2','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','bet']].copy(),how='left',on=['Date2'])
+#hhif_check=hhif_check.loc[~pd.isnull(hhif_check['Open_HSI']),:].copy()
+#hhif_check['year']=hhif_check['Date2'].apply(lambda x:x[0:4]).astype(int)
+#hhif_check['hhi_diff']=hhif_check['Close']-hhif_check['Open']
+#hhif_check['hsi_diff']=hhif_check['Close_HSI']-hhif_check['Open_HSI']
+#
+#hhif_check.loc[((hhif_check['hsi_diff']>=0)&(hhif_check['hhi_diff']>=0))|((hhif_check['hsi_diff']<0)&(hhif_check['hhi_diff']<0)),'sign_same']=1
+#hhif_check['sign_same']=hhif_check['sign_same'].fillna(0)
+#
+#sum(hhif_check['sign_same'])/hhif_check.shape[0]
+#
+#hhif_check.groupby(["year"])['sign_same'].sum()
+#
+#hhif_check['PnL_hhi']=(hhif_check['Close']-hhif_check['Open'])*hhif_check['bet']*10
+#hhif_check['PnL_hhi_cumsum']=hhif_check.groupby(["year"])['PnL_hhi'].cumsum()
+#hhif_check['PnL_hsi']=(hhif_check['Close_HSI']-hhif_check['Open_HSI'])*hhif_check['bet']*10
+#hhif_check['PnL_hsi_cumsum']=hhif_check.groupby(["year"])['PnL_hsi'].cumsum()
+#
+#hhif_check.groupby(["year"])['PnL_hsi'].sum()
+#hhif_check.groupby(["year"])['PnL_hhi'].sum()
+#
+#hhif_check.to_csv(r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\data\hhif_check.csv")
+#
+#hhif=pd.merge(hhif,d0[['Date2', 'Y_up_predict','bet']].copy(),how='left',on=['Date2'])
+#hhif=hhif.loc[~pd.isnull(hhif['Y_up_predict']),:].copy()
+#
+#hhif_use=hhif[['Date2', 'Y_up_predict','Open', 'High', 'Low', 'Close','DateNum','bet']].copy()
+#hhif_use=hhif_use.rename(columns={'Open':'Open_HSI', 'High':'High_HSI', 'Low':'Low_HSI', 'Close':'Close_HSI'})
+#hhif_use=hhif_use.reset_index(drop=True)
+#hhif_use.to_csv(os.path.join(folder_path,"all_prediction.csv"))
+
+
+
+#if need to use HSI prediction to apply to 15_to_999999 and find pnl
+d0=pd.read_csv(os.path.join(folder_path,"all_prediction.csv"))
+d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet']].copy()
+
+hhif=pd.read_excel("HSI_15_to_999999_with_tidy.xlsx")
+
+hhif=pd.merge(hhif,d0[['Date2', 'Y_up_predict','bet']].copy(),how='left',on=['Date2'])
+hhif=hhif.loc[~pd.isnull(hhif['Y_up_predict']),:].copy()
+
+hhif_use=hhif[['Date2', 'Y_up_predict','Open_HSI_afternoon', 'High_HSI_afternoon', 'Low_HSI_afternoon', 'Close_HSI_afternoon','DateNum','bet']].copy()
+hhif_use=hhif_use.rename(columns={'Open_HSI_afternoon':'Open_HSI', 'High_HSI_afternoon':'High_HSI', 'Low_HSI_afternoon':'Low_HSI', 'Close_HSI_afternoon':'Close_HSI'})
+hhif_use=hhif_use.reset_index(drop=True)
+hhif_use.to_csv(os.path.join(folder_path,"all_prediction_15_to_999999_use_fullday.csv"))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#grid search for stop loss level
+d0=pd.read_csv(os.path.join(folder_path,"all_prediction.csv"))
+
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_phase1.csv"))
+
+
+
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_phase1.csv"))
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_afternoon.csv"))
+d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet']].copy()
+
+
+
+d0_gridsearch_stop=d0.copy()
+d0_gridsearch_stop=d0_gridsearch_stop.reset_index(drop=True)
+d0_gridsearch_stop['year']=d0_gridsearch_stop['Date2'].apply(lambda x:x[0:4]).astype(int)
+
+
+
+
+##if last racing day is 4 day before, not to trade, and find the pnl
+#
+#d0_gridsearch_stop['last_trading_date']=d0_gridsearch_stop['Date2'].shift(1)
+#d0_gridsearch_stop=d0_gridsearch_stop.loc[~(pd.isnull(d0_gridsearch_stop['last_trading_date'])),:].reset_index(drop=True).copy()
+#d0_gridsearch_stop['last_trading_date']=d0_gridsearch_stop['last_trading_date'].apply(lambda x:dt.strptime(x,"%Y-%m-%d"))
+#d0_gridsearch_stop['Date2_dt']=d0_gridsearch_stop['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d"))
+#d0_gridsearch_stop['last_trading_diff'] = (d0_gridsearch_stop.Date2_dt-d0_gridsearch_stop.last_trading_date).astype("timedelta64[D]").astype(np.int64)
+#
+#d0_gridsearch_stop=d0_gridsearch_stop.loc[d0_gridsearch_stop['last_trading_diff']<4,:].copy()
+
+
+
+#check high open difference
+d0_gridsearch_stop['high_open']=abs(d0_gridsearch_stop['High_HSI']-d0_gridsearch_stop['Open_HSI'])
+d0_gridsearch_stop.groupby(['year'])['high_open'].apply(lambda x:x.mean())
+
+d0_gridsearch_stop['low_open']=abs(d0_gridsearch_stop['Low_HSI']-d0_gridsearch_stop['Open_HSI'])
+d0_gridsearch_stop.groupby(['year'])['low_open'].apply(lambda x:x.mean())
+
+d0_gridsearch_stop['close_open']=abs(d0_gridsearch_stop['Close_HSI']-d0_gridsearch_stop['Open_HSI'])
+d0_gridsearch_stop.groupby(['year'])['close_open'].apply(lambda x:x.mean())
+
+
+
+#d0_gridsearch_stop['Y_up_predict']=1-d0_gridsearch_stop['Y_up_predict']
+
+
+
+stop_grid_search=[*range(10,500,10)]+[10000]
+stop_grid_search=[*range(1,20,1)]+[10000]
+
+#stop_level=190
+for stop_level in stop_grid_search:
+
+    stop_col_name='stop_indicate_'+str(stop_level)
+    pnl_name='pnl_with_stop_'+str(stop_level)
+
+    #indicate if triggered stop
+    d0_gridsearch_stop2=d0_gridsearch_stop.copy()
+    d0_gridsearch_stop2.loc[(d0_gridsearch_stop2['Y_up_predict']==1)&(d0_gridsearch_stop2['Low_HSI']<=d0_gridsearch_stop2['Open_HSI']-stop_level),'stop_indicate_up']=1
+    d0_gridsearch_stop2['stop_indicate_up']=d0_gridsearch_stop2['stop_indicate_up'].fillna(0)
+    
+    d0_gridsearch_stop2.loc[(d0_gridsearch_stop2['Y_up_predict']==0)&(d0_gridsearch_stop2['High_HSI']>=d0_gridsearch_stop2['Open_HSI']+stop_level),'stop_indicate_down']=1
+    d0_gridsearch_stop2['stop_indicate_down']=d0_gridsearch_stop2['stop_indicate_down'].fillna(0)
+    d0_gridsearch_stop2[stop_col_name]=d0_gridsearch_stop2['stop_indicate_up']-d0_gridsearch_stop2['stop_indicate_down']
+
+    d0_gridsearch_stop2.loc[d0_gridsearch_stop2[stop_col_name]!=0,pnl_name]=-1*stop_level*10-7.62
+    d0_gridsearch_stop2.loc[d0_gridsearch_stop2[stop_col_name]==0,pnl_name]=(d0_gridsearch_stop2['Close_HSI']-d0_gridsearch_stop2['Open_HSI'])*d0_gridsearch_stop2['bet']*10-7.62
+    d0_gridsearch_stop2[pnl_name+'_cum']=d0_gridsearch_stop2.groupby(['year'])[pnl_name].cumsum()
+    
+    d0_gridsearch_stop[pnl_name]=d0_gridsearch_stop2[pnl_name].copy()
+    d0_gridsearch_stop[pnl_name+'_cum']=d0_gridsearch_stop2[pnl_name+'_cum'].copy()
+    
+    
+    
+    print(sum(d0_gridsearch_stop[pnl_name]))
+
+
+def find_pnl_for_diff_stop(xx,pnl_name):
+    return sum(xx[pnl_name].values)
+
+def find_drawdown(xx,pnl_name):
+    return max(np.maximum.accumulate(xx[pnl_name+'_cum'])-xx[pnl_name+'_cum'])
+
+
+#stop_level=90
+count=0
+for stop_level in stop_grid_search:
+    
+    pnl_name='pnl_with_stop_'+str(stop_level)
+    yearly_pnl='pnl_stop_'+str(stop_level)
+    yearly_downside='downside_stop_'+str(stop_level)
+    
+    temp=d0_gridsearch_stop.groupby(['year']).apply(lambda x:find_pnl_for_diff_stop(x.reset_index(drop=True),pnl_name))
+    temp=temp.reset_index(drop=False)
+    temp=temp.rename(columns={0:yearly_pnl})
+    
+    #temp_downside=d0_gridsearch_stop.groupby(['year'])[pnl_name+'_cum'].min()
+    temp_downside=d0_gridsearch_stop.groupby(['year']).apply(lambda x:find_drawdown(x.reset_index(drop=True),pnl_name))
+    
+    
+    temp_downside=temp_downside.reset_index(drop=False)
+    temp_downside.columns=['year',yearly_downside]
+
+    
+    if count==0:
+        yearly_pnl_stop_summary=temp.copy()
+        yearly_downside_stop_summary=temp_downside.copy()
+    else:
+        yearly_pnl_stop_summary[yearly_pnl]=temp[yearly_pnl]
+        yearly_downside_stop_summary[yearly_downside]=temp_downside[yearly_downside].copy()
+        
+        
+    count=count+1
+
+
+yearly_downside_stop_summary.loc['Mean',:]= yearly_downside_stop_summary.mean(axis=0)
+yearly_pnl_stop_summary.loc['Mean',:]= yearly_pnl_stop_summary.mean(axis=0)
+
+
+yearly_pnl_stop_summary_validation=yearly_pnl_stop_summary.loc[yearly_pnl_stop_summary['year']<=2014,:].copy()
+yearly_downside_stop_summary_validation=yearly_downside_stop_summary.loc[yearly_downside_stop_summary['year']<=2014,:].copy()
+#Total sum per column: 
+yearly_pnl_stop_summary_validation.loc['Mean',:]= yearly_pnl_stop_summary_validation.mean(axis=0)
+
+
+yearly_downside_stop_summary_validation.loc['Mean',:]= yearly_downside_stop_summary_validation.mean(axis=0)
+
+
+
+
+
+
+yearly_downside_stop_summary_old=yearly_pnl_stop_summary.copy()
+yearly_pnl_stop_summary_old=yearly_pnl_stop_summary.copy()
+
+
+
+for i in range(1,20,1):
+    var_name="pnl_with_stop_"+str(i)
+    print(sum(d0_gridsearch_stop2[var_name]>0))
+
+
+
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+x = np.array(stop_grid_search)
+y = -1*yearly_pnl_stop_summary_validation.loc['Mean',:][1:].values/yearly_downside_stop_summary_validation.loc['Mean',:][1:].values
+plt.scatter(x, y)
+plt.xlim(stop_grid_search[1],stop_grid_search[-2])
+plt.show()
+
+
+x = np.array(stop_grid_search)
+y = yearly_downside_stop_summary_validation.loc['Mean',:][1:].values
+plt.scatter(x, y)
+plt.xlim(stop_grid_search[1],stop_grid_search[-2])
+plt.show()
+
+
+
+xy=pd.DataFrame([])
+xy['stop_level']=x
+xy['pnl/loss']=y
+
+
+
+
+
+
+#check stop percentage
+lookat=200
+
+#d0_gridsearch_stop2=d0_gridsearch_stop2[['Date2','year','Open_HSI','High_HSI','Low_HSI','Close_HSI','Y_up_predict']].copy()
+
+d0_gridsearch_stop2_check=d0_gridsearch_stop2.loc[d0_gridsearch_stop2['year']==2020,['Date2','pnl_with_stop_'+str(lookat),'stop_indicate']].copy()
+
+#sum((d0_gridsearch_stop2['Y_up_predict']==1)&(d0_gridsearch_stop2['Low_HSI']<=d0_gridsearch_stop2['Open_HSI']-lookat))
+
+d0_gridsearch_stop2['stop_indicate_up']=0
+d0_gridsearch_stop2.loc[(d0_gridsearch_stop2['Y_up_predict']==1)&(d0_gridsearch_stop2['Low_HSI']<=d0_gridsearch_stop2['Open_HSI']-lookat),'stop_indicate_up']=1
+d0_gridsearch_stop2['stop_indicate_up']=d0_gridsearch_stop2['stop_indicate_up'].fillna(0)
+
+d0_gridsearch_stop2['stop_indicate_down']=0
+d0_gridsearch_stop2.loc[(d0_gridsearch_stop2['Y_up_predict']==0)&(d0_gridsearch_stop2['High_HSI']>=d0_gridsearch_stop2['Open_HSI']+lookat),'stop_indicate_down']=1
+d0_gridsearch_stop2['stop_indicate_down']=d0_gridsearch_stop2['stop_indicate_down'].fillna(0)
+
+#sum(d0_gridsearch_stop2['stop_indicate_down'])
+
+d0_gridsearch_stop2['triggered_stop']=d0_gridsearch_stop2['stop_indicate_up']+d0_gridsearch_stop2['stop_indicate_down']
+
+
+#sum(d0_gridsearch_stop2['triggered_stop'])
+
+a=d0_gridsearch_stop2.groupby(['year'])['triggered_stop'].sum()
+a
+
+b=d0_gridsearch_stop2.groupby(['year'])['year'].count()
+
+#stop portion
+a/b
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#check bet in first minute
+
+d0=pd.read_csv(os.path.join(main_dir,folder_path,"all_prediction_phase1.csv"))
+d0['Close_HSI_shift1']=d0['Close_HSI'].shift(1)
+d0['break_open']=d0['Open_HSI']-d0['Close_HSI_shift1']
+
+d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet','break_open','DateNum']].copy()
+
+d0.dtypes
+d0['Date2']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m-%d"))
+d0['Date2_ym']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m"))
+d0['Date2_ym_number']=d0['Date2'].apply(lambda x:float(dt.strptime(x,"%Y-%m-%d").strftime("%Y%m")))
+ 
+d0['Date2_y']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y"))
+
+
+
+fn = os.path.join(main_dir,folder_path,"FHSI_minute_20051201to_cum.hdf5")
+
+#fn = os.path.join(folder_path,"FHSI_minute_20051201to20190326.hdf5")
+store = pd.HDFStore(fn)
+print(store)
+data_all_final= store.select('FHSI_minute')
+ 
+store.close()
+
+
+data_all_final_check=data_all_final.tail(4000)
+data=data_all_final[['date_ymd_hms','date_ymd','Open','High','Low','Close','TotalVolume']].copy()
+data['hms']=data['date_ymd_hms'].apply(lambda x: x.strftime('%H:%M:%S'))
+data=data.rename(columns={'date_ymd_hms':'Date1','date_ymd':'Date2'})
+
+data_use=data.groupby('Date2').head(1)
+
+data_use=pd.merge(data_use,d0[['Date2','Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','bet','break_open','DateNum']].copy(),how='left',on=['Date2'])
+data_use=data_use.loc[(data_use['Date2']>='2011-01-01')&(~pd.isnull(data_use['break_open'])),:].copy()
+
+
+
+
+
+target_profit=80
+commission=7.62
+stop=50
+
+
+data_use['Open_HSI']=(data_use['Open']+data_use['High']+data_use['Low']+data_use['Close'])/4
+
+
+
+
+d0=data_use.copy()
+
+stop_level=90
+
+d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet']].copy()
+d0.dtypes
+d0['Date2']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m-%d"))
+d0['Date2_ym']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m"))
+d0['Date2_ym_number']=d0['Date2'].apply(lambda x:float(dt.strptime(x,"%Y-%m-%d").strftime("%Y%m")))
+ 
+d0['Date2_y']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y"))
+
+#indicate if triggered stop
+d0.loc[(d0['Y_up_predict']==1)&(d0['Low_HSI']<=d0['Open_HSI']-stop_level),'stop_indicate_up']=1
+d0['stop_indicate_up']=d0['stop_indicate_up'].fillna(0)
+
+d0.loc[(d0['Y_up_predict']==0)&(d0['High_HSI']>=d0['Open_HSI']+stop_level),'stop_indicate_down']=1
+d0['stop_indicate_down']=d0['stop_indicate_down'].fillna(0)
+d0['stop_indicate']=d0['stop_indicate_up']-d0['stop_indicate_down']
+
+
+#for hong kong
+d0.loc[d0['stop_indicate']!=0,'PnL']=-1*stop_level*10
+d0.loc[d0['stop_indicate']==0,'PnL']=(d0['Close_HSI']-d0['Open_HSI'])*d0['bet']*10
+d0['PnL_after_commission']=d0['PnL']-7.62
+d0['PnL_after_commission_cum']=d0.groupby(['Date2_y'])['PnL_after_commission'].cumsum()
+d0_check=d0.loc[d0['Date2_y']=='2019',:]
+
+
+
+
+
+
+data_use.loc[(data_use['bet']==1)&((data_use['Open']-data_use['Low'])>=stop),'profit2_stop']=-1*stop*10-commission
+data_use.loc[(data_use['bet']==-1)&((data_use['High']-data_use['Open'])>=stop),'profit2_stop']=-1*stop*10-commission
+
+
+data_use.loc[(data_use['bet']==1)&((data_use['High']-data_use['Open'])>=target_profit+2)&(pd.isnull(data_use['profit2_stop'])),'make_target']=1
+data_use.loc[(data_use['bet']==-1)&((data_use['Open']-data_use['Low'])>=target_profit+2)&(pd.isnull(data_use['profit2_stop'])),'make_target']=-1
+data_use.loc[(pd.isnull(data_use['make_target']))&(pd.isnull(data_use['profit2_stop'])),'make_target']=0
+
+data_use.loc[(data_use['make_target']==1)|(data_use['make_target']==-1),'profit1']=target_profit*10-commission
+
+data_use.loc[data_use['make_target']==0,'profit2_no_stop']=data_use['bet']*(data_use['Close']-data_use['Open'])*10-commission
+
+
+data_use.shape[0]
+
+sum(data_use.profit1>0)
+sum(data_use.profit2_no_stop>0)
+sum(data_use.profit2_stop<0)
+sum(data_use.profit2_no_stop<0)
+
+sum(data_use.profit1.values[data_use.profit1>0])
+sum(data_use.profit2_no_stop.values[data_use.profit2_no_stop>0])
+sum(data_use.profit2_stop.values[data_use.profit2_stop<0])
+sum(data_use.profit2_no_stop.values[data_use.profit2_no_stop<0])
+
+sum(data_use.profit1.values[data_use.profit1>0])+sum(data_use.profit2.values[data_use.profit2>0])+sum(data_use.profit2.values[data_use.profit2<0])
+
+data_use.loc[data_use['profit2']<0,'profit3']=data_use['bet']*(data_use['Close_HSI']-data_use['Open_HSI'])*10-commission
+
+sum(data_use.profit3.values[data_use.profit3>0])
+sum(data_use.profit3.values[data_use.profit3<0])
+
+
+
+
+
+
+
+
+
+
+
+
+stop_level=60
+
+#summary statistics for all_prediction
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction.csv"))
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_phase1.csv"))
+d0=pd.read_csv(os.path.join(folder_path,"all_prediction_15_to_30.csv"))
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_45_to_165.csv"))
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_15_to_999999_use_fullday.csv"))
+
+
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_japan_0_to_60.csv"))
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction_japan_fullday.csv"))
+
+
+
+d0=d0[['Date2', 'Y_up_predict','Open_HSI', 'High_HSI', 'Low_HSI', 'Close_HSI','DateNum','bet']].copy()
+d0.dtypes
+d0['Date2']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m-%d"))
+d0['Date2_ym']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m"))
+d0['Date2_ym_number']=d0['Date2'].apply(lambda x:float(dt.strptime(x,"%Y-%m-%d").strftime("%Y%m")))
+ 
+d0['Date2_y']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y"))
+
+#indicate if triggered stop
+d0.loc[(d0['Y_up_predict']==1)&(d0['Low_HSI']<=d0['Open_HSI']-stop_level),'stop_indicate_up']=1
+d0['stop_indicate_up']=d0['stop_indicate_up'].fillna(0)
+
+d0.loc[(d0['Y_up_predict']==0)&(d0['High_HSI']>=d0['Open_HSI']+stop_level),'stop_indicate_down']=1
+d0['stop_indicate_down']=d0['stop_indicate_down'].fillna(0)
+d0['stop_indicate']=d0['stop_indicate_up']-d0['stop_indicate_down']
+
+
+#for hong kong
+d0.loc[d0['stop_indicate']!=0,'PnL']=-1*stop_level*10
+d0.loc[d0['stop_indicate']==0,'PnL']=(d0['Close_HSI']-d0['Open_HSI'])*d0['bet']*10
+d0['PnL_after_commission']=d0['PnL']-7.62
+d0['PnL_after_commission_cum']=d0.groupby(['Date2_y'])['PnL_after_commission'].cumsum()
+d0_check=d0.loc[d0['Date2_y']=='2019',:]
+
+##for japan
+#d0.loc[d0['stop_indicate']!=0,'PnL']=-1*stop_level*100/14
+#d0.loc[d0['stop_indicate']==0,'PnL']=(d0['Close_HSI']-d0['Open_HSI'])*d0['bet']*100/14
+#d0['PnL_after_commission']=d0['PnL']-80/14
+#d0['PnL_after_commission_cum']=d0.groupby(['Date2_y'])['PnL_after_commission'].cumsum()
+#d0_check=d0.loc[d0['Date2_y']=='2019',:]
+
+
+
+#d0.to_csv(os.path.join(folder_path,"d0_model_0_to_13.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_model_15_to_30.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_model_45_to_165.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_model_15_to_999999_use_fullday.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_standard.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_japan_0_to_60.csv"))
+#d0.to_csv(os.path.join(folder_path,"d0_japan_fullday.csv"))
+
+
+
+
+
+
+
+
+
+
+
+
+#hsi_2019_check=read_excel(r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\plot\30010_test_2019.xlsx",'daily_detail_summary')
+#hsi_2019_check['PnL']=hsi_2019_check['PnL']*10
+#hsi_2019_check['Cum.Sum']=hsi_2019_check['Cum.Sum']*10
+#d0_check=pd.merge(d0_check,hsi_2019_check[['Date2', 'Y_up_predict','HSI_change','PnL', 'Cum.Sum']].copy(),how='left',on=['Date2'])
+#hsi_2019_check.columns.values
+
+
+sum(d0['PnL'])
+sum(d0['PnL'])
+sum(d0['PnL_after_commission'])
+
+
+#d0=d0.loc[d0['advantage']>-9999999,:]
+
+
+d0=d0.reset_index(drop=True)
+
+#check whether high low is higher or lower than open
+
+d0['H_O']=d0['High_HSI']-d0['Open_HSI']
+ 
+sum(d0['H_O'].values<=5)
+
+
+
+##try to remove some day around settlement as simulation
+#settlement_day = read_excel(os.path.join(calendar_path,'calendar.xlsx'),'settlement')
+#settlement_day['Date2']=settlement_day['settlement_day'].astype(str)      
+#settlement_day['settlement']=1
+#
+#tradeday_before20181224=read_excel(os.path.join(calendar_path,'calendar.xlsx'),'tradingdate_before20181227')
+#calendar = read_excel(os.path.join(calendar_path,'calendar.xlsx'),'calendar')
+#calendar['Date2']=calendar['Date'].astype(str)
+#calendar=calendar.loc[calendar['trading_date']==1,:]  
+#
+#all_trading_date=tradeday_before20181224.append(calendar[['Date2']])
+#all_trading_date=all_trading_date.reset_index(drop=True)
+#
+#all_trading_date=pd.merge(all_trading_date,settlement_day[['Date2','settlement']].copy(),how='left',on=['Date2'])
+#all_trading_date['settlement']=all_trading_date['settlement'].fillna(0)
+#
+##all_trading_date['s1']=all_trading_date['settlement'].shift(-1)
+##all_trading_date['a1']=all_trading_date['settlement'].shift(1)
+##all_trading_date=all_trading_date.fillna(0)
+##all_trading_date['one']=all_trading_date['settlement']+all_trading_date['s1']+all_trading_date['a1']
+##d0=pd.merge(d0,all_trading_date[['Date2','settlement','s1','a1','one']].copy(),how='left',left_on=['Date2'],right_on=['Date2'])            
+#
+#
+#all_trading_date['one']=all_trading_date['settlement']
+#d0=pd.merge(d0,all_trading_date[['Date2','settlement','one']].copy(),how='left',left_on=['Date2'],right_on=['Date2'])   
+#
+#
+#d0=d0.loc[d0['one']==0,:]
+#d0=d0.reset_index(drop=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#use last n mins mean as close price and find pnl
+#
+#data.dtypes
+#data_check=data.head(10)
+
+enter_number_of_bar=2
+stop_number_of_bar=2
+exit_number_of_bar=2
+
+data_use=data.loc[data['Date2']=='2014-12-31',:]
+def find_min_6min(data_use):
+    data_use2=data_use.sort_values(by=['Date1'],ascending=False)
+    data_use2=data_use2.head(exit_number_of_bar)
+    #data_use2['mean']=(data_use2['High']+data_use2['Low'])/2
+    data_use2['mean']=(data_use2['High']+data_use2['Low']+data_use2['Open']+data_use2['Close'])/4
+    output=np.mean(data_use2['mean'].values)
+    return output
+
+new_column=data.groupby("Date2").apply(lambda x:find_min_6min(x))
+new_column=new_column.reset_index(drop=False)
+new_column=new_column.rename(columns={0:'close_adjusted_6min_mean'})
+
+d0=pd.merge(d0,new_column,how='left',left_on=['Date2'],right_on=['Date2'])
+d0=d0.loc[~pd.isnull(d0['close_adjusted_6min_mean']),:]
+
+
+data_use=data.loc[data['Date2']=='2014-12-31',:]
+def find_min_6min_adj_open(data_use):
+    data_use2=data_use.sort_values(by=['Date1'],ascending=True)
+    data_use2=data_use2.head(enter_number_of_bar)
+    #data_use2['mean']=(data_use2['High']+data_use2['Low'])/2
+    data_use2['mean']=(data_use2['High']+data_use2['Low']+data_use2['Open']+data_use2['Close'])/4
+    output=np.mean(data_use2['mean'].values)
+    #output=data_use2['Open']
+    return output
+
+new_column=data.groupby("Date2").apply(lambda x:find_min_6min_adj_open(x))
+new_column=new_column.reset_index(drop=False)
+new_column=new_column.rename(columns={0:'open_adjusted_6min_mean'})
+
+d0=pd.merge(d0,new_column,how='left',left_on=['Date2'],right_on=['Date2'])
+d0=d0.loc[~pd.isnull(d0['open_adjusted_6min_mean']),:]
+
+#d0['open_adjusted_6min_mean']=d0['Open_HSI'].copy()
+#d0.to_csv(r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\d0_adjusted_open_close.csv")
+
+
+#create new stop
+
+#for each date, select rows after first few row, as first few rows is used to open position, then create new high and
+#new low
+data2=data.copy()
+data2_new_high_low=data2.groupby(['Date2']).head(enter_number_of_bar)
+data2_new_high_low['one']=1
+data2_new_stop=pd.merge(data2,data2_new_high_low[['Date1','one']].copy(),how='left',on=['Date1'])
+data2_new_stop=data2_new_stop.loc[pd.isnull(data2_new_stop.one),:]
+del data2_new_stop['one']
+
+#also remove some bar before close
+data2_new_high_low=data2.groupby(['Date2']).tail(exit_number_of_bar)
+data2_new_high_low['one']=1
+data2_new_stop=pd.merge(data2_new_stop,data2_new_high_low[['Date1','one']].copy(),how='left',on=['Date1'])
+data2_new_stop=data2_new_stop.loc[pd.isnull(data2_new_stop.one),:]
+del data2_new_stop['one']
+
+
+df_max=data2_new_stop.groupby('Date2')['High'].max().reset_index(drop=False)
+df_min=data2_new_stop.groupby('Date2')['Low'].min().reset_index(drop=False)
+
+d0_for_new_stop=d0.copy()
+
+d0_for_new_stop=pd.merge(d0_for_new_stop,df_max[['Date2','High']].copy(),how='left',on=['Date2'])
+d0_for_new_stop=pd.merge(d0_for_new_stop,df_min[['Date2','Low']].copy(),how='left',on=['Date2'])
+d0_for_new_stop=d0_for_new_stop.rename(columns={'High':'High_new','Low':'Low_new'})
+
+#create new stop level
+d0_for_new_stop.loc[d0_for_new_stop['Y_up_predict']==1,'new_stop']=d0_for_new_stop[['Open_HSI','open_adjusted_6min_mean']].min(axis=1)-stop_level
+d0_for_new_stop.loc[d0_for_new_stop['Y_up_predict']==0,'new_stop']=d0_for_new_stop[['Open_HSI','open_adjusted_6min_mean']].max(axis=1)+stop_level
+
+
+d0_for_new_stop.loc[(d0_for_new_stop['Y_up_predict']==1)&(d0_for_new_stop['Low_new']<=d0_for_new_stop['new_stop']),'stop_indicate_up_revised']=1
+d0_for_new_stop['stop_indicate_up_revised']=d0_for_new_stop['stop_indicate_up_revised'].fillna(0)
+
+d0_for_new_stop.loc[(d0_for_new_stop['Y_up_predict']==0)&(d0_for_new_stop['High_new']>=d0_for_new_stop['new_stop']),'stop_indicate_down_revised']=1
+d0_for_new_stop['stop_indicate_down_revised']=d0_for_new_stop['stop_indicate_down_revised'].fillna(0)
+d0_for_new_stop['stop_indicate_new']=d0_for_new_stop['stop_indicate_up_revised']-d0_for_new_stop['stop_indicate_down_revised']
+
+
+#d0_for_new_stop.loc[d0_for_new_stop['stop_indicate_new']!=0,'PnL_new']=-1*stop_level*10
+#d0_for_new_stop.loc[d0_for_new_stop['stop_indicate_new']==0,'PnL_new']=(d0_for_new_stop['close_adjusted_6min_mean']-d0_for_new_stop['open_adjusted_6min_mean'])*d0_for_new_stop['bet']*10
+
+
+
+
+
+#handle stop loss, if triggered stop loss, for next 10 bars, each bar settled 50 contracts
+ii=208
+ii=1048
+ii=983 #2014/12/31
+ii=1109 #2015-07-08
+revised_stop=[]
+data2=data.sort_values(by=['Date2','Date1'],ascending=[True,True]).copy()
+data2=data2.loc[data2['Date2']>='2011-01-01',:]
+
+data2=pd.merge(data2,d0_for_new_stop[['Date2','Open_HSI',
+                         'stop_indicate_new',
+                         'open_adjusted_6min_mean',
+                         'close_adjusted_6min_mean']].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+
+#ii_old=all_links[963] #2014-12-01
+#ii_old=all_links[1134] #2015-08-12 this is guess up with stop
+#ii_old=all_links[6] #2011-01-11 this is guess up without stop
+#ii_old=all_links[1] #2011-01-04 this is guess down with stop
+def revise_stop(ii_old):
+    ii=ii_old[1] #ii_old is tuple, 1 is the second item, stored the dataframe
+    ii=ii.reset_index(drop=True)
+    target_date=ii['Date2'].values[0]
+    #stop_indicate=ii['stop_indicate'].values[0]
+    stop_indicate=ii['stop_indicate_new'].values[0]
+    output=9999999
+    first_index=9999999
+    
+    no_of_bar_to_settle=stop_number_of_bar
+    
+    if stop_indicate==1:
+        #stop_price=ii['Open_HSI'].values[0]-stop_level
+        old_stop=ii['Open_HSI'].values[0]-stop_level
+        #stop_price=ii['open_adjusted_6min_mean'].values[0]-stop_level
+        stop_price=min(old_stop,ii['open_adjusted_6min_mean'].values[0]-stop_level)
+        
+       
+        ii=ii.iloc[enter_number_of_bar:-1*exit_number_of_bar,:]
+        
+        ii['stop_series']=(ii['Low'].values<=stop_price)*1
+        first_index=(ii.stop_series.values==1).argmax()
+        data_use2_use=ii[first_index+1:first_index+1+no_of_bar_to_settle]
+        data_use2_use=data_use2_use.reset_index(drop=True)
+        #data_use2_use['mean']=(data_use2_use['High']+data_use2_use['Low'])/2
+        data_use2_use['mean']=(data_use2_use['High']+data_use2_use['Low']+data_use2_use['Open']+data_use2_use['Close'])/4
+        
+        output=np.mean(data_use2_use['mean'].values)
+
+        if data_use2_use.shape[0]<no_of_bar_to_settle:
+            output=9999999
+
+    if stop_indicate==-1:
+        #stop_price=ii['Open_HSI'].values[0]+stop_level
+        old_stop=ii['Open_HSI'].values[0]+stop_level
+        #stop_price=ii['open_adjusted_6min_mean'].values[0]+stop_level
+        stop_price=max(ii['open_adjusted_6min_mean'].values[0]+stop_level,old_stop)
+        
+        
+        ii=ii.iloc[enter_number_of_bar:-1*exit_number_of_bar,:]
+        
+        ii['stop_series']=(ii['High'].values>=stop_price)*1
+        first_index=(ii.stop_series.values==1).argmax()
+        data_use2_use=ii[first_index+1:first_index+1+no_of_bar_to_settle]
+        data_use2_use=data_use2_use.reset_index(drop=True)
+        #data_use2_use['mean']=(data_use2_use['High']+data_use2_use['Low'])/2
+        data_use2_use['mean']=(data_use2_use['High']+data_use2_use['Low']+data_use2_use['Open']+data_use2_use['Close'])/4
+        
+        output=np.mean(data_use2_use['mean'].values)
+        
+        if data_use2_use.shape[0]<no_of_bar_to_settle:
+            output=9999999
+    print("finished ",target_date)
+    return target_date+'#'+str(output)+'#'+str(first_index+enter_number_of_bar)+'#'+str(stop_indicate)
+
+
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+
+    
+all_links=list(data2.groupby("Date2"))
+output=[]
+with ThreadPoolExecutor(max_workers=20) as pool:
+    output=list(pool.map(revise_stop,all_links))
+
+
+
+
+output=pd.DataFrame(output)
+output['Date2']=output[0].apply(lambda x:x.split("#")[0])
+output['revised_Stop']=output[0].apply(lambda x:x.split("#")[1])
+output['revised_Stop']=output['revised_Stop'].astype(np.float64)
+
+output['first_index']=output[0].apply(lambda x:x.split("#")[2])
+output['first_index']=output['first_index'].astype(np.float64)
+
+output['stop_indicate_new']=output[0].apply(lambda x:x.split("#")[3])
+output['stop_indicate_new']=output['stop_indicate_new'].astype(np.float64)
+
+d0=pd.merge(d0,output[['Date2','revised_Stop','first_index','stop_indicate_new']].copy(),how='left',on=['Date2'])
+
+d0.loc[d0['revised_Stop']!=9999999,'close_adjusted_6min_mean']=d0['revised_Stop']
+
+d0['close_open_diff_adjusted_6min_mean']=d0['close_adjusted_6min_mean']-d0['open_adjusted_6min_mean']
+#12 is commission, 10 is assume lost 1 tick
+d0['PnL_after_commission_adjusted_6min_mean']=d0['close_open_diff_adjusted_6min_mean']*d0['bet']*10-12-10-10
+
+
+#for below one case
+#as triggered stop loss nearly market close, so above d0['revised_Stop']==9999999
+#so assumed it settled at close
+d0_check=d0.loc[(d0['revised_Stop']==9999999)&(d0['stop_indicate_new']!=0),:]
+
+
+
+
+
+#frequency plot for days with stop
+import matplotlib.pyplot as plt
+diff_stop=d0.loc[d0['revised_Stop']!=9999999,'PnL_after_commission_adjusted_6min_mean'].values
+plt.hist(d0.loc[d0['revised_Stop']!=9999999,'PnL_after_commission_adjusted_6min_mean'].values,normed=False,bins=30,range=(-6000,120))  #ravel=flatten
+np.mean(d0.loc[d0['revised_Stop']!=9999999,'PnL_after_commission_adjusted_6min_mean'].values)
+plt.title('Frequency plot of loss if triggered stop')
+plt.xlabel('loss')
+plt.ylabel('Frequency')
+
+sum(diff_stop)/diff_stop.shape[0]
+
+
+#frequency plot,difference between original close and close_adjusted_6min_mean, for days without stop
+diff=d0.loc[d0['revised_Stop']==9999999,'close_adjusted_6min_mean'].values-d0.loc[d0['revised_Stop']==9999999,'Close_HSI'].values
+plt.hist(diff,normed=False,bins=30,range=(-100,100))  #ravel=flatten
+#plt.title('Frequency plot of difference between original exit price and randomized exit price without triggering stop')
+plt.xlabel('difference')
+plt.ylabel('Frequency')
+
+np.mean(diff)
+
+
+
+
+
+
+
+
+#frequency plot
+diff_open_1=d0.loc[d0['Y_up_predict']==1,'open_adjusted_6min_mean'].values-d0.loc[d0['Y_up_predict']==1,'Open_HSI'].values
+plt.hist(diff,normed=False,bins=30,range=(min(diff_open_1),max(diff_open_1)))  #ravel=flatten
+#plt.title('Frequency plot of difference between original exit price and randomized exit price without triggering stop')
+plt.xlabel('difference')
+plt.ylabel('Frequency')
+
+sum(diff_open_1)
+diff_open_1.shape[0]
+
+
+diff_open_0=d0.loc[d0['Y_up_predict']==0,'open_adjusted_6min_mean'].values-d0.loc[d0['Y_up_predict']==0,'Open_HSI'].values
+plt.hist(diff,normed=False,bins=30,range=(min(diff_open_0),max(diff_open_0)))  #ravel=flatten
+#plt.title('Frequency plot of difference between original exit price and randomized exit price without triggering stop')
+plt.xlabel('difference')
+plt.ylabel('Frequency')
+
+sum(diff_open_0)
+diff_open_0.shape[0]
+
+
+
+
+
+
+#frequency plot
+diff_close_1=d0.loc[(d0['Y_up_predict']==1)&(d0['revised_Stop']==9999999),'close_adjusted_6min_mean'].values-d0.loc[(d0['Y_up_predict']==1)&(d0['revised_Stop']==9999999),'Close_HSI'].values
+plt.hist(diff_close_1,normed=False,bins=30,range=(min(diff_close_1),max(diff_close_1)))  #ravel=flatten
+#plt.title('Frequency plot of difference between original exit price and randomized exit price without triggering stop')
+plt.xlabel('difference')
+plt.ylabel('Frequency')
+
+sum(diff_close_1)  #so this is better
+diff_close_1.shape[0]
+
+
+diff_close_0=d0.loc[(d0['Y_up_predict']==0)&(d0['revised_Stop']==9999999),'close_adjusted_6min_mean'].values-d0.loc[(d0['Y_up_predict']==0)&(d0['revised_Stop']==9999999),'Close_HSI'].values
+plt.hist(diff_close_0,normed=False,bins=30,range=(min(diff_close_0),max(diff_close_0)))  #ravel=flatten
+#plt.title('Frequency plot of difference between original exit price and randomized exit price without triggering stop')
+plt.xlabel('difference')
+plt.ylabel('Frequency')
+
+sum(diff_close_0)
+diff_close_0.shape[0]
+
+
+
+sum(diff_open_1)*-1
+sum(diff_open_0)
+sum(diff_close_1)
+sum(diff_close_0)*-1
+
+
+
+#investigate different bewteen single bet and block bet
+sum(d0['PnL_after_commission_adjusted_6min_mean'])
+
+sum(d0['PnL_after_commission'])
+
+
+d0['diff_block_single']=d0['PnL_after_commission_adjusted_6min_mean']-d0['PnL_after_commission']
+
+sum(d0['diff_block_single'])
+
+d0['opendiff_block_single']=d0['open_adjusted_6min_mean']-d0['Open_HSI']
+d0.loc[d0['stop_indicate_new']==0,'closediff_block_single']=d0['close_adjusted_6min_mean']-d0['Close_HSI']
+
+
+a_check=data2.loc[data2['Date2']=='2015-07-09',:]
+
+d0.loc[d0['stop_indicate']!=0,:].shape[0]
+d0.loc[d0['stop_indicate_new']!=0,:].shape[0]
+
+
+data_check=data.head(1000)
+data_1min=data.groupby(['Date2']).nth(0)
+np.mean(data_1min.TotalVolume)
+
+data_2min=data.groupby(['Date2']).nth(1)
+np.mean(data_2min.TotalVolume)
+
+data_2min=data.groupby(['Date2']).nth(2)
+np.mean(data_2min.TotalVolume)
+
+data_last1min=data.groupby(['Date2']).nth(-1)
+np.mean(data_last1min.TotalVolume)
+
+data_last2min=data.groupby(['Date2']).nth(-2)
+np.mean(data_last2min.TotalVolume)
+
+data_last2min=data.groupby(['Date2']).nth(-3)
+np.mean(data_last2min.TotalVolume)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#incorportae both full dat prediction and afternoon prediction
+#if 
+d0_afternoon=pd.read_csv(os.path.join(folder_path,"all_prediction_afternoon.csv"))
+d0_afternoon=d0_afternoon.rename(columns={'Y_up_predict':'Y_up_predict_afternoon'})
+d0=pd.merge(d0,d0_afternoon[['Date2','Y_up_predict_afternoon']],how='left',on='Date2')
+
+
+stop_level=200
+
+
+sum(d0['Y_up_predict']==d0['Y_up_predict_afternoon'])/d0.shape[0]
+
+
+data2=data.loc[data['Date2']>='2011-01-01',:]
+
+data2_check=data2.head(100)
+data2=pd.merge(data2,d0,how='left',on=['Date2'])
+data2_check=data2.tail(100)
+
+
+
+sum(pd.isnull(data2['DateNum']))
+
+#ii_old=all_links[963] #2014-12-01
+#ii_old=all_links[1134] #2015-08-12 this is guess up with stop
+#ii_old=all_links[6] #2011-01-11 this is guess up without stop
+#ii_old=all_links[1] #2011-01-04 this is guess down with stop
+#ii_old=all_links[0] 
+#ii_old=all_links[2263] #2020-03-13
+
+
+#logic is, if triggered morning stop loss, not enter if afternoon is the same direction as morning
+#if morning not trigger stop loss, if afternoon same signal, keep the order till close
+#if morning not trigger stop loss, if afternoon opposite signal,
+#close morning order and enter afternoon order at 11:59:59
+def morning_afternoon_strategy1(ii_old):
+    ii=ii_old[1] #ii_old is tuple, 1 is the second item, stored the dataframe
+    ii=ii.reset_index(drop=True)
+    target_date=ii['Date2'].values[0]
+    
+    full_day_predict=ii['Y_up_predict'].values[0]
+    afternoon_predict=ii['Y_up_predict_afternoon'].values[0]
+
+    morning_stop=0
+    afternoon_stop=0
+    entry_morning=999999
+    exit_morning=999999
+    entry_afternoon=999999
+    exit_afternoon=999999
+    
+    mor_after_either_one=0
+
+
+    data_use2=ii.copy()
+    data_use2['Date1_shift1']=data_use2['Date1'].shift(1)
+    data_use2['time_diff']=data_use2['Date1']-data_use2['Date1_shift1']
+    data_use2['time_diff_min']=data_use2['time_diff'].apply(lambda x:x.total_seconds()/60)
+
+
+    ind=data_use2['time_diff_min']>=60
+    ind=ind[ind==True]
+    ind_size=len(ind)
+    
+    
+
+    
+    if ind_size!=0:
+        ind=ind.index[0]
+        
+        #below use fix point
+        data_use2_morning=data_use2.iloc[0:ind-1]  
+        data_use2_afternoon1=data_use2.iloc[ind-1:]    
+        
+        open_morning=data_use2_morning['Open'].values[0]     
+        high_morning=np.max(data_use2_morning['High'].values)
+        low_morning=np.min(data_use2_morning['Low'].values)
+        #close_morning=data_use2_morning['Open'].values[-1]    #use 1158 open
+        
+        open_afternoon=data_use2_afternoon1['Close'].values[0]   #use 1159 close
+        high_afternoon=np.max(data_use2_afternoon1['High'].values[1:])
+        low_afternoon=np.min(data_use2_afternoon1['Low'].values[1:])
+        close_afternoon=data_use2_afternoon1['Close'].values[-1]
+        
+        
+        #check if morning trigger stop loss
+        #if triggered morning stop loss, not enter if afternoon is the same direction as morning
+        if full_day_predict==1:
+            entry_morning=open_morning
+            stop_exit_morning=entry_morning-stop_level
+            if low_morning<=stop_exit_morning:
+                exit_morning=stop_exit_morning
+                morning_stop=1
+                
+#                if (afternoon_predict==1):
+#                    entry_afternoon=open_afternoon
+#                    stop_exit_afternoon=entry_afternoon-stop_level  
+#                    if low_afternoon<=stop_exit_afternoon:
+#                        exit_afternoon=stop_exit_afternoon
+#                        afternoon_stop=1
+#                    else:
+#                        exit_afternoon=close_afternoon
+                        
+                if (afternoon_predict==0):
+                    entry_afternoon=open_afternoon
+                    stop_exit_afternoon=entry_afternoon+stop_level
+                    if high_afternoon>=stop_exit_afternoon:
+                        exit_afternoon=stop_exit_afternoon
+                        afternoon_stop=-1
+                    else:
+                        exit_afternoon=close_afternoon
+            else:
+                if (afternoon_predict==1)&(low_afternoon<=stop_exit_morning):
+                    exit_morning=stop_exit_morning
+                    afternoon_stop=1
+                if (afternoon_predict==1)&(low_afternoon>stop_exit_morning):
+                    exit_morning=close_afternoon                   
+                if (afternoon_predict==0):
+                    exit_morning=open_afternoon
+                    entry_afternoon=open_afternoon
+                    stop_exit_afternoon=entry_afternoon+stop_level
+                    if high_afternoon>=stop_exit_afternoon:
+                        exit_afternoon=stop_exit_afternoon
+                        afternoon_stop=-1
+                    else:
+                        exit_afternoon=close_afternoon
+                 
+                    
+        if full_day_predict==0:
+            entry_morning=open_morning
+            stop_exit_morning=entry_morning+stop_level
+            if high_morning>=stop_exit_morning:
+                exit_morning=stop_exit_morning
+                morning_stop=-1
+                
+                if (afternoon_predict==1):
+                    entry_afternoon=open_afternoon
+                    stop_exit_afternoon=entry_afternoon-stop_level  
+                    if low_afternoon<=stop_exit_afternoon:
+                        exit_afternoon=stop_exit_afternoon
+                        afternoon_stop=1
+                    else:
+                        exit_afternoon=close_afternoon
+                        
+#                if (afternoon_predict==0):
+#                    entry_afternoon=open_afternoon
+#                    stop_exit_afternoon=entry_afternoon+stop_level
+#                    if high_afternoon>=stop_exit_afternoon:
+#                        exit_afternoon=stop_exit_afternoon
+#                        afternoon_stop=-1
+#                    else:
+#                        exit_afternoon=close_afternoon
+            else:
+                if (afternoon_predict==0)&(high_afternoon>=stop_exit_morning):
+                    exit_morning=stop_exit_morning
+                    afternoon_stop=-1
+                if (afternoon_predict==0)&(high_afternoon<stop_exit_morning):
+                    exit_morning=close_afternoon                   
+                if (afternoon_predict==1):
+                    exit_morning=open_afternoon
+                    entry_afternoon=open_afternoon
+                    stop_exit_afternoon=entry_afternoon-stop_level
+                    if low_afternoon<=stop_exit_afternoon:
+                        exit_afternoon=stop_exit_afternoon
+                        afternoon_stop=1
+                    else:
+                        exit_afternoon=close_afternoon                
+        
+    else:
+        mor_after_either_one=1
+    
+
+    output=pd.DataFrame({'Date2':[target_date],
+                         'morning_stop':[morning_stop],
+                         'afternoon_stop':[afternoon_stop],
+                         'entry_morning':[entry_morning],
+                         'exit_morning':[exit_morning],
+                         'entry_afternoon':[entry_afternoon],
+                         'exit_afternoon':[exit_afternoon],
+                         'mor_after_either_one':[mor_after_either_one]})
+    print("finished ",target_date)
+    return output     
+
+
+
+
+
+
+
+
+
+
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+
+
+all_links=list(data2.groupby("Date2"))
+output=[]
+with ThreadPoolExecutor(max_workers=20) as pool:
+    output=list(pool.map(morning_afternoon_strategy1,all_links))
+
+
+output_morning_afternoon=pd.DataFrame([])
+for i in output:
+    output_morning_afternoon=output_morning_afternoon.append(i)
+
+
+
+d0=pd.merge(d0,output_morning_afternoon,how='left',on=['Date2'])
+
+
+
+
+d0.dtypes
+
+d0['bet_morning']=d0['Y_up_predict'].copy()
+d0.loc[d0['Y_up_predict']==0,'bet_morning']=-1
+
+d0['bet_afternoon']=d0['Y_up_predict_afternoon'].copy()
+d0.loc[d0['Y_up_predict_afternoon']==0,'bet_afternoon']=-1
+
+d0.loc[d0['mor_after_either_one']==0,'morning_pnl']=(d0['exit_morning']-d0['entry_morning'])*d0['bet_morning']*10-12
+
+d0.loc[(d0['mor_after_either_one']==0)&(d0['entry_afternoon']!=999999),'afternoon_pnl']=(d0['exit_afternoon']-d0['entry_afternoon'])*d0['bet_afternoon']*10-12
+d0['afternoon_pnl']=d0['afternoon_pnl'].fillna(0)
+
+d0.loc[d0['mor_after_either_one']==0,'PnL_after_commission']=d0['morning_pnl']+d0['afternoon_pnl']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#only use hsi time tie with stock market start and end
+data_check=data.head(1000)
+data_new_open=data.groupby(['Date2']).nth(15)
+data_new_open=data_new_open.reset_index(drop=False)
+
+data_new_close=data.groupby(['Date2']).nth(-30)
+data_new_close=data_new_close.reset_index(drop=False)
+
+d0=pd.merge(d0,data_new_open[['Date2','Open']].copy(),how='inner',on=['Date2'])
+d0=pd.merge(d0,data_new_close[['Date2','Close']].copy(),how='inner',on=['Date2'])
+d0=d0.rename(columns={'Open':'Open_15mins','Close':'Close_30mins'})
+d0['close_open_diff_adjusted_6min_mean']=d0['Close_30mins']-d0['Open_15mins']
+d0['PnL_after_commission_adjusted_6min_mean']=d0['close_open_diff_adjusted_6min_mean']*d0['bet']-12
+
+
+
+
+
+#applied to individual stock
+
+#stock=read_excel(r'C:\Users\larrylau\Dropbox\notebooks\index_analysis\HK_XHKG_1398_wsj_with_tidy.xlsx','Sheet1')
+stock=read_excel(os.path.join(main_dir,'index_HK_XHKG_HSI_wsj_with_tidy.xlsx'),'Sheet1')
+stock=read_excel(os.path.join(main_dir,'HK_16_wsj_with_tidy.xlsx'),'Sheet1')
+stock=read_excel(os.path.join(main_dir,'index_JP_XTKS_NIK_wsj_with_tidy.xlsx'),'Sheet1')
+stock=read_excel(os.path.join(main_dir,'index_CN_SHCOMP_wsj_with_tidy.xlsx'),'Sheet1')
+stock=pd.read_csv(os.path.join(main_dir,'singapore_index.csv'))
+
+if 'Date2' not in stock.columns:
+    stock['Date2']=stock['Date'].apply(lambda x:dt.strptime(x,'%m/%d/%y'))
+    stock['Date2']=stock['Date2'].apply(lambda x:x.strftime('%Y-%m-%d'))
+    stock.columns= [i.strip() for i in stock.columns.tolist()]
+    del stock['Date']
+
+#del stock['DateNum']
+
+stock.dtypes
+
+d0=pd.merge(d0,stock,how='inner',on=['Date2'])
+
+
+#d0['close_open_diff_adjusted_6min_mean']=d0['Close_HK_XHKG_1398_wsj']-d0['Open_HK_XHKG_1398_wsj']
+d0['close_open_diff_adjusted_6min_mean']=d0['Close_index_HK_XHKG_HSI_wsj']-d0['Open_index_HK_XHKG_HSI_wsj']
+d0['close_open_diff_adjusted_6min_mean']=d0['Close_HK_16_wsj']-d0['Open_HK_16_wsj']
+d0['close_open_diff_adjusted_6min_mean']=d0['Close_index_JP_XTKS_NIK_wsj']-d0['Open_index_JP_XTKS_NIK_wsj']
+d0['close_open_diff_adjusted_6min_mean']=d0['Close_index_CN_SHCOMP_wsj']-d0['Open_index_CN_SHCOMP_wsj']
+d0['close_open_diff_adjusted_6min_mean']=d0['Close']-d0['Open']
+
+#12 is commission, 10 is assume lost 1 tick
+d0['PnL_after_commission_adjusted_6min_mean']=d0['close_open_diff_adjusted_6min_mean']*d0['bet']
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#use grouped d0
+d0_1=pd.read_csv(os.path.join(folder_path,"d0_model_0_to_13.csv"))
+#d0_2=pd.read_csv(os.path.join(folder_path,"d0_model_15_to_45.csv"))
+d0_2=pd.read_csv(os.path.join(folder_path,"d0_standard.csv"))
+
+d0=pd.merge(d0_1,d0_2[['Date2','PnL_after_commission','stop_indicate']],how='left',on=['Date2'])
+
+
+#d0['PnL_after_commission']=d0['PnL_after_commission_x']+d0['PnL_after_commission_y']
+d0['PnL_after_commission']=d0['PnL_after_commission_y']
+d0['stop_indicate']=d0['PnL_after_commission_x']
+
+
+d0['Date2']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m-%d"))
+d0['Date2_ym']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m"))
+d0['Date2_ym_number']=d0['Date2'].apply(lambda x:float(dt.strptime(x,"%Y-%m-%d").strftime("%Y%m")))
+d0['Date2_y']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y"))
+
+d0=d0.loc[~(pd.isnull(d0['PnL_after_commission'])),:].copy()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#use4 fullday to 0_to_999999 for facebook ads
+d0=pd.read_csv(os.path.join(folder_path,"d0_model_15_to_999999_use_fullday.csv"))
+
+d0.columns.values
+
+d0['PnL_after_commission_cum']=d0['PnL_after_commission'].cumsum()
+
+
+d0['Return']=d0['PnL_after_commission_cum']/50000
+
+
+pnl_csv=d0.copy()
+
+#plot
+import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
+fig = plt.figure(figsize=(20,6))
+ax = fig.add_subplot(121)
+
+#ax.set_facecolor('black')
+
+ax.set_xlabel('Number of Trading Days (2011-2021)')
+ax.set_ylabel('Cumulative Return')
+
+ax.text(.2,.9,'HSI Futures Return',horizontalalignment='center',transform=ax.transAxes,color='white')
+
+
+ax.xaxis.label.set_color('white')        #setting up X-axis label color to yellow
+ax.yaxis.label.set_color('white')          #setting up Y-axis label color to blue
+
+ax.tick_params(axis='x', colors='lightcyan')    #setting up X-axis tick color to red
+ax.tick_params(axis='y', colors='lightcyan')  #setting up Y-axis tick color to black
+
+ax.spines['left'].set_color('None')        # setting up Y-axis tick color to red
+ax.spines['right'].set_color('None')        # setting up Y-axis tick color to red
+ax.spines['top'].set_color('None')         #setting up above X-axis tick color to red
+ax.spines['bottom'].set_color('springgreen')         #setting up above X-axis tick color to red
+
+ax.yaxis.set_major_formatter(FuncFormatter(lambda y, _: '{:.0%}'.format(y))) 
+
+plt.rcParams.update({'font.size': 12,"font.weight":"bold","axes.labelweight":"bold"})
+#plt.rcParams["font.weight"] = "bold"
+#plt.rcParams["axes.labelweight"] = "bold"
+plt.plot(range(0,d0.shape[0]), pnl_csv['Return'].values,'cyan')
+#plt.show()
+plt.savefig("15_to_999999_use_fullday_plot_facebook.png", transparent=True,bbox_inches="tight")
+
+
+#pnl_csv['Date']=pnl_csv['Date'].apply(lambda x: x.strftime("%Y-%m-%d")) #dt to string
+
+temp=pd.DataFrame({'Date':['string'],'Return':['number']})
+
+pnl_csv=temp.append(pnl_csv)
+pnl_csv=pnl_csv.reset_index(drop=True)
+output_path=os.path.join(main_dir,'IB_live_trade','cum_pnl_15_to_999999_use_fullday.csv')
+pnl_csv.to_csv(output_path,index=None)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#combine phase 1
+
+d0=pd.read_csv(os.path.join(folder_path,"d0_standard.csv"))
+d0=d0.rename(columns={'PnL_after_commission':'PnL_after_commission_original','bet':'bet_original'})
+
+d0_phase1=pd.read_csv(os.path.join(folder_path,"d0_model_0_to_13.csv"))
+d0_phase1=d0_phase1.rename(columns={'PnL_after_commission':'PnL_after_commission_phase1','bet':'bet_phase1'})
+
+d0_15_to_30=pd.read_csv(os.path.join(folder_path,"d0_model_15_to_30.csv"))
+d0_15_to_30=d0_15_to_30.rename(columns={'PnL_after_commission':'PnL_after_commission_15_to_30','bet':'bet_15_to_30'})
+
+d0_45_to_165=pd.read_csv(os.path.join(folder_path,"d0_model_45_to_165.csv"))
+d0_45_to_165=d0_45_to_165.rename(columns={'PnL_after_commission':'PnL_after_commission_45_to_165','bet':'bet_45_to_165'})
+
+
+
+#d0_japan_fullday=pd.read_csv(os.path.join(folder_path,"d0_japan_fullday.csv"))
+#d0_japan_fullday=d0_japan_fullday.rename(columns={'PnL_after_commission':'PnL_after_commission_japan_fullday','bet':'bet_japan_fullday'})
+#
+d0_japan_0_to_60=pd.read_csv(os.path.join(folder_path,"d0_japan_0_to_60.csv"))
+d0_japan_0_to_60=d0_japan_0_to_60.rename(columns={'PnL_after_commission':'PnL_after_commission_japan_0_to_60','bet':'bet_japan_0_to_60'})
+#d0=d0_japan_0_to_60.copy()
+#d0=d0.rename(columns={'bet_japan_0_to_60':'bet_original'})
+
+d0=pd.merge(d0,d0_phase1[['Date2','PnL_after_commission_phase1','bet_phase1',]].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+d0=pd.merge(d0,d0_15_to_30[['Date2','PnL_after_commission_15_to_30','bet_15_to_30',]].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+d0=pd.merge(d0,d0_45_to_165[['Date2','PnL_after_commission_45_to_165','bet_45_to_165',]].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+d0=pd.merge(d0,d0_japan_0_to_60[['Date2','PnL_after_commission_japan_0_to_60','bet_japan_0_to_60',]].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+
+
+#d0=pd.merge(d0,d0_japan_fullday[['Date2','PnL_after_commission_japan_fullday','bet_japan_fullday']].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+#d0=pd.merge(d0,d0_japan_0_to_60[['Date2','PnL_after_commission_japan_0_to_60','bet_japan_0_to_60']].copy(),how='left',left_on=['Date2'],right_on=['Date2'])
+    
+
+d0=d0.loc[~pd.isnull(d0['PnL_after_commission_phase1']),:]
+d0=d0.loc[~pd.isnull(d0['PnL_after_commission_15_to_30']),:]
+d0=d0.loc[~pd.isnull(d0['PnL_after_commission_45_to_165']),:]
+#d0=d0.loc[~pd.isnull(d0['PnL_after_commission_japan_0_to_60']),:]
+
+
+
+
+
+
+contract1=1
+contract2=2
+contract3=2
+contract4=6
+
+contract1=1
+contract2=1
+contract5=1
+contract6=1
+contract7=1
+
+contract1=3*5
+contract2=3*5
+contract5=3*5
+contract6=0*5
+contract7=0*10
+
+#contract1=1
+#contract2=1
+#contract3=1
+#contract4=1
+#contract5=1
+#contract6=1
+
+
+
+d0['p1']=contract1*1*d0['PnL_after_commission_original']
+d0['p2']=contract2*1*d0['PnL_after_commission_phase1']
+
+d0['p5']=contract5*1*d0['PnL_after_commission_15_to_30']
+#d0['p6']=contract6*1*d0['PnL_after_commission_45_to_165']
+
+#d0['p3']=contract3*1*d0['PnL_after_commission_japan_fullday']
+#d0['p7']=contract7*1*d0['PnL_after_commission_japan_0_to_60']
+
+
+d0['PnL_after_commission']=d0['p7']
+d0['PnL_after_commission']=d0['p2']
+d0['PnL_after_commission']=d0['p2']+d0['p7']
+d0['PnL_after_commission']=d0['p2']+d0['p5']
+d0['PnL_after_commission']=d0['p1']+d0['p2']+d0['p5']+d0['p7']
+d0['PnL_after_commission']=d0['p1']+d0['p2']+d0['p5']
+
+#d0['PnL_after_commission']=d0['p1']+d0['p2']+d0['p5']+d0['p6']
+#d0['PnL_after_commission']=d0['p2']+d0['p5']
+#
+#d0['PnL_after_commission']=d0['p1']
+#d0['PnL_after_commission']=d0['p2']+d0['p5']
+#d0['PnL_after_commission']=d0['p2']+d0['p5']+d0['p6']
+#d0['PnL_after_commission']=d0['p1']+d0['p6']
+#d0['PnL_after_commission']=d0['p6']
+
+
+
+d0['PnL_after_commission_cum']=d0.groupby(['Date2_y'])['PnL_after_commission'].cumsum()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#d0['PnL_after_commission']=5*d0['PnL_after_commission_original']+2*5*d0['PnL_after_commission_phase1']+1*10*d0['PnL_after_commission_japan_fullday']+2*10*d0['PnL_after_commission_japan_0_to_60']
+#d0['PnL_after_commission']=1*10*d0['PnL_after_commission_japan_fullday']+2*10*d0['PnL_after_commission_japan_0_to_60']
+#d0['PnL_after_commission']=3*5*d0['PnL_after_commission_original']+2*5*d0['PnL_after_commission_phase1']+1*10*d0['PnL_after_commission_japan_fullday']+1*10*d0['PnL_after_commission_japan_0_to_60']
+
+d0['Date2']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m-%d"))
+d0['Date2_ym']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y-%m"))
+d0['Date2_ym_number']=d0['Date2'].apply(lambda x:float(dt.strptime(x,"%Y-%m-%d").strftime("%Y%m")))
+d0['Date2_y']=d0['Date2'].apply(lambda x:dt.strptime(x,"%Y-%m-%d").strftime("%Y"))
+
+d0_check=d0.groupby(['Date2_ym']).tail(1)
+d0_check=d0_check.groupby(['Date2_ym']).head(1)
+d0_check['month_temp']=d0_check['Date2_ym'].apply(lambda x:x.split('-')[1])
+d0_check=d0_check.loc[d0_check['month_temp']=='10',:].copy()
+
+
+
+
+##check
+#sum(d0['bet_original']==d0['bet_phase1'])/d0.shape[0]
+#sum(d0['bet_original']==d0['bet_15_to_30'])/d0.shape[0]
+#sum(d0['bet_original']==d0['bet_45_to_165'])/d0.shape[0]
+#
+#
+writer = pd.ExcelWriter('mis/d0_temp.xlsx', engine='xlsxwriter')
+d0.to_excel(writer, sheet_name='summary')
+writer.save()
+writer.close()
+
+
+
+
+
+
+
+
+
+
+
+
+
+#monthly data- pnl
+xx=d0.loc[d0['Date2_ym']=="2019-01",:]
+def monthly_pnl(xx,pnl_col_name='PnL_after_commission'):
+    month_pnl=xx[pnl_col_name].sum()
+    month_output=xx['Date2_ym'].values[0]
+ 
+    #downside as if starting each month
+    pnl_series=d0.loc[(d0['Date2_ym_number']>=xx['Date2_ym_number'].values[0])&(d0['Date2_y']<=month_output[0:4]),pnl_col_name]
+    pnl_series_cum=pnl_series.cumsum()
+    downside_as_as=min(pnl_series_cum)
+    pnl_as_as=pnl_series_cum[-1:].values[0]
+    return pd.Series([month_output,month_pnl,downside_as_as,pnl_as_as])
+ 
+# choose between PnL_after_commission or PnL_after_commission_adjusted_6min_mean
+    
+pnl_look_at='PnL_after_commission'
+#pnl_look_at='PnL_after_commission_adjusted_6min_mean'
+#pnl_look_at='afternoon_pnl'
+d0_monthly=d0.groupby(["Date2_ym"]).apply(lambda x:monthly_pnl(x.reset_index(drop=True),pnl_look_at))
+d0_monthly=d0_monthly.rename(columns={0:'year_month',1:'monthly_pnl',2:'downside_as_as',3:'pnl_as_as'})
+d0_monthly['year']=d0_monthly['year_month'].apply(lambda x:x[0:4])
+
+d0_monthly=d0_monthly.sort_values(by=['year_month'],ascending=[True])
+
+all_year=d0_monthly.year.unique().tolist()
+
+#i=2014
+#j="07"
+for i in all_year:
+    for j in ["01","02","03","04","05","06","07","08","09","10","11","12"]:
+        aim=str(i)+"-"+j
+        year_month_in=d0_monthly['year_month'].unique()
+        if not (aim in year_month_in):
+            new_data = pd.DataFrame(np.asarray([[aim,0,0,0,i]]), columns=d0_monthly.columns)
+            d0_monthly = d0_monthly.append(new_data)
+
+d0_monthly['monthly_pnl']=d0_monthly['monthly_pnl'].apply(lambda x: float(x))
+d0_monthly['downside_as_as']=d0_monthly['downside_as_as'].apply(lambda x: float(x))
+d0_monthly['pnl_as_as']=d0_monthly['pnl_as_as'].apply(lambda x: float(x))
+
+year_distinct=list(d0_monthly['year'].unique())
+monthly_summary=pd.DataFrame({'month':['01','02','03','04','05','06','07','08','09','10','11','12']})
+monthly_summary_downside_asas=pd.DataFrame({'month':['01','02','03','04','05','06','07','08','09','10','11','12']})
+monthly_summary_pnl_asas=pd.DataFrame({'month':['01','02','03','04','05','06','07','08','09','10','11','12']})
+ 
+i='2020'
+for i in year_distinct:
+    temp=d0_monthly.loc[d0_monthly['year']==i,'monthly_pnl']
+    if temp.values.shape[0]!=12:
+        out1=np.concatenate((temp.values,np.zeros(12-temp.values.shape[0])))
+    else:
+        out1=temp.values
+    monthly_summary[i]=out1
+ 
+temp_matrix=monthly_summary.iloc[:,1:].values>0
+
+
+monthly_summary.iloc[:,1:].as_matrix().sum(axis=0)
+
+monthly_summary['count_positive']=temp_matrix.sum(axis=1)
+monthly_summary['sum_pnl']=monthly_summary.iloc[:,1:-1].values.sum(axis=1)
+ 
+
+#find total pnl
+sum(monthly_summary['sum_pnl'].values)
+
+monthly_summary.to_csv('monthly_summary.csv')
+
+
+#277325 250
+#308567 220
+#320587 200
+#327723 195
+#321759 190
+#312068 180
+#280039 150
+
+
+
+#yearly plot
+#plot weight (this is the posterior mean of each weight after 2000 run)
+import matplotlib.pyplot as plt
+plt.figure(figsize=(20,10), dpi=80, facecolor='w', edgecolor='k')
+
+Ws={1:d0.loc[d0['Date2_y']=='2011','PnL_after_commission_cum'].values,
+    2:d0.loc[d0['Date2_y']=='2012','PnL_after_commission_cum'].values,
+    3:d0.loc[d0['Date2_y']=='2013','PnL_after_commission_cum'].values,
+    4:d0.loc[d0['Date2_y']=='2014','PnL_after_commission_cum'].values,
+    5:d0.loc[d0['Date2_y']=='2015','PnL_after_commission_cum'].values,
+    6:d0.loc[d0['Date2_y']=='2016','PnL_after_commission_cum'].values,
+    7:d0.loc[d0['Date2_y']=='2017','PnL_after_commission_cum'].values,
+    8:d0.loc[d0['Date2_y']=='2018','PnL_after_commission_cum'].values,
+    9:d0.loc[d0['Date2_y']=='2019','PnL_after_commission_cum'].values,
+    10:d0.loc[d0['Date2_y']=='2020','PnL_after_commission_cum'].values}
+
+for i,H in Ws.items():
+    plt.subplot(4,3,i).set_title("Year "+str(i+2010)) #fist two argument is the dimension, the three argument is the number for each plot
+    plt.tight_layout() # Or equivalently,  "plt.tight_layout()"
+    plt.plot(range(0,len(H)),H,'*', color='r')
+    plt.xlabel('No.of.Days')
+    plt.ylabel('Cum.PnL')    
+
+
+file_name_plot=os.path.join(main_dir,'yearly_plot.png')
+
+plt.savefig(file_name_plot,bbox_inches="tight")   
+
+
+
+
+
+
+#monthly_summary_downside_asas
+for i in year_distinct:
+    temp=d0_monthly.loc[d0_monthly['year']==i,'downside_as_as']
+    
+    if temp.values.shape[0]!=12:
+        out1=np.concatenate((temp.values,np.zeros(12-temp.values.shape[0])))
+    else:
+        out1=temp.values
+    
+    monthly_summary_downside_asas[i]=out1
+ 
+temp_matrix=monthly_summary_downside_asas.iloc[:,1:].values>0
+ 
+monthly_summary_downside_asas['count_positive']=temp_matrix.sum(axis=1)
+monthly_summary_downside_asas['sum']=monthly_summary_downside_asas.iloc[:,1:-1].values.sum(axis=1)
+ 
+#monthly_summary_pnl_asas
+for i in year_distinct:
+    temp=d0_monthly.loc[d0_monthly['year']==i,'pnl_as_as']
+    if temp.values.shape[0]!=12:
+        out1=np.concatenate((temp.values,np.zeros(12-temp.values.shape[0])))
+    else:
+        out1=temp.values
+    monthly_summary_pnl_asas[i]=out1
+ 
+temp_matrix=monthly_summary_pnl_asas.iloc[:,1:].values>0
+ 
+monthly_summary_pnl_asas['count_positive']=temp_matrix.sum(axis=1)
+monthly_summary_pnl_asas['sum_pnl']=monthly_summary_pnl_asas.iloc[:,1:-1].values.sum(axis=1)
+ 
+ 
+
+
+
+#sharpe ratio and accuracy
+#xx=d0.loc[d0['Date2_y']=="2020",:]
+#pnl_col_name='PnL_after_commission'
+def sharpe_ratio(xx,pnl_col_name='PnL_after_commission_adjusted_6min_mean'):
+    xx['margin']=56000
+    xx['return']=xx[pnl_col_name]/xx['margin']
+    risk_free_rate=0
+ 
+    year_output=xx['Date2_y'].values[0]
+    SR=((xx['return'].mean()-risk_free_rate)/xx['return'].std())*np.sqrt(252)
+    
+    #Cum_pnl
+    cum_pnl=sum(xx[pnl_col_name])
+    
+    #accuracy
+    acc=sum(xx[pnl_col_name]>0)/xx.shape[0]
+    
+    #max cum loss
+    xx['cum_pnl']=xx[pnl_col_name].cumsum()
+    max_cum_loss=min(xx['cum_pnl'].values)
+    
+    #find number stop trigered
+    stop_count=sum(xx['stop_indicate']!=0)
+
+    #find number of trade
+    trade_count=xx.shape[0]
+    #stop ratio
+    stop_ratio=stop_count/trade_count
+    
+    #average gain per trade/average loss per trade
+    ave_gain=np.mean(xx.loc[xx[pnl_col_name]>0,pnl_col_name].values)
+    ave_loss=abs(np.mean(xx.loc[xx[pnl_col_name]<0,pnl_col_name].values))
+    ave_gain_over_ave_loss=ave_gain/ave_loss
+    
+    #drawdown
+    mdd=max(np.maximum.accumulate(xx['cum_pnl'])-xx['cum_pnl'])
+    
+    return pd.Series([year_output,SR,acc,max_cum_loss,ave_gain,ave_loss,ave_gain_over_ave_loss,cum_pnl,stop_count,trade_count,stop_ratio,mdd])
+
+#PnL_after_commission    PnL_after_commission_adjusted_6min_mean
+d0_SR=d0.groupby(["Date2_y"]).apply(lambda x:sharpe_ratio(x.reset_index(drop=True),pnl_look_at))
+d0_SR=d0_SR.rename(columns={0:'year',1:'SR',2:'accuracy',3:'max_cum_loss',4:'ave_gain',5:'ave_loss',6:'gain/loss',7:'cum_pnl',8:'stop_count',9:'trade_count',10:'stop_ratio',11:'mdd'})
+
+d0_SR['P&L/MaxCumLoss']=abs(d0_SR['cum_pnl']/d0_SR['max_cum_loss'])
+d0_SR['capital']=80000
+d0_SR['return']=d0_SR['cum_pnl']/d0_SR['capital']
+
+cols = d0_SR.columns.tolist()
+cols.insert(1, cols.pop(cols.index('cum_pnl')))
+cols.insert(2, cols.pop(cols.index('max_cum_loss')))
+cols.insert(3, cols.pop(cols.index('P&L/MaxCumLoss')))
+cols.insert(4, cols.pop(cols.index('gain/loss')))
+cols.insert(5, cols.pop(cols.index('accuracy')))
+cols.insert(6, cols.pop(cols.index('capital')))
+cols.insert(7, cols.pop(cols.index('return')))
+
+d0_SR = d0_SR.reindex(columns= cols)
+
+d0_SR.loc['Mean',:]= d0_SR.mean(axis=0)
+
+
+
+#check monday effect
+d0['DateNum_lag1']=d0['DateNum'].shift(1)
+d0['DateNum_diff']=d0['DateNum']-d0['DateNum_lag1']
+d0['DateNum_diff_greater_one']=d0['DateNum_diff']>5
+
+sum(d0.loc[d0['DateNum_diff_greater_one']==True,'PnL_after_commission'])
+
+
+d0_SR_old=d0_SR.copy()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#investigate stop for hong kong 
+a=read_excel('HSI_with_tidy.xlsx',sheet='Sheet1')
+a=a.reset_index(drop=True)
+a['high_open']=a['High_HSI']-a['Open_HSI']
+a['low_open']=a['Open_HSI']-a['Low_HSI']
+a['s_level']=(a['high_open']+a['low_open'])/2
+a['s_level%']=a['s_level']/a['Open_HSI']
+a['year']=a['Date2'].str[0:4]
+
+def find_stop_investigate(data_temp):
+    a1=np.percentile(data_temp.s_level,0)
+    a2=np.percentile(data_temp.s_level,25)
+    a3=np.percentile(data_temp.s_level,50)
+    a4=np.percentile(data_temp.s_level,80)
+    a5=np.percentile(data_temp.s_level,100)
+    
+    b1=np.percentile(data_temp['s_level%'],0)
+    b2=np.percentile(data_temp['s_level%'],25)
+    b3=np.percentile(data_temp['s_level%'],50)
+    b4=np.percentile(data_temp['s_level%'],80)
+    b5=np.percentile(data_temp['s_level%'],100)
+    output=pd.DataFrame({'min':[a1],'25%':[a2],'50%':[a3],'80%':[a4],'100%':[a5],'min%':[b1],'25%%':[b2],'50%%':[b3],'80%%':[b4],'100%%':[b5]})
+    return output
+
+a_stop=a.groupby(['year']).apply(lambda x:find_stop_investigate(x.reset_index(drop=True)))
+
+
+
+#investigate stop for japan  open to 10am
+a=read_excel('n225_10am_with_tidy.xlsx',sheet='Sheet1')
+a=a.reset_index(drop=True)
+a['high_open']=a['High_n225_10am']-a['Open_n225_10am']
+a['low_open']=a['Open_n225_10am']-a['Low_n225_10am']
+a['s_level']=(a['high_open']+a['low_open'])/2
+a['s_level%']=a['s_level']/a['Open_n225_10am']
+a['year']=a['Date2'].str[0:4]
+
+def find_stop_investigate(data_temp):
+    a1=np.percentile(data_temp.s_level,0)
+    a2=np.percentile(data_temp.s_level,25)
+    a3=np.percentile(data_temp.s_level,50)
+    a4=np.percentile(data_temp.s_level,80)
+    a5=np.percentile(data_temp.s_level,100)
+    
+    b1=np.percentile(data_temp['s_level%'],0)
+    b2=np.percentile(data_temp['s_level%'],25)
+    b3=np.percentile(data_temp['s_level%'],50)
+    b4=np.percentile(data_temp['s_level%'],80)
+    b5=np.percentile(data_temp['s_level%'],100)
+    output=pd.DataFrame({'min':[a1],'25%':[a2],'50%':[a3],'80%':[a4],'100%':[a5],'min%':[b1],'25%%':[b2],'50%%':[b3],'80%%':[b4],'100%%':[b5]})
+    return output
+
+b_stop=a.groupby(['year']).apply(lambda x:find_stop_investigate(x.reset_index(drop=True)))
+
+
+
+#investigate stop for japan
+a=read_excel('n225_with_tidy.xlsx',sheet='Sheet1')
+a=a.reset_index(drop=True)
+a['high_open']=a['High_n225']-a['Open_n225']
+a['low_open']=a['Open_n225']-a['Low_n225']
+a['s_level']=(a['high_open']+a['low_open'])/2
+a['s_level%']=a['s_level']/a['Open_n225']
+a['year']=a['Date2'].str[0:4]
+
+def find_stop_investigate(data_temp):
+    a1=np.percentile(data_temp.s_level,0)
+    a2=np.percentile(data_temp.s_level,25)
+    a3=np.percentile(data_temp.s_level,50)
+    a4=np.percentile(data_temp.s_level,80)
+    a5=np.percentile(data_temp.s_level,100)
+    
+    b1=np.percentile(data_temp['s_level%'],0)
+    b2=np.percentile(data_temp['s_level%'],25)
+    b3=np.percentile(data_temp['s_level%'],50)
+    b4=np.percentile(data_temp['s_level%'],80)
+    b5=np.percentile(data_temp['s_level%'],100)
+    output=pd.DataFrame({'min':[a1],'25%':[a2],'50%':[a3],'80%':[a4],'100%':[a5],'min%':[b1],'25%%':[b2],'50%%':[b3],'80%%':[b4],'100%%':[b5]})
+    return output
+
+c_stop=a.groupby(['year']).apply(lambda x:find_stop_investigate(x.reset_index(drop=True)))
+
+
+
+#d0=pd.read_csv(os.path.join(folder_path,"all_prediction.csv"))
+#
+#
+#original_guess=d0[['Date2','Y_up_predict']].copy()
+#original_guess=original_guess.rename(columns={'Y_up_predict':'prediction'})
+#original_guess=original_guess.reset_index(drop=True)
+#
+#
+#all_in_data=data.Date2.unique().tolist()
+#
+#
+#original_guess['have_data']=original_guess['Date2'].apply(lambda x: x in all_in_data)
+#
+#original_guess=original_guess.loc[original_guess['have_data']==True,:]
+#
+##original_guess=original_guess.loc[original_guess['Date2']<='2013-12-31',:]
+#
+#original_guess=original_guess.reset_index(drop=True)
+#
+#
+#
+#
+#
+#
+#from random import *
+# 
+#from datetime import datetime as dt
+#import datetime
+#from collections import OrderedDict
+#import pandas as pd
+#import numpy as np
+# 
+#
+#morning_signal=0
+#profit_target=20000
+#stop_level=200
+#after_stop_target=20000
+#after_stop_stop=20000
+#date_use="2011-01-04"
+#date_ymd_col_name='Date2'
+#date_ymd_hms_col_name='Date1'
+#second_stage_trade=True
+#start_row=0 
+#end_row=-1 
+#
+# 
+#start_row=0 #9:15 Open
+#start_row=5 #9:20 Open
+#end_row=15 #0929 close
+#end_row=-1 # 1629 close
+#end_row=-2 # 1628 close
+#
+#
+# 
+#def strategy1(data,date_use,date_ymd_col_name,date_ymd_hms_col_name,morning_signal,profit_target,stop_level,after_stop_target,after_stop_stop,second_stage_trade,start_row=0,end_row=-1):
+#    data_use=data.loc[data[date_ymd_col_name]==date_use,:].copy()
+#    data_use=data_use.reset_index(drop=True)
+#    if end_row>=0:
+#        data_use=data_use[(start_row):(end_row)]
+#    else:
+#        data_use=data_use[(start_row):(data_use.shape[0]+1+end_row)]
+# 
+#    data_use=data_use.reset_index(drop=True)
+# 
+#    entry_price=data_use[0:1]['Open'][0]
+#    exit_price=data_use[0:1]['Open'][0]
+#    second_entry_price=999999
+#    second_exit_price=999999
+#    trigger_first_stop=False
+#    trigger_second_stop=False
+##    date_use_dt=dt.strptime(date_use,"%Y-%m-%d")
+##    exit_time=dt(int(date_use_dt.strftime("%Y")),int(date_use_dt.strftime("%m")),int(date_use_dt.strftime("%d")),16,30,0)
+#    achieve_profit=999999
+#    achieve_stop=999999
+#    achieve_profit2=999999
+#    achieve_stop2=999999    
+# 
+#    if morning_signal==1:
+#        #find when achieve profit target
+#        data_use.loc[data_use['High']>=entry_price+profit_target,'indicate_profit']=1
+#        data_use['indicate_profit']=data_use['indicate_profit'].fillna(0)
+#        if sum(data_use['indicate_profit']==1)>0:
+#            achieve_profit=data_use.index[data_use['indicate_profit']==1][0]
+#        else:
+#            achieve_profit=999999
+# 
+#        #find when achieve stop target        
+#        data_use.loc[data_use['Low']<=entry_price-stop_level,'indicate_stop']=1
+#        data_use['indicate_stop']=data_use['indicate_stop'].fillna(0)
+#        if sum(data_use['indicate_stop']==1)>0:
+#            achieve_stop=data_use.index[data_use['indicate_stop']==1][0]
+#        else:
+#            achieve_stop=999999
+# 
+#        #case1: achieve_profit=999999, achieve_stop=999999, leave at close
+#        if (achieve_profit==999999)&(achieve_stop==999999):
+#            exit_price=data_use.loc[data_use['Date1']==max(data_use['Date1']),'Close'].values[0]
+# 
+# 
+#        #case2 or case 5, second trade
+#        if ((achieve_profit==999999)&(achieve_stop!=999999))|((achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit>achieve_stop)):
+#            trigger_first_stop=True
+#            exit_price=entry_price-stop_level
+# 
+#        #case3 or case 4, exit at profit target
+#        if ((achieve_profit!=999999)&(achieve_stop==999999))|((achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit<achieve_stop)):
+#            exit_price=entry_price+profit_target
+# 
+#        #case6, second trade
+#        if (achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit==achieve_stop):
+#            trigger_first_stop=True
+#            exit_price=entry_price-stop_level
+# 
+#        if (trigger_first_stop==True)&(second_stage_trade==True):
+#            data_use2=data_use[achieve_stop:].copy()  
+#            data_use2=data_use2.reset_index(drop=True)
+#            second_entry_price=entry_price-stop_level-1
+# 
+#            #find when achieve profit target
+#            data_use2.loc[data_use2['Low']<=second_entry_price-after_stop_target,'indicate_profit2']=1
+#            data_use2['indicate_profit2']=data_use2['indicate_profit2'].fillna(0)
+#            if sum(data_use2['indicate_profit2']==1)>0:
+#                achieve_profit2=data_use2.index[data_use2['indicate_profit2']==1][0]
+#            else:
+#                achieve_profit2=999999
+# 
+#            #find when achieve stop target        
+#            data_use2.loc[data_use2['High']>=(second_entry_price+after_stop_stop),'indicate_stop2']=1
+#            data_use2['indicate_stop2']=data_use2['indicate_stop2'].fillna(0)
+#            if sum(data_use2['indicate_stop2']==1)>0:
+#                achieve_stop2=data_use2.index[data_use2['indicate_stop2']==1][0]
+#            else:
+#                achieve_stop2=999999
+# 
+#            #case1: achieve_profit=999999, achieve_stop=999999, leave at close
+#            if (achieve_profit2==999999)&(achieve_stop2==999999):
+#                second_exit_price=data_use2.loc[data_use2['Date1']==max(data_use2['Date1']),'Close'].values[0]
+# 
+#            #case2 or case 5, second trade
+#            if ((achieve_profit2==999999)&(achieve_stop2!=999999))|((achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2>achieve_stop2)):
+#                trigger_second_stop=True
+#                second_exit_price=second_entry_price+after_stop_stop
+# 
+#            #case3 or case 4, exit at profit target
+#            if ((achieve_profit2!=999999)&(achieve_stop2==999999))|((achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2<achieve_stop2)):
+#                second_exit_price=second_entry_price-after_stop_target
+# 
+#            #case6, achieve_profit2==achieve_stop2, second trade
+#            if (achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2==achieve_stop2):
+#                trigger_second_stop=True
+#                second_exit_price=second_entry_price+after_stop_stop
+# 
+#    if morning_signal==0:
+#        #find when achieve profit target
+#        data_use.loc[data_use['Low']<=entry_price-profit_target,'indicate_profit']=1
+#        data_use['indicate_profit']=data_use['indicate_profit'].fillna(0)
+#        if sum(data_use['indicate_profit']==1)>0:
+#            achieve_profit=data_use.index[data_use['indicate_profit']==1][0]
+#        else:
+#            achieve_profit=999999
+# 
+#        #find when achieve stop target        
+#        data_use.loc[data_use['High']>=entry_price+stop_level,'indicate_stop']=1
+#        data_use['indicate_stop']=data_use['indicate_stop'].fillna(0)
+#        if sum(data_use['indicate_stop']==1)>0:
+#            achieve_stop=data_use.index[data_use['indicate_stop']==1][0]
+#        else:
+#            achieve_stop=999999
+# 
+#        #case1: achieve_profit=999999, achieve_stop=999999, leave at close
+#        if (achieve_profit==999999)&(achieve_stop==999999):
+#            exit_price=data_use.loc[data_use['Date1']==max(data_use['Date1']),'Close'].values[0]
+# 
+#        #case2 or case 5, second trade
+#        if ((achieve_profit==999999)&(achieve_stop!=999999))|((achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit>achieve_stop)):
+#            trigger_first_stop=True
+#            exit_price=entry_price+stop_level
+# 
+#        #case3 or case 4, exit at profit target
+#        if ((achieve_profit!=999999)&(achieve_stop==999999))|((achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit<achieve_stop)):
+#            exit_price=entry_price-profit_target
+# 
+#        #case6, second trade
+#        if (achieve_profit!=999999)&(achieve_stop!=999999)&(achieve_profit==achieve_stop):
+#            trigger_first_stop=True
+#            exit_price=entry_price+stop_level
+# 
+#        if (trigger_first_stop==True)&(second_stage_trade==True):
+#            data_use2=data_use[achieve_stop:].copy()
+#            data_use2=data_use2.reset_index(drop=True)
+#            second_entry_price=entry_price+stop_level+1
+# 
+#            #find when achieve profit target
+#            data_use2.loc[data_use2['High']>=second_entry_price+after_stop_target,'indicate_profit2']=1
+#            data_use2['indicate_profit2']=data_use2['indicate_profit2'].fillna(0)
+#            if sum(data_use2['indicate_profit2']==1)>0:
+#                achieve_profit2=data_use2.index[data_use2['indicate_profit2']==1][0]
+#            else:
+#                achieve_profit2=999999
+# 
+#            #find when achieve stop target        
+#            data_use2.loc[data_use2['Low']<=(second_entry_price-after_stop_stop),'indicate_stop2']=1
+#            data_use2['indicate_stop2']=data_use2['indicate_stop2'].fillna(0)
+#            if sum(data_use2['indicate_stop2']==1)>0:
+#                achieve_stop2=data_use2.index[data_use2['indicate_stop2']==1][0]
+#            else:
+#                achieve_stop2=999999
+# 
+#            #case1: achieve_profit=999999, achieve_stop=999999, leave at close
+#            if (achieve_profit2==999999)&(achieve_stop2==999999):
+#                second_exit_price=data_use2.loc[data_use2['Date1']==max(data_use2['Date1']),'Close'].values[0]
+# 
+# 
+#            #case2 or case 5, second trade
+#            if ((achieve_profit2==999999)&(achieve_stop2!=999999))|((achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2>achieve_stop2)):
+#                trigger_second_stop=True
+#                second_exit_price=second_entry_price-after_stop_stop
+# 
+#            #case3 or case 4, exit at profit target
+#            if ((achieve_profit2!=999999)&(achieve_stop2==999999))|((achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2<achieve_stop2)):
+#                second_exit_price=second_entry_price+after_stop_target
+# 
+#            #case6, achieve_profit2==achieve_stop2, second trade
+#            if (achieve_profit2!=999999)&(achieve_stop2!=999999)&(achieve_profit2==achieve_stop2):
+#                trigger_second_stop=True
+#                second_exit_price=second_entry_price-after_stop_stop
+# 
+#    output=pd.Series([date_use,morning_signal,entry_price,exit_price,trigger_first_stop,second_entry_price,second_exit_price,trigger_second_stop,
+#                      profit_target,stop_level,after_stop_target,after_stop_stop,second_stage_trade,achieve_profit,achieve_stop,achieve_profit2,achieve_stop2,start_row,end_row])
+#    return output
+# 
+# 
+# 
+# 
+# 
+#import time
+#import os
+##parameter_df=pd.DataFrame(OrderedDict({'profit_target':     [20000,100,150,200,250,300,350,150,200,250,300,350,200,250,300,350],
+##                                       'stop_level'   :     [200,75,75,75,75,75,75,100,100,100,100,100,150,150,150,150],
+##                                       'after_stop_target': [10000,75,75,75,75,75,75,100,100,100,100,100,150,150,150,150],
+##                                       'after_stop_stop':   [10000,75,75,75,75,75,75,100,100,100,100,100,150,150,150,150],
+##                                       'second_stage_trade':[False,True,True,True,True,True,True,True,True,True,True,True,True,True,True,True]}))
+#
+#parameter_df = read_excel(r'C:\Users\larrylau\Dropbox\notebooks\index_analysis\mis\parameter_df.xlsx','Sheet1')
+#    
+#    
+#    
+#    
+#    
+#    
+#    
+#summary=pd.DataFrame()
+# 
+# 
+#start_time=dt.now()
+#i=30
+#j=0
+#for j in range(0,parameter_df.shape[0]):
+#    parameter_df_use=parameter_df[j:j+1]
+#    pt1=parameter_df_use['profit_target'].values[0]
+#    st1=parameter_df_use['stop_level'].values[0]
+#    pt2=parameter_df_use['after_stop_target'].values[0]
+#    st2=parameter_df_use['after_stop_stop'].values[0]
+#    second_stage_trade=parameter_df_use['second_stage_trade'].values[0]
+#    start_row=parameter_df_use['start_row'].values[0]
+#    end_row=parameter_df_use['end_row'].values[0]
+# 
+#    store_result=pd.DataFrame(columns=["Date","Prediction","entry_price","exit_price","trigger_first_stop",
+#                                       "second_entry_price","second_exit_price","trigger_second_stop",
+#                                       "profit_target","stop_level","after_stop_target","after_stop_stop","second_stage_trade",'achieve_profit','achieve_stop','achieve_profit2','achieve_stop2','start_row','end_row'])    
+#    for i in range(0,original_guess.shape[0]):
+#        row_use=original_guess[i:i+1]
+#        temp=strategy1(data,row_use['Date2'].values[0],'Date2','Date1',row_use['prediction'].values[0],pt1,st1,pt2,st2,second_stage_trade,start_row,end_row)
+#        temp=temp.values.reshape(1,temp.shape[0])
+#        temp=pd.DataFrame(temp)
+#        temp.columns=("Date","Prediction","entry_price","exit_price","trigger_first_stop","second_entry_price","second_exit_price",
+#                        "trigger_second_stop","profit_target","stop_level","after_stop_target","after_stop_stop","second_stage_trade",'achieve_profit','achieve_stop','achieve_profit2','achieve_stop2','start_row','end_row')
+#        store_result=store_result.append(temp)
+#        print("finished ",row_use['Date2'].values[0])
+# 
+# 
+#    store_result['year']=store_result['Date'].str[0:4]    
+#    store_result['first_commission']=12
+#    store_result.loc[store_result['second_entry_price']!=999999,'second_commission']=12
+#    store_result.loc[store_result['second_entry_price']==999999,'second_commission']=0
+#    store_result.loc[store_result['Prediction']==0,'Prediction']=-1
+#    store_result['Prediction_second']=store_result['Prediction']*-1
+#    store_result['pnl_first_trade']=(store_result['exit_price']-store_result['entry_price'])*store_result['Prediction']*10-store_result['first_commission']
+#    store_result['pnl_second_trade']=(store_result['second_exit_price']-store_result['second_entry_price'])*store_result['Prediction_second']*10-store_result['second_commission']
+#    store_result['pnl']=store_result['pnl_first_trade']+store_result['pnl_second_trade']
+# 
+#    file_name="hsi_investigate2_"+str(pt1)+"_"+str(st1)+"_"+str(pt2)+"_"+str(st2)+"_"+str(start_row)+"_"+str(end_row)+'_'+time.strftime("%Y%m%d")+'_'+time.strftime("%H%M%S")+".csv"
+#    save_path=os.path.join(main_dir,'plot2',file_name)
+#    store_result.to_csv(save_path,index=False)
+# 
+#    def pnl_function(x):
+#        year_name=x['year'].values[0]
+#        x['Cum_pnl_peryear']=x['pnl'].cumsum()
+#        MDD=max(np.maximum.accumulate(x['Cum_pnl_peryear']) - x['Cum_pnl_peryear'])
+#        max_downside=min(x['Cum_pnl_peryear'])
+#        final_cum_pnl=x['Cum_pnl_peryear'].values[-1]
+#        accuracy=sum(x['pnl']>0)/x.shape[0]
+#        return pd.Series([year_name,final_cum_pnl,MDD,max_downside,accuracy])
+# 
+#    temp=store_result.groupby(["year"]).apply(lambda x:pnl_function(x.reset_index(drop=True)))
+#    temp.columns = ('year',"FinalCumPnl","MDD","MaxDownside","accuracy")
+# 
+#    temp['profit_target']=pt1
+#    temp['stop_level']=st1
+#    temp['after_stop_target']=pt2
+#    temp['after_stop_stop']=st2
+#    temp['second_stage_trade']=second_stage_trade
+#    temp['start_row']=start_row
+#    temp['end_row']=end_row
+# 
+#    summary=summary.append(temp)
+# 
+#save_path=os.path.join(main_dir,'plot2','summary_pnl'+'_'+time.strftime("%Y%m%d")+'_'+time.strftime("%H%M%S")+'.csv')
+#summary.to_csv(save_path,index=False)
+# 
+# 
+#end_time=dt.now()
+#total_time=(end_time-start_time).total_seconds()
+#total_time
+# 
+# 
+#
+#
+#
+#
+#
+#
+#
+##manually made hsi_y and HSI_with_tidy
+#start_row=15
+#end_row=-1
+#x=data.loc[data['Date2']=='2005-12-01',:]
+#def extract_price(x,start_row=0,end_row=-1):
+#    if end_row>=0:
+#        data_use=x[(start_row):(end_row)]
+#    else:
+#        data_use=x[(start_row):(x.shape[0]+1+end_row)]
+# 
+#    data_use=data_use.reset_index(drop=True)
+# 
+#    open_price=data_use['Open'].values[0]
+#    close_price=data_use['Close'].values[-1]
+#    high_price=max(data_use['High'])
+#    low_price=min(data_use['Low'])
+#    date_target=data_use['Date2'].values[0]
+#    datenum=(dt.strptime(date_target,"%Y-%m-%d")-dt(1970,1,1)).days
+#    percentage_diff=(close_price-open_price)/open_price
+#    return pd.Series([date_target,open_price,high_price,low_price,close_price,percentage_diff,datenum])
+# 
+#data_extracted=data.groupby('Date2').apply(lambda x:extract_price(x.reset_index(drop=True),15,-1))
+#data_extracted=data_extracted.rename(columns={0:'Date2',1:'Open_HSI',2:'High_HSI',3:'Low_HSI',4:'Close_HSI',5:'HSI_change',6:'DateNum'}) 
+#data_extracted=data_extracted.reset_index(drop=True)
+# 
+#check=data[79950:79960].copy()
+#
+#writer = pd.ExcelWriter(r'C:\Users\larrylau\Dropbox\notebooks\index_analysis\HSI_with_tidy.xlsx', engine='xlsxwriter')
+#data_extracted.to_excel(writer, sheet_name='Sheet1')
+# 
+# 
+##create dependent variable Y
+#hsi_y=data_extracted.loc[:,['Date2','DateNum','Open_HSI','High_HSI','Low_HSI','Close_HSI']]
+#hsi_y['Y_up']=hsi_y.apply(lambda row: (row.Close_HSI>=row.Open_HSI)*1,axis=1)
+#hsi_y['Y_down']=hsi_y.apply(lambda row: (row.Close_HSI<row.Open_HSI)*1,axis=1)
+#
+#writer = pd.ExcelWriter(r'C:\Users\larrylau\Dropbox\notebooks\index_analysis\hsi_y.xlsx', engine='xlsxwriter')
+#hsi_y.to_excel(writer, sheet_name='Sheet1')
+#writer.save()
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+# 
+# 
+# 
+# 
+# 
+#import numpy as np
+#import matplotlib.pyplot as plt
+#from matplotlib import dates, ticker
+#import matplotlib as mpl
+#import sys
+#sys.path.append(r'C:\Users\larrylau\Desktop\python\mpl_finance\dist\mpl_finance-0.10.0')
+#from mpl_finance import candlestick_ohlc
+# 
+#mpl.style.use('default')
+# 
+# 
+#data['Date1_string']=data['Date1'].apply(lambda x:x.strftime("%Y-%m-%d %H:%M:%S"))
+#data_for_plot=data.loc[data['Date2']=='2005-12-01',['Date1_string','Open','High','Low','Close']].copy()
+#data_for_plot['Open']=data_for_plot['Open'].astype(str)
+#data_for_plot['High']=data_for_plot['High'].astype(str)
+#data_for_plot['Low']=data_for_plot['Low'].astype(str)
+#data_for_plot['Close']=data_for_plot['Close'].astype(str)
+#data_for_plot=[tuple(r) for r in data_for_plot.values]
+# 
+#ohlc_data = []
+# 
+#for line in data_for_plot:
+#    ohlc_data.append((dates.datestr2num(line[0]), np.float64(line[1]), np.float64(line[2]), np.float64(line[3]), np.float64(line[4])))
+# 
+#fig, ax1 = plt.subplots()
+#candlestick_ohlc(ax1, ohlc_data, width = 0.5/(24*60), colorup = 'g', colordown = 'r', alpha = 0.8)
+# 
+#ax1.xaxis.set_major_formatter(dates.DateFormatter('%d/%m/%Y %H:%M'))
+#ax1.xaxis.set_major_locator(ticker.MaxNLocator(10))
+# 
+#plt.xticks(rotation = 30)
+#plt.grid()
+#plt.xlabel('Date')
+#plt.ylabel('Price')
+#plt.title('Historical Data')
+#plt.tight_layout()
+#plt.show()
+# 
+# 
+# 
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+#
+##investigate close position impact
+##read FHSI_minute_20051201to20190326.hdf5
+#import os
+#import numpy as np
+#from pandas import HDFStore,DataFrame
+#import pandas as pd
+#from datetime import datetime as dt
+#import datetime
+#
+#folder_path=r"C:\Users\larrylau\Dropbox\notebooks\index_analysis\mis"
+#
+#
+#fn = os.path.join(folder_path,"FHSI_minute_20051201to20190326.hdf5")
+#store = pd.HDFStore(fn)
+#print(store)
+#data_all_final= store.select('FHSI_minute')
+# 
+#store.close()
+#
+#
+#data_all_final_check=data_all_final.head(10)
+#data=data_all_final[['date_ymd_hms','date_ymd','Open','High','Low','Close','TotalVolume']].copy()
+#data=data.rename(columns={'date_ymd_hms':'Date1','date_ymd':'Date2'})
+#
+#data_check=data.tail(10000)
+#
+#
+#data_1=data.groupby('Date2').apply(lambda x:x.tail(1))
+#data_2=data_1.loc[data_1['Date2']>='2011-01-01',:]
+#data_2['close_minor_open_abs']=abs(data_2['High'].values-data_2['Low'].values)
+#
+#(data_2['close_minor_open_abs'].mean()/data_2['TotalVolume'].mean())*300
+#
+#data_2['TotalVolume'].mean()/data_2['close_minor_open_abs'].mean()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
 
 
 
