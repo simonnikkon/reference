@@ -6011,6 +6011,193 @@ Password is 4567
 
 
 
+#use yahoo finance data
+import os
+import numpy as np
 
+import requests
+import zipfile
+import io
+import pandas as pd
+import yfinance as yf
+target_dir='/home/alexlau/Dropbox/notebooks/index_analysis'
+
+
+os.chdir(target_dir)
+
+
+
+spx_raw = yf.download('^GSPC',start='1987-09-11',end='2022-06-30',progress=False)
+spx_raw=spx_raw.reset_index(drop=False)
+spx_raw=spx_raw.rename(columns={'Open':'Open_spx','Close':'Close_spx'})
+spx_raw['Date']=spx_raw['Date'].apply(lambda x:x.strftime("%Y-%m-%d"))
+
+second_raw = yf.download('^RUT',start='1987-09-10',end='2022-06-30',progress=False)
+second_raw=second_raw.reset_index(drop=False)
+second_raw=second_raw.rename(columns={'Open':'Open_rty','Close':'Close_rty'})
+second_raw['Date']=second_raw['Date'].apply(lambda x:x.strftime("%Y-%m-%d"))
+
+
+
+
+
+pd.isnull(spx_raw['Close_spx']).sum()
+pd.isnull(second_raw['Close_rty']).sum()
+
+
+
+
+spx0=pd.merge(spx_raw[['Date','Open_spx','Close_spx']].copy(),second_raw[['Date','Open_rty','Close_rty']].copy(),how='left',on=['Date'])
+
+pd.isnull(spx0['Close_spx']).sum()
+pd.isnull(spx0['Close_rty']).sum()
+
+
+spx0['Close_spx_lag1']=spx0['Close_spx'].shift(1)
+spx0['Close_rty_lag1']=spx0['Close_rty'].shift(1)
+spx0['spx_change']=spx0['Close_spx']/spx0['Close_spx_lag1']-1
+spx0['rty_change']=spx0['Close_rty']/spx0['Close_rty_lag1']-1
+
+
+
+
+spx=spx0.loc[(spx0['Date']>='2019-10-01')&(spx0['Date']<='2022-12-31'),:].copy()
+
+
+
+
+
+capital=1
+
+spx['spx_60_max']=spx['Close_spx'].rolling(60).max()
+spx['spx_60_dd']=spx['Close_spx']/spx['spx_60_max']-1
+spx['spx_60_dd_shift']=spx['spx_60_dd'].shift(1)
+
+
+spx=spx.reset_index(drop=True)
+
+
+#determine when hedge
+spx['spx_max']=spx['Close_spx'].rolling(28).max()
+
+spx['spx_min']=spx['Close_spx'].rolling(28).min()
+
+spx['spx_close_normalized']=(spx['Close_spx']-spx['spx_min'])/(spx['spx_max']-spx['spx_min'])
+spx['spx_slow']=spx['spx_close_normalized'].rolling(6).mean()
+
+spx['hedge_B']=((spx['spx_close_normalized']>0.2)&(spx['spx_close_normalized']>spx['spx_slow']))*1
+spx['hedge_S']=((spx['spx_close_normalized']<0.8)&(spx['spx_close_normalized']<spx['spx_slow']))*1
+spx['hedge_B_shift']=spx['hedge_B'].shift(1)
+
+
+
+spx_use=spx[['Date','Close_spx','spx_change','Close_rty','rty_change','spx_60_dd_shift','hedge_B_shift']].copy()
+#spx_use=spx_use.loc[(~pd.isnull(spx_use['spx_change']))&(~pd.isnull(spx_use['djia_change'])),:].copy()
+
+
+spx_use=spx_use[60:].copy()
+spx_use=spx_use.reset_index(drop=True)
+
+spx_use[['Date','Close_spx']].head(5)
+spx_use[['Date','Close_spx']].tail(5)
+
+spx_use[['Date','Close_rty']].head(5)
+spx_use[['Date','Close_rty']].tail(5)
+
+
+
+
+
+capital=1
+spx_use['account_value']=0
+spx_use['hedge_size']=0
+spx_use['spx_change_1']=(1+spx_use['spx_change'])
+spx_use['spx_cum_product']=spx_use['spx_change_1'].cumprod()
+spx_use['rty_change_1']=(1+spx_use['rty_change'])
+spx_use['rty_cum_product']=spx_use['rty_change_1'].cumprod()
+
+
+i=0
+for i in range(0,spx_use.shape[0]):
+    if i==0:
+        if spx_use.loc[i,'hedge_B_shift']==0:
+            spx_use.loc[i,'hedge_pnl']=0
+            spx_use.loc[i,'account_value']=capital*(1+spx_use.loc[i,'spx_change'])
+        else:
+            spx_use.loc[i,'hedge_pnl']=capital*(1+0.5*spx_use.loc[i,'spx_60_dd_shift'])*spx_use.loc[i,'rty_change']*-1
+            spx_use.loc[i,'account_value']=capital*(1+spx_use.loc[i,'spx_change'])+spx_use.loc[i,'hedge_pnl']        
+
+    if i>0:
+        if spx_use.loc[i,'hedge_B_shift']==0:
+            spx_use.loc[i,'hedge_pnl']=0
+            spx_use.loc[i,'account_value']=spx_use.loc[i-1,'account_value']*(1+spx_use.loc[i,'spx_change'])
+        else:
+            spx_use.loc[i,'hedge_pnl']=spx_use.loc[i-1,'account_value']*(1+0.5*spx_use.loc[i,'spx_60_dd_shift'])*spx_use.loc[i,'rty_change']*-1
+            spx_use.loc[i,'account_value']=spx_use.loc[i-1,'account_value']*(1+spx_use.loc[i,'spx_change'])+spx_use.loc[i,'hedge_pnl']              
+
+
+
+
+
+spx_use.tail(10)
+
+        
+    
+#https://stackoverflow.com/questions/69861880/plotly-colorize-line-segments
+#https://medium.com/codex/financial-charts-and-visuals-with-plotly-in-python-843ffa9341a9   #plot stock 
+#./python -m pip install plotly
+#./python -m pip install kaleido
+
+from plotly.offline import download_plotlyjs, init_notebook_mode,  plot
+from plotly import graph_objects as go
+
+x =spx_use['Date'].values
+y1 = spx_use['spx_cum_product'].values
+y2 = spx_use['rty_cum_product'].values
+y3 = spx_use['account_value'].values
+
+
+
+layout = go.Layout(autosize=False,width=1300,height=700,
+                   title='<span style="font-size: 30px;">abc plot</span>',
+                   xaxis_title='<b>Date</b>',#"Date",
+                   yaxis_title='<b>Cumulative P&L</b>',#"Cumulative P&L",
+                   legend_title='<span style="font-size: 15px;">Legend Description</span>')
+fig = go.Figure(layout=layout)
+#obj1 = go.Scatter(x = x,y = y2,mode = 'lines')
+#fig.add_trace(obj1)
+obj2 = go.Scatter(x = x,y = y3,mode = 'lines',marker=dict(color='#CDAA7D'))
+fig.add_trace(obj2)
+
+fig['data'][0]['name'] = 'Account Value - S&P hedge with Russel'   #change legend first color description name
+
+#defind 2 colors for hedge
+line_cols = np.where(spx_use['hedge_B_shift'].values==1,"red","black")
+color_legend_name={'red':'S&P (Own Movement) - Hedging Triggered','black':'S&P (Own Movement) - Hedging Not Triggered'}
+
+#find the index of first occurance of distince emement
+distinct_element_first_occurance_index=[np.where(line_cols==k)[0][0] for k in list(set(line_cols))]
+
+i=0
+#iterate every single points in line_cols, each will show a legend line in right, but only show it when it is in the index of
+#distinct color
+for i, col in enumerate(line_cols):
+    if i in distinct_element_first_occurance_index:
+        fig.add_scatter(x=x[i:(i+2)], y=y1[i:(i+2)],line=dict(color=col),mode='lines',showlegend=True) #don't know why use i+2, just follow it
+        fig['data'][i+1]['name'] = color_legend_name[col]  #need to use i+1 because fig['data'][0]['name'] already used above
+    else:
+        fig.add_scatter(x=x[i:(i+2)], y=y1[i:(i+2)],line=dict(color=col),mode='lines',showlegend=False)        
+
+#add vertical line
+fig.add_vline(x='2022-04-07')
+#add horizontal line
+fig.add_hline(y=0.8, line_dash="dot",annotation_text="hello",annotation_position="bottom left")
+#add verticval rectangular
+fig.add_vrect(x0="2022-05-18", x1="2022-06-01",annotation_text="decline", annotation_position="top left",fillcolor="green", opacity=0.25, line_width=0)
+#fig.layout.yaxis.tickformat = ',.0%'  #display in percentage
+
+plot(fig)
+
+fig.write_image("plotly_temp.jpeg")
 
 
