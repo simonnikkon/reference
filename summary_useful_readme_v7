@@ -19,9 +19,15 @@ pandas.__version__
 pandas.__file__
 
 
+def print_hi(name):
+    # Use a breakpoint in the code line below to debug your script.
+      # Press Ctrl+F8 to toggle the breakpoint.
+
+name='alex'
+print(f'Hi, {name}')
 
 #if fail to install pip, use below
-.\python C:\Users\\Desktop\python\get-pip\get-pip.py
+.\python C:\Users\alexlau\Desktop\python\get-pip\get-pip.py
 #the upgade with depenency
 .\pip install -U ib_insync
 
@@ -71,6 +77,44 @@ for i in range(0,total):
     if math.sqrt(x2+y2)<1:
         inside=inside+1
 number=(float(inside)/total)*4
+
+
+
+
+#asterisk - unpack a list
+shared_items = [1, 2, 3]
+
+items1 = [*shared_items, 4, 5, 6]
+items1
+
+#varied argument
+def f1(*mm):
+    for k in mm:
+        print(k)
+
+f1(1,2,3,4)
+
+
+#double asterisk - unpack dict
+science_scores = {"math": 90, "physics": 95, "chemistry": 92}
+art_scores = {"english": 93, "spanish": 94}
+
+combined_scores = {**science_scores, **art_scores}
+combined_scores
+
+
+def send_info_to_server(**kwargs):
+    print(kwargs)  #is a dict
+    for k,v in kwargs.items():
+        print(k+'->'+v)
+    
+
+send_info_to_server(postId="abc", userId="user") #can pass multiple argument with name
+
+
+
+
+
 
 
 
@@ -244,7 +288,7 @@ else:
     print ("3 state")
     print ("none of above")
 
-my_list=['ww','apple','anna']
+my_list=['alex','apple','anna']
 for i in my_list:      #for(i=0;i<my_list.length();i++)
     print (i)          #cout<<my_list[i]
 
@@ -289,7 +333,7 @@ import os
 print (os.getcwd()) # Prints the working directory
 
 
-#os.chdir(r'C:\Users\Ava kkk\Desktop\python\test_new')
+#os.chdir(r'C:\Users\Ava Lau\Desktop\python\test_new')
 #print (os.getcwd())
 #import test4
 #a=test4.f(3)
@@ -489,9 +533,9 @@ d.keys()
 d.values()
 
 d['a']
-d['ww']='hand'
+d['alex']='hand'
 d
-del d['ww']
+del d['alex']
 
 #Tuples are basically immutable lists. The elements of a tuple are written between parentheses, or just separated by commas:
 t = 12345, 54321, 'hello!'
@@ -534,7 +578,6 @@ x=1
 y=x
 id(x)
 id(y)
-
 
 
 
@@ -597,6 +640,8 @@ for i in 'powerful':
 
 #Could use while loop with a counter as above. Or a for loop:
 words = ('cool', 'powerful', 'readable')
+
+
 
 for i in range(0, len(words)):
     print((i, words[i]))
@@ -908,6 +953,24 @@ anna.major
 
 
 
+import pandas as pd
+x1=pd.DataFrame({'capital':[100,200,200],'signal':[1,0,1]})
+
+class Student(object):
+    def __init__(self, x1):
+        self.capital = x1.capital
+        self.signal = x1.signal
+    def trade(self):
+        temp = sum(self.capital)
+        self.signal=10
+        return temp
+
+
+x=Student(x1)
+
+x.trade()
+x.signal
+
 
 
 
@@ -1165,6 +1228,8 @@ x.sum(axis=2)[0, 1]
 x[0, 1, :].sum() 
 
 
+#np.array([[1,2,3],[1,2,3]]).mul(np.array([[1,2,3],[1,2,3]]),axis=0)
+
 
 #Logical operations:
 a = np.zeros((100, 100))
@@ -1382,7 +1447,7 @@ merged_right = pd.merge(left=data2,right=data,how='right', left_on='Property_Are
 
 merged_right['happy'].fillna('e', inplace=True)
 
-word=['ww','apple']
+word=['alex','apple']
 key_lower=list(map(lambda x:x.upper(),word))
 
 a=[]
@@ -1433,7 +1498,7 @@ Employee.displayEmployee(emp1) #pass emp1 to employee class so need to include e
 
 import class_sample as cs
 cc=cs.Employee
-emp3 = cc("ww", 2000)
+emp3 = cc("alex", 2000)
 emp3.displayEmployee()
 
 
@@ -1955,7 +2020,7 @@ import numpy as np
 import pandas as pd
 left = DataFrame([[1,2,np.nan],[3,4,np.nan],[5,6,2]],columns=['one','two','three'])
 left
-right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10]],columns=['one','ww','three'])
+right = DataFrame([[1,2,3],[3,4,np.nan],[7,8,10]],columns=['one','alex','three'])
 right
 left.merge(right,on='one') # Same as how=’inner’
 left.merge(right,on='one', how='left')
@@ -2107,7 +2172,7 @@ data.groupby('col1').apply(lambda x: (x.col2 * x.col3).max())
 import pandas as pd
 from pandas import DataFrame
 data = pd.DataFrame(
-    {'wewe':['ww','ww','ww','tom','tom','tom','sam','sam'],
+    {'horse':['alex','alex','alex','tom','tom','tom','sam','sam'],
     'col2':[1,1,1,2,2,1,3,4],
      'col3':[-1,-2,-3,-4,-5,-6,-7,-8]
     }
@@ -2115,7 +2180,7 @@ data = pd.DataFrame(
 type(data)
 data
 col=data.columns.tolist();print(type(col));print(col)
-a=data.columns.get_loc("wewe")
+a=data.columns.get_loc("horse")
 
 a1=[col[a]] #chnage a single string to list
 
@@ -2129,7 +2194,7 @@ def find_no_unique(y,name):
                      'counts':out2})
     return output
 
-m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
 m.columns = ['out']
 m.index.tolist()
 m.ix[[('sam',0),('sam',1)],]
@@ -2143,7 +2208,7 @@ def find_no_unique(y,name):
     out2=len(y[name].unique())
     df = DataFrame(np.array([[out,out2]]), columns=['elements','counts'])
     return df
-m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
 
 
 def find_no_unique(y,name):
@@ -2153,7 +2218,7 @@ def find_no_unique(y,name):
                      'counts':[out2]})
     return output
 
-m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
 m
 
 
@@ -2165,10 +2230,10 @@ def find_no_unique(y,name):
                       'col2':out2})    
     return output
 
-m=DataFrame(data.groupby('wewe').apply(lambda x: find_no_unique(x,'col2')))
+m=DataFrame(data.groupby('horse').apply(lambda x: find_no_unique(x,'col2')))
 m
 
-new=DataFrame(data.wewe.unique())
+new=DataFrame(data.horse.unique())
 new.columns=['name']
 new
 
@@ -2289,7 +2354,7 @@ c=3
 
 
 
-#python pip Fatal error in kkkncher: Unable to create process using '"'
+#python pip Fatal error in launcher: Unable to create process using '"'
 #go to python.exe page, open cmd
 #python -m pip install selenium
 #http://stackoverflow.com/questions/40208051/selenium-using-python-geckodriver-executable-needs-to-be-in-path
@@ -2299,20 +2364,20 @@ c=3
 #note that for selecting button, use both xpath and ccs selector also ok. for xpath need to download selectorgadget
 #for ccs selector, need to look at html code
 import os
-os.chdir(r'C:\Users\\Desktop\python\WinPython-64bit-3.5.2.3Qt5\notebooks')
+os.chdir(r'C:\Users\alexlau\Desktop\python\WinPython-64bit-3.5.2.3Qt5\notebooks')
 print (os.getcwd())
 
 
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-driver = webdriver.Firefox(executable_path=r'C:\Users\\Desktop\python\geckodriver.exe')
-driver.get(r"file:///C:/Users//Desktop/python/testhtml.html")
+driver = webdriver.Firefox(executable_path=r'C:\Users\alexlau\Desktop\python\geckodriver.exe')
+driver.get(r"file:///C:/Users/alexlau/Desktop/python/testhtml.html")
 element = driver.find_element_by_xpath(".//a[@id='gb_23']")
 element.click()
 
 #search in google using firefox
-browser = webdriver.Firefox(executable_path=r'C:\Users\\Desktop\python\geckodriver.exe')
+browser = webdriver.Firefox(executable_path=r'C:\Users\alexlau\Desktop\python\geckodriver.exe')
 browser.get('http://www.google.com')
 search = browser.find_element_by_name('q')
 search = browser.find_element_by_xpath('//*[(@id = "lst-ib")]')
@@ -2326,7 +2391,7 @@ browser.quit()
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('https://www.elitetrader.com/et/forums/programming.65/')
 search = browser.find_element_by_xpath('//*[(@id = "QuickSearchQuery")]')
 search.send_keys(" search through python")
@@ -2351,12 +2416,12 @@ browser.quit()
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-free-trial')
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-first-name")]')
-search.send_keys("ww kkk")
+search.send_keys("alex lau")
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-last-name")]')
-search.send_keys("lei wert")
+search.send_keys("lei wai")
 #click check-box
 search = browser.find_element_by_xpath('//*[(@id = "edit-submitted-00n60000002gqco")]') #check box for energy
 search.click()
@@ -2376,7 +2441,7 @@ import selenium.webdriver as webdriver
 import selenium.webdriver.support.ui as UI
 import contextlib
 
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('https://www.cqg.com/products/cqg-integrated-client/cqg-ic-2-week-free-trial')
 items=[]
 select = UI.Select(browser.find_element_by_xpath('//select[@name="submitted[00N60000002Gk5o]"]'))
@@ -2394,9 +2459,9 @@ items
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('https://smallpdf.com/word-to-pdf')
-browser.find_element_by_css_selector('input[type="file"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[type="file"]').send_keys(r"C:\Users\alexlau\Desktop\try.pdf")
 
 
 
@@ -2409,13 +2474,13 @@ browser.find_element_by_css_selector('input[type="file"]').send_keys(r"C:\Users\
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('https://www.pdfmerge.com/')
 
-browser.find_element_by_css_selector('input[tabindex="1"]').send_keys(r"C:\Users\\Desktop\try.pdf")
-browser.find_element_by_css_selector('input[tabindex="2"]').send_keys(r"C:\Users\\Desktop\try.pdf")
-browser.find_element_by_css_selector('input[tabindex="3"]').send_keys(r"C:\Users\\Desktop\try.pdf")
-browser.find_element_by_css_selector('input[tabindex="4"]').send_keys(r"C:\Users\\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="1"]').send_keys(r"C:\Users\alexlau\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="2"]').send_keys(r"C:\Users\alexlau\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="3"]').send_keys(r"C:\Users\alexlau\Desktop\try.pdf")
+browser.find_element_by_css_selector('input[tabindex="4"]').send_keys(r"C:\Users\alexlau\Desktop\try.pdf")
 browser.find_element_by_css_selector('input[id="btnSubmit"]').click()   #click merge button
 
                                      
@@ -2435,7 +2500,7 @@ browser.find_element_by_css_selector('input[id="btnSubmit"]').click()   #click m
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
-browser = webdriver.Chrome(executable_path=r'C:\Users\\Desktop\python\chromedriver.exe')
+browser = webdriver.Chrome(executable_path=r'C:\Users\alexlau\Desktop\python\chromedriver.exe')
 browser.get('http://bet.hkjc.com/football/default.aspx')
 search = browser.find_element_by_xpath('//*[(@id = "leftTxtFBHIL")]') #Hilo
 search.click()
@@ -2512,7 +2577,7 @@ for key in df.groupby(df.a):
     print (key)
     
     
-df = pd.DataFrame({'a': ['ww', 'ww', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['alex', 'alex', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 df
 d=df
 d['a'][0]='ee'
@@ -2539,7 +2604,7 @@ bb[0]=2   #tuple is immutable
 
 
 import pandas as pd
-df = pd.DataFrame({'a': ['ww', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 def mo(x):
     yes=x.loc[:,'c']
     return yes
@@ -2583,12 +2648,12 @@ def DBA(x):
 hkdb_with_track_work=hkdb_with_track_work.head(1)
 hkdb_with_track_work.sort_index(inplace=True)
 
-hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey','wewe_no','Date']).apply(lambda x:DBA(x))
+hkdb_with_track_work['revised_tony_paul']=hkdb_with_track_work.groupby(['racekey','horse_no','Date']).apply(lambda x:DBA(x))
 
 %timeit DBA(x)
 
     
-df = pd.DataFrame({'a': ['ww', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
+df = pd.DataFrame({'a': ['alex', 'lam', 'simon'], 'b': [4, 5, 6],'c':[5,6,7]})
 
 def mo(x):
     yes=x.loc[:,'c']
@@ -2605,7 +2670,7 @@ df.index
 #pip issue
 #put python.exe to envirnment path
 #reopen computer
-#go to C:\Users\\Desktop\python\get-pip, open cmd, python get-pip.py (install latest pip)
+#go to C:\Users\alexlau\Desktop\python\get-pip, open cmd, python get-pip.py (install latest pip)
 #go to python.exe folder, open cmd, type "python -m pip install xxxx"
 
 #or
@@ -2619,12 +2684,12 @@ df.index
 #constraint optimization
 #https://labix.org/python-constraint
 import os
-os.chdir(r'C:\Users\\Desktop\python\constraint')
+os.chdir(r'C:\Users\alexlau\Desktop\python\constraint')
 import constraint
 
 
 import os
-os.chdir(r'C:\Users\\Desktop\python\WinPython-64bit-3.4.4.5Qt5\notebooks')
+os.chdir(r'C:\Users\alexlau\Desktop\python\WinPython-64bit-3.4.4.5Qt5\notebooks')
 
 
 from constraint import *
@@ -2649,7 +2714,7 @@ problem.getSolutions()
 #hsi
 import pandas as pd
 import os
-#hsi_path =r"C:\Users\ww.kkk\Desktop\adhot\hsi\HSI.csv"
+#hsi_path =r"C:\Users\alex.lau\Desktop\adhot\hsi\HSI.csv"
 #data = pd.read_csv(hsi_path)
  
 import fix_yahoo_finance as yf
@@ -2778,7 +2843,7 @@ print(msg['status']) # queued
 
 
 import os
-os.chdir(r'C:\Users\\Desktop\python\twilio')
+os.chdir(r'C:\Users\alexlau\Desktop\python\twilio')
 import twilio
 # Download the helper library from https://www.twilio.com/docs/python/install
 from twilio.rest import Client
@@ -2790,8 +2855,8 @@ client = Client(account_sid, auth_token)
 
 message = client.messages.create(
                               body='Hello there!',
-                              from_='whatsapp:+852234',
-                              to='whatsapp:+4'
+                              from_='whatsapp:+85255480236',
+                              to='whatsapp:+447754279265'
                           )
 
 print(message.sid)
@@ -2814,7 +2879,7 @@ server.starttls()
 server.login("random9522@gmail.com", "95229522")
  
 msg = "YOUR MESSAGE!"
-server.sendmail("ww.wewe@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
+server.sendmail("alex.leiwai@gmail.com", "THE EMAIL ADDRESS TO SEND TO", msg)
 server.quit()
 
 
@@ -2826,7 +2891,7 @@ server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
 server.login("random9522@gmail.com", "95229522")
 server.sendmail(
   "random9522@gmail.com", 
-  "ww.wewe@gmail.com", 
+  "alex.leiwai@gmail.com", 
   "this message is from python")
 server.quit()
 
@@ -2846,7 +2911,7 @@ mail_content = "test python"
 #The mail addresses and password
 sender_address = 'random9522@gmail.com'
 sender_pass = '95229522'
-receiver_address = 'lei.ww2016@gmail.com'
+receiver_address = 'lei.alex2016@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
@@ -2870,8 +2935,76 @@ print('Mail Sent')
 
 
 
+
+
+
 #python regular expression
 #https://www.analyticsvidhya.com/blog/2015/06/regular-expression-python/
+
+
+
+Operators	Description
+.	 Matches with any single character except newline ‘\n’.
+?	 match 0 or 1 occurrence of the pattern to its left
++	 1 or more occurrences of the pattern to its left
+*	 0 or more occurrences of the pattern to its left
+
+
+
+result=re.findall(r'\d','AV is largest Analytics community of India 3749 eruabcd 309')
+print (result) 
+['3', '7', '4', '9', '3', '0', '9']
+
+result=re.findall(r'\d+','AV is largest Analytics community of India 3749 eruabcd 309')
+print (result) 
+['3749', '309']
+
+# * allow zero d, so include white space and resulting many white space
+result=re.findall(r'\d*','AV is largest Analytics community of India 3749 eruabcd 309')
+print (result) 
+['', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '3749', '', '', '', '', '', '', '', '', '', '309', '']
+
+#using ? to include 3749 and 309 becasue 0 or 1 occurance of . or ,
+result=re.findall(r'\d+[.,]?\d*','AV is largest Analytics 103.45 1,000   3,000  of India 3749 eruabcd 309')
+print (result) 
+['103.45', '1,000', '3,000', '3749', '309']
+
+result=re.findall(r'\d+[.,]\d*','AV is largest Analytics 103.45 1,000   3,000  of India 3749 eruabcd 309')
+print (result) 
+['103.45', '1,000', '3,000']
+
+#if without * then it require exactly 1 digit
+result=re.findall(r'\d+[.,]\d','AV is largest Analytics 103.45 1,000   3,000  of India 3749 eruabcd 309')
+print (result) 
+['103.4', '1,0', '3,0']
+
+result=re.findall(r' [A-Z] ','AV is D largest Analytics 103.45 1,000   3,000  of India 3749 eruabcd 309')
+print (result) 
+[' D ']
+
+
+https://stackoverflow.com/questions/10804732/difference-between-and
+#?: meaning
+
+result=re.findall(r'a(\d)','a7 bcd abcd')
+print (result) 
+['7']
+
+result=re.findall(r'a(?:\d)c','a7 a8c bcd abcd')
+print (result) 
+['a8c']
+
+result=re.findall(r'a(?=\d)','a7 bcd abcd')
+print (result) 
+['a']
+
+
+
+
+
+
+
+
 import re
 #Use “r” at the start of the pattern string, it designates a python raw string.
 result = re.match(r'AV', 'AV Analytics Vidhya AV')
@@ -2905,10 +3038,12 @@ import re
 s = 'I love book()'
 result = re.search(r'\(\)',s)
 print (result.group())
+
+
+
 s1 = 'I love book(s)'
 result2 = re.sub(r'[\(\)]','',s1)
 print (result2)
-
 
 
 
@@ -2939,20 +3074,8 @@ to_zone = tz.gettz('Asia/Hong_Kong')
 execution_time_is_hk=execution_time_is_utc.astimezone(to_zone)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+From: "Mr. Ben Suleman" <bensul2004nng@spinfinder.com>
+From: "PRINCE OBONG ELEME" <obong_715@epatra.com>
 
 
 
@@ -2981,6 +3104,90 @@ central = utc.astimezone(to_zone)
 
 
 
+################################################################################
+################################################################################
+####################################3data masking###############################
+################################################################################
+################################################################################
+
+import pandas as pd
+import numpy as np
+import random
+
+data=pd.DataFrame({'name_eng':['chan siu ming','chan tai ming','wong tai sin','wong lei man','au yuen kwan ho'],
+                   'name_chi':['陳小明','陳大明','黃大仙','黃利民','歐陽君好'],
+                   'email':['chansiuming@gmail.com','abc@gmail.com','oop@gmail.com','pol@gmail.com','qwe@gmail.com'],
+                   'address':['12/F, AIA Tower','Room 1201, 12/f, AIA Tower','香港北角電器道183號 13樓','香港北角電器道183號 19樓','香港北角電器道183號 13樓']})
+
+
+#shuffle eng name
+temp_np=data['name_eng'].str.split(" ",n=10,expand=True).values
+all_name=temp_np.flatten()
+
+all_name_distinct_original=[x for x in list(set(all_name)) if x !=None]
+all_name_distinct_new=all_name_distinct_original.copy()
+random.shuffle(all_name_distinct_new)
+
+distinct_pair={all_name_distinct_original[i]:all_name_distinct_new[i] for i in range(len(all_name_distinct_original))}
+all_name_new=np.vectorize(distinct_pair.get)(temp_np)
+
+temp=[' '.join(i) for i in all_name_new.tolist()]
+temp=[i.replace(' None','') for i in temp]
+data['name_eng_shuffle']=temp
+
+#create one-one ch to ch mapping
+alphabet_string_original=[chr(num) for num in list(range(ord('a'),ord('z')+1))]
+alphabet_string=alphabet_string_original.copy()
+random.shuffle(alphabet_string)
+
+distinct_pair={alphabet_string_original[i]:alphabet_string[i] for i in range(len(alphabet_string))}
+
+distinct_pair.get('a','p')  #p is replacement if not found
+
+f_temp=lambda din: "".join([distinct_pair.get(x,x) for x in din])
+
+data['name_eng_shuffle_ch']=np.vectorize(f_temp)(data['name_eng_shuffle'].values)
+temp=data['email'].str.split('@', n=2,expand=True)[0].values
+data['email_ch']=np.vectorize(f_temp)(temp)
+
+
+#shuffle chi name
+temp=data['name_chi'].str.split(" ",n=10,expand = True)
+all_name_distinct_original=[x for x in list(set(np.sum(temp.values))) if x != None]
+all_name_distinct_new=all_name_distinct_original.copy()
+random.shuffle(all_name_distinct_new)
+
+distinct_pair={all_name_distinct_original[i]:all_name_distinct_new[i] for i in range(len(all_name_distinct_original))}
+data['name_chi_shuffle']=np.vectorize(f_temp)(data['name_chi'].values)
+
+
+import re
+def address_remove(target_address):
+    t_chi='室|房|樓|層'
+    target_address=re.sub('(\d+)([\s]*)'+"("+t_chi+")",'',target_address)
+    
+    t_eng1='|'.join(['Suite','room','ROOM'])
+    t_eng2 = '|'.join(["/f","/F"])
+    
+    temp1=re.sub("("+t_eng1+")"+'([\s]*)(\w*)(,*)'+"|"+"(\d*)"+"([\s]*)"+"("+t_eng2+")(,*)",'',target_address)
+    temp1=temp1.strip()
+    return temp1
+
+data['address_remove_room_floor']=np.vectorize(address_remove)(data['address'].values)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2991,10 +3198,10 @@ central = utc.astimezone(to_zone)
 
 #https://github.com/h2oai/h2o-3/blob/master/h2o-docs/src/product/tutorials/gbm/gbmTuning.ipynb
 import sys
-sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
-sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
-sys.path.append(r'C:\Users\\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
-#sys.path.append(r'C:\Users\\Desktop\python\six\dist\six-1.12.0')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
+#sys.path.append(r'C:\Users\alexlau\Desktop\python\six\dist\six-1.12.0')
 
 import h2o
 import numpy as np
@@ -3032,7 +3239,7 @@ response = "survived"
 
 import pandas as pd
 #h2o.import_file(path = "http://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
-df=pd.read_csv(r"C:\Users\\Dropbox\notebooks\gbm\titanic.csv")
+df=pd.read_csv(r"C:\Users\alexlau\Dropbox\notebooks\gbm\titanic.csv")
 train= h2o.H2OFrame(df)
 train[response] = train[response].asfactor()  
 predictors = train.columns
@@ -3178,7 +3385,7 @@ help(gbm.score_history(valid))
 
 
 # save the model
-model_path = h2o.save_model(gbm,r"C:\Users\\Dropbox\notebooks\gbm\gbm_output1", force=True)
+model_path = h2o.save_model(gbm,r"C:\Users\alexlau\Dropbox\notebooks\gbm\gbm_output1", force=True)
 print(model_path)
 
 
@@ -3194,9 +3401,9 @@ from IPython.display import Image
 import subprocess
 import os
 
-gbm_dir=r"C:\Users\''\Dropbox\notebooks\gbm"
+gbm_dir=r"C:\Users\alexlau\Dropbox\notebooks\gbm"
 #download from http://h2o-release.s3.amazonaws.com/h2o/rel-zahradnik/3/index.html
-h2o_jar_path= r'C:\Users\''\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\''\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
+h2o_jar_path= r'C:\Users\alexlau\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\alexlau\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
 gbm_model_name='saved_model' #'gbm'
 tree_id=3
 
@@ -3300,8 +3507,8 @@ from IPython.display import Image
 import subprocess
 import os
 
-gbm_dir=r"C:\Users\''\Dropbox\notebooks\gbm"
-h2o_jar_path= r'C:\Users\''\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\''\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
+gbm_dir=r"C:\Users\alexlau\Dropbox\notebooks\gbm"
+h2o_jar_path= r'C:\Users\alexlau\Desktop\python\GBM\h2o-3.30.0.3\h2o.jar'#r'C:\Users\alexlau\Desktop\python\GBM\dist\h2o-3.24.0.3.tar'
 gbm_model_name='cv_gbm' #'gbm'
 tree_id=3
 
@@ -3326,7 +3533,14 @@ subprocess.call(["java", "-cp", h2o_jar_path, "hex.genmodel.tools.PrintMojo", "-
 
 
 
-
+import os
+path = '/home/alexlau/my_storage/360files'
+#we shall store all the file names in this list
+filelist = []
+subfolders = [ f.path for f in os.scandir(path) if f.is_dir() ]
+subfolders
+x=['"'+x.split('/')[-1]+'"' for x in subfolders]
+' '.join(x)
 
 
 
@@ -3534,10 +3748,10 @@ new_max=5
 
 #https://github.com/h2oai/h2o-3/blob/master/h2o-docs/src/product/tutorials/gbm/gbmTuning.ipynb
 import sys
-sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
-sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
-sys.path.append(r'C:\Users\''\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
-#sys.path.append(r'C:\Users\''\Desktop\python\six\dist\six-1.12.0')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\GBM\dist\h2o-3.24.0.3')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\tabulate\dist\tabulate-0.8.3')
+sys.path.append(r'C:\Users\alexlau\Dropbox\notebooks\gbm\future\dist\future-0.17.1\src')
+#sys.path.append(r'C:\Users\alexlau\Desktop\python\six\dist\six-1.12.0')
 
 import h2o
 import numpy as np
@@ -3551,7 +3765,7 @@ h2o.init(nthreads=-1, strict_version_check=True)
 response = "survived"
 import pandas as pd
 #h2o.import_file(path = "http://s3.amazonaws.com/h2o-public-test-data/smalldata/gbm_test/titanic.csv")
-df=pd.read_csv(r"C:\Users\''\Dropbox\notebooks\gbm\titanic.csv")
+df=pd.read_csv(r"C:\Users\alexlau\Dropbox\notebooks\gbm\titanic.csv")
 train= h2o.H2OFrame(df)
 train[response] = train[response].asfactor()  
 predictors = train.columns
@@ -3777,7 +3991,7 @@ best_model.model_performance(valid)
     
 # write-html.py
 
-f = open(r'C:\Users\''\Dropbox\notebooks\index_analysis\mis\helloworld.html','w')
+f = open(r'C:\Users\alexlau\Dropbox\notebooks\index_analysis\mis\helloworld.html','w')
 
 message = """<html>
 <head></head>
@@ -3801,7 +4015,7 @@ import pandas as pd
 import numpy as np
 import pymysql
 
-connection=create_engine("mysql+pymysql://ww:12345678@localhost:3306/test1")
+connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/test1")
 
 x=pd.DataFrame(np.array([[1,2],[3,4]]),columns=['a','b'])
 
@@ -4836,11 +5050,11 @@ output=requests.post(url_use, allow_redirects=False).json()
 
 
 #multi process on dataframe apply
-data=main_data.loc[(main_data['Date']=='2019-10-20')&(main_data['wewe_Brand']=="i'm the conquist_B155"),:]
+data=main_data.loc[(main_data['Date']=='2019-10-20')&(main_data['Horse_Brand']=="i'm the conquist_B155"),:]
 def trackwork_swim_extract(data):
     data_index=data.index
     #data=data.reset_index(drop=True)
-    target_wewe=data['wewe_Brand'].values[0]
+    target_horse=data['Horse_Brand'].values[0]
     
     target_date=data['Date'].values[0]
     target_date_lag_two=dt.strptime(target_date,'%Y-%m-%d')-timedelta(days=2)
@@ -4856,8 +5070,8 @@ def trackwork_swim_extract(data):
     target_date_lag_30=target_date_lag_30.strftime("%Y-%m-%d") 
 
     #count_14=count_22=count_30=0
-    key_wewe=trackwork_swim[:,1]==target_wewe
-    trackwork_swim_temp=trackwork_swim[key_wewe]
+    key_horse=trackwork_swim[:,1]==target_horse
+    trackwork_swim_temp=trackwork_swim[key_horse]
     trackwork_swim_use=trackwork_swim_temp[(trackwork_swim_temp[:,0]<=target_date_lag_two)&(trackwork_swim_temp[:,0]>=target_date_lag_14)]
     count_14=np.shape(trackwork_swim_use)[0]
 
@@ -4872,12 +5086,12 @@ def trackwork_swim_extract(data):
 
 
     
-out=main_data[['Date','wewe_Brand']][0:1000].groupby(['Date','wewe_Brand'],group_keys=False).apply(lambda x:trackwork_swim_extract(x))
+out=main_data[['Date','Horse_Brand']][0:1000].groupby(['Date','Horse_Brand'],group_keys=False).apply(lambda x:trackwork_swim_extract(x))
 
 i=0
 all_out=pd.DataFrame([])
 for i in range(0,main_data[0:30].shape[0]):
-    out=trackwork_swim_extract(main_data[['Date','wewe_Brand']][i:i+1])
+    out=trackwork_swim_extract(main_data[['Date','Horse_Brand']][i:i+1])
     all_out=all_out.append(out)
     print(i)
 
@@ -4889,7 +5103,7 @@ def applyParallel(dfGrouped, func):
         ret_list = p.map(func, [group for name, group in dfGrouped])
     return pd.concat(ret_list)
 
-out=applyParallel(main_data[['Date','wewe_Brand']][0:10000].groupby(['Date','wewe_Brand'],group_keys=False), trackwork_swim_extract)
+out=applyParallel(main_data[['Date','Horse_Brand']][0:10000].groupby(['Date','Horse_Brand'],group_keys=False), trackwork_swim_extract)
 
 
 
@@ -5143,7 +5357,7 @@ def run(filename, path, inqueue, outqueue):
     finally:
         synchronized_close_file(h5file)
 
-os.chdir('/home/''/Dropbox/notebooks/wewe/model')
+os.chdir('/home/alexlau/Dropbox/notebooks/horse/model')
 
 import os
 import queue
@@ -5217,13 +5431,17 @@ if __name__ == '__main__':
 
 
 
+a=[1, 1, 1, 0, 0, 0, 1, 1, 0, 0]
+
+def island_cumsum_vectorized(a):
+    a_ext = np.concatenate(( [0], a, [0] ))
+    idx = np.flatnonzero(a_ext[1:] != a_ext[:-1])
+    a_ext[1:][idx[1::2]] = idx[::2] - idx[1::2]
+    return a_ext.cumsum()[1:-1]
 
 
 
-
-
-
-
+island_cumsum_vectorized(a)
 
 
 
@@ -5329,8 +5547,8 @@ from math import cos, pi, floor
 import requests
 
 Employee = pd.DataFrame({'EmployeeId': [11,12,13,14],
-                         'FirstName': ['lei wert','lung sing','wert man','mei yan'],
-                         'LastName': ['kkk','lam','wong','chan']},index=False)
+                         'FirstName': ['lei wai','lung sing','wai man','mei yan'],
+                         'LastName': ['lau','lam','wong','chan']},index=False)
 
 Address = pd.DataFrame({'AddressId': [1,2,3,4],'EmployeeId': [11,12,13,14],
                         'Street': ['aa','bb','cc',None],
@@ -5341,7 +5559,7 @@ Bank = pd.DataFrame({'Id': [1,2,3],'AssetSize':[100,200,300]})
     
     
     
-connection=create_engine("mysql+pymysql://ww:12345678@localhost:3306/sql_learning")
+connection=create_engine("mysql+pymysql://alex:12345678@localhost:3306/sql_learning")
     
 Employee.to_sql('Employee',connection,if_exists='replace',chunksize=1000,index=False)
 Address.to_sql('Address',connection,if_exists='replace',chunksize=1000,index=False)
@@ -5362,13 +5580,13 @@ Bank.to_sql('Bank',connection,if_exists='replace',chunksize=1000,index=False)
 
 import paramiko
 from scp import SCPClient
-source = r'C:\Users\''\Dropbox\notebooks\index_analysis\IB_live_trade\client_everything\try.txt'
-dest = r'/home/customer/www/pptech.org/public_html/client_use_daily/version1/try.txt'
-# web site link is http://pptech.org/client_use_daily/version1/try.txt
+source = r'C:\Users\alexlau\Dropbox\notebooks\index_analysis\IB_live_trade\client_everything\try.txt'
+dest = r'/home/customer/www/poseidontech.org/public_html/client_use_daily/version1/try.txt'
+# web site link is http://poseidontech.org/client_use_daily/version1/try.txt
 hostname = 'gsgpm1029.siteground.biz'
 port = 18765 # default port for SSH
 username = 'u427-3uutm94zey9v'
-password = '4567'
+password = '36467323'
 
 
 
@@ -5404,20 +5622,33 @@ ssh.close()
 
 
 
+#average aggregate example
+import pandas as pd
+
+import numpy as np
+
+df=pd.DataFrame({'symbol':['a','a','b','b','c'],'volume':[10,20,10,20,10],'price':[2,4,3,1,6]})
+df
+
+#find sum of volume and max price
+output=df.groupby('symbol').agg({'volume': 'sum','price':'max'})
+
+
+#find avergae price
+temp_fun=lambda x : np.average(list(x.price), weights=list(x.volume))
+temp=df.groupby('symbol').apply(temp_fun)
+temp
+
+output['average price']=temp
+
+output=output.reset_index(drop=False)
+
+output
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+import sys
+sys.executable
 
 
 
@@ -5428,7 +5659,7 @@ ssh.close()
 
 
 #telegram send message
-#find botfather to set a bot first, my bot is ppTech_bot
+#find botfather to set a bot first, my bot is PoseidonTech_bot
 #https://zaoldyeck.medium.com/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E6%80%8E%E9%BA%BC%E6%89%93%E9%80%A0-telegram-bot-a7b539c3402a
 
 #pip install python-telegram-bot
@@ -5440,10 +5671,10 @@ https://blog.csdn.net/yiqiushi4748/article/details/103994364
 #if you're looking to simply send a message to a specific user, you need to provide your
 #bot with the user's ID. To get the user's ID, use @userinfobot in telegram client for that user
 #  所以要叫對方search userinfobot, 再俾個id 我
-# then need to ask 234 to chat with ppTech_bot first then ppTech_bot can send message to him
+# then need to ask 55480236 to chat with PoseidonTech_bot first then PoseidonTech_bot can send message to him
 
-pp_admin user id is 1404242736
-234 user id is 1164425261
+poseidon_admin user id is 1404242736
+55480236 user id is 1164425261
 
 
 #code for send message
@@ -5454,16 +5685,16 @@ bot = telegram.Bot(token='1354258543:AAFOdEGomqwHu3n9u_qjxBALKOn2doUseNo')
 print (bot.get_me())
 info = bot.get_webhook_info()
 #print (info)
-bot.send_message(chat_id='1404242736', text=str(bot.get_me())) # id of pp_admin
+bot.send_message(chat_id='1404242736', text=str(bot.get_me())) # id of poseidon_admin
 
 
-bot.send_message(chat_id='1164425261', text='你好嗎')# id of 234
+bot.send_message(chat_id='1164425261', text='你好嗎')# id of 55480236
 
 
 href = "https://baidu.com"
 title = "嘿嘿嘿马"
 #发送带标题网址链接
-bot.send_message(chat_id='@pp_admin',
+bot.send_message(chat_id='@poseidon_admin',
     text='<a href="http://slowread.net/monitor-hostloc/">HOSTLOC 交易贴提醒</a>.',
     parse_mode=telegram.ParseMode.HTML)
 #发送无预览带标题网址链接
@@ -5495,17 +5726,28 @@ https://docs.telethon.dev/en/latest/basic/signing-in.html
 
 
 
-#234
+#55480236
 api_id = '6166311'
 api_hash = '6d6e7f24e14f3ccc98f89480b441381a'
 
-#wewe quant
+#horse quant
 api_id = '6864164'
 api_hash = '061fb4bb81d3fddf29103693a2c7d091'
 
-#pp_admin
+#poseidon_admin
 api_id_p='6486098'
 api_hash_p='b2e4642b0071334fcc076a83d6a85095'
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -5516,7 +5758,7 @@ api_hash_p='b2e4642b0071334fcc076a83d6a85095'
 import os
 import sys
 
-os.chdir('/hometebooks/spark_learn')
+os.chdir('/home/alexlau/Dropbox/notebooks/spark_learn')
 
 
 #https://cloud.tencent.com/developer/article/1604610?from=article.detail.1528360
@@ -5547,7 +5789,7 @@ from pyspark.sql import SparkSession
 # 创建一个Spark会话对象
 spark=SparkSession.builder.appName('data_processing').getOrCreate()
 # 加载csv数据集
-df=spark.read.csv('/homerDB_left.csv',inferSchema=True,header=True)
+df=spark.read.csv('/home/alexlau/Dropbox/notebooks/spark_learn/factorDB_left.csv',inferSchema=True,header=True)
 
 print((df.count(), len(df.columns)))
 df.select('HorseName', 'HorseNo').show(10)
@@ -5569,7 +5811,7 @@ spark = SparkSession.builder \
     .master(master) \
     .appName(appName) \
     .getOrCreate()
-file_path='/home/actorDB_left.csv'
+file_path='/home/alexlau/Dropbox/notebooks/spark_learn/factorDB_left.csv'
 # Convert list to data frame
 df = spark.read.format('csv') \
                 .option('header',True) \
@@ -5583,14 +5825,33 @@ print(f'Record count is: {df.count()}')
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #save as parquet
-file_path='/homen/factorDB_left.csv'
+file_path='/home/alexlau/Dropbox/notebooks/spark_learn/factorDB_left.csv'
 import pandas as pd
 df = pd.read_csv(file_path)
 df.to_parquet('factorDB_left.parquet')
 
 #read from aprquet
 df=pd.read_parquet('factorDB_left.parquet', engine='pyarrow')
+
 
 
 
@@ -5606,63 +5867,130 @@ store.close()
 
 
 
+#difference between iloc and loc
+import pandas as pd
+import sys
+import os
+target_dir='/home/alexlau/Dropbox/notebooks/docs/niantic'
+os.chdir(target_dir)
+
+#read data
+pokemon_data=pd.read_csv('pokemon_data_science.csv')
+
+pokemon_data=pokemon_data[['Name','HP']].copy()
+pokemon_data=pokemon_data.head(10)
+pokemon
+
+Out[9]: 
+         Name  HP
+0   Bulbasaur  45
+1     Ivysaur  60
+2    Venusaur  80
+3  Charmander  39
+4  Charmeleon  58
+5   Charizard  78
+6    Squirtle  44
+7   Wartortle  59
+8   Blastoise  79
+9    Caterpie  45
+
+
+#1)
+#loc is to locate the index
+pokemon_data.loc[2,'Name']      #locate the index
+Out[16]: 'Venusaur'
+
+
+pokemon_data.loc[0:3,'Name']    #include end point
+Out[10]: 
+0     Bulbasaur
+1       Ivysaur
+2      Venusaur
+3    Charmander
+Name: Name, dtype: object
+
+
+#iloc only accept the form a:b
+pokemon_data.iloc[2,'Name']       #fail
+pokemon_data.iloc[0:22,'Name']    #fail
 
 
 
+pokemon_data.iloc[2]  
+Out[20]: 
+Name    Venusaur
+HP            80
+Name: 2, dtype: object
+
+
+pokemon_data.iloc[2:4]     #exclude end point
+Out[22]: 
+         Name  HP
+2    Venusaur  80
+3  Charmander  39
 
 
 
+#2)
+pokemon_data=pokemon_data[4:8].copy()
+pokemon_data
+
+         Name  HP
+4  Charmeleon  58
+5   Charizard  78
+6    Squirtle  44
+7   Wartortle  59
+
+
+pokemon_data.loc[2,'Name']      #loc locate the index, so 2 not exist
+
+
+pokemon_data.loc[4,'Name'] 
+Out[27]: 'Charmeleon'
+
+pokemon_data.loc[5:7,'Name'] 
+
+Out[28]: 
+5    Charizard
+6     Squirtle
+7    Wartortle
+Name: Name, dtype: object
+
+
+#iloc is to find out the number of row, instead of locate the index
+pokemon_data.iloc[2]  
+Out[31]: 
+Name    Squirtle
+HP            44
+Name: 6, dtype: object
 
 
 
+pokemon_data.iloc[2:4] 
+Out[32]: 
+        Name  HP
+6   Squirtle  44
+7  Wartortle  59
 
 
 
+#reorder search path
+import os
+import sys
+
+sys.path
 
 
+sys.path[0]
 
+#append an element
+sys.path.append('/root/anaconda3/lib/python36.zip')
 
+#remove first element
+sys.path.pop(0)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#remove element by name
+sys.path.pop(sys.path.index('/root/anaconda3/lib/python36.zip'))
 
 
 
@@ -5703,19 +6031,19 @@ store.close()
 
 
 #if fail to install pip, use below
-.\python C:\Users\''\Desktop\python\get-pip\get-pip.py
+.\python C:\Users\alexlau\Desktop\python\get-pip\get-pip.py
 
 
 #when install python 3.6.7 edward already at 
-#C:\Users\''\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
+#C:\Users\alexlau\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
 
 # install tensorflow version
-#it will install at C:\Users\''\AppData\Roaming\Python\Python36\site-packages
+#it will install at C:\Users\alexlau\AppData\Roaming\Python\Python36\site-packages
 .\pip install --user tensorflow==1.2.1
 
 ##*****very important******
 #if in case need to reinstall python, go to 
-#delete C:\Users\''\AppData\Roaming\Python first
+#delete C:\Users\alexlau\AppData\Roaming\Python first
 #then normally install and also install tensorflow==1.2.1 otherwise edward may have error
 
 
@@ -5727,7 +6055,7 @@ store.close()
 numpy version
 https://www.lfd.uci.edu/~gohlke/pythonlibs/#numpy
     
-.\pip install --user C:\Users\''\Desktop\python\numpymkl\numpy-1.15.4+mkl-cp36-cp36m-win_amd64.whl
+.\pip install --user C:\Users\alexlau\Desktop\python\numpymkl\numpy-1.15.4+mkl-cp36-cp36m-win_amd64.whl
 
 
 #install ib_insync version 0.9.64
@@ -5757,7 +6085,7 @@ https://stackoverflow.com/questions/17684610/python-convert-csv-to-xlsx
 
 #install talib in window in python 3.6, not python 3.7
 #becasue talib need to use numpy 1.19.4 but python 3.7 is using numpy 1.14.6 in order to use hdf5
-pip install C:\Users\''\Desktop\python\talib\TA_Lib-0.4.19-cp36-cp36m-win_amd64.whl
+pip install C:\Users\alexlau\Desktop\python\talib\TA_Lib-0.4.19-cp36-cp36m-win_amd64.whl
 
 
 
@@ -5765,16 +6093,16 @@ pip install C:\Users\''\Desktop\python\talib\TA_Lib-0.4.19-cp36-cp36m-win_amd64.
 #add pyexcel.cookbook to python search path
 import sys
 sys.path
-sys.path.append("C:\\Users\\''\\Desktop\\python\\WPy-3670\\python-3.6.7.amd64\\lib\\site-packages")
+sys.path.append("C:\\Users\\alexlau\\Desktop\\python\\WPy-3670\\python-3.6.7.amd64\\lib\\site-packages")
 
 
 
 
 
 #concept
-#if add --user, it will be installed at (A) C:\Users\''\AppData\Roaming\Python\Python36\site-packages
+#if add --user, it will be installed at (A) C:\Users\alexlau\AppData\Roaming\Python\Python36\site-packages
 .\pip install --user xxxx
-#if not adding --user, it will install normally at (B) C:\Users\''\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
+#if not adding --user, it will install normally at (B) C:\Users\alexlau\Desktop\python\WPy-3670\python-3.6.7.amd64\Lib\site-packages
 
 #if already at A cannot install at B
 
@@ -5839,7 +6167,7 @@ python -m pip install python-crontab
 ./pip install --upgrade tensorflow-probability  
 
 ##########
-#install tensorflow 2.1, for edward 2, at least 2.1  (for wewe, not using edward 2, so not necessary use 2.1)
+#install tensorflow 2.1, for edward 2, at least 2.1  (for horse, not using edward 2, so not necessary use 2.1)
 
 ./pip install tensorflow-gpu==2.1   
 
@@ -5848,7 +6176,8 @@ python -m pip install python-crontab
 
 #for safety, use spyder 3.2.8 not 4.0
 
-
+#current version of spyder
+./conda install spyder=4.2.4
 
 
 
@@ -5993,11 +6322,11 @@ https://www.cnblogs.com/tinywan/p/7230039.html
 
 Ssh connect to siteground
 Follow https://www.siteground.com/tutorials/ssh/putty/
-Bear in mind that Hostname: gsgpm1029.siteground.biz  , never use pp_admin
+Bear in mind that Hostname: gsgpm1029.siteground.biz  , never use Poseidon_admin
 Hostname: gsgpm1029.siteground.biz
 Username: u427-3uutm94zey9v
 Port: 18765
-Password is 4567
+Password is 36467323
 
 #python ssh
 ./python -m pip install --user paramiko
@@ -6011,193 +6340,68 @@ Password is 4567
 
 
 
-#use yahoo finance data
-import os
-import numpy as np
 
-import requests
-import zipfile
-import io
-import pandas as pd
-import yfinance as yf
-target_dir='/home/alexlau/Dropbox/notebooks/index_analysis'
+import sys
+sys.exit(0)
 
+a=1
+print(a)
 
-os.chdir(target_dir)
 
 
 
-spx_raw = yf.download('^GSPC',start='1987-09-11',end='2022-06-30',progress=False)
-spx_raw=spx_raw.reset_index(drop=False)
-spx_raw=spx_raw.rename(columns={'Open':'Open_spx','Close':'Close_spx'})
-spx_raw['Date']=spx_raw['Date'].apply(lambda x:x.strftime("%Y-%m-%d"))
 
-second_raw = yf.download('^RUT',start='1987-09-10',end='2022-06-30',progress=False)
-second_raw=second_raw.reset_index(drop=False)
-second_raw=second_raw.rename(columns={'Open':'Open_rty','Close':'Close_rty'})
-second_raw['Date']=second_raw['Date'].apply(lambda x:x.strftime("%Y-%m-%d"))
 
 
 
 
 
-pd.isnull(spx_raw['Close_spx']).sum()
-pd.isnull(second_raw['Close_rty']).sum()
 
 
 
 
-spx0=pd.merge(spx_raw[['Date','Open_spx','Close_spx']].copy(),second_raw[['Date','Open_rty','Close_rty']].copy(),how='left',on=['Date'])
 
-pd.isnull(spx0['Close_spx']).sum()
-pd.isnull(spx0['Close_rty']).sum()
 
 
-spx0['Close_spx_lag1']=spx0['Close_spx'].shift(1)
-spx0['Close_rty_lag1']=spx0['Close_rty'].shift(1)
-spx0['spx_change']=spx0['Close_spx']/spx0['Close_spx_lag1']-1
-spx0['rty_change']=spx0['Close_rty']/spx0['Close_rty_lag1']-1
+import xlwings as xw
 
+# Connect to existing workbook containing VBA macro
+wb = xw.Book(r'C:\Users\alexlau\Dropbox\notebooks\data_output.xlsm')
 
+# Run the VBA macro named 'MacroName'
+wb.macro('mm')()
 
 
-spx=spx0.loc[(spx0['Date']>='2019-10-01')&(spx0['Date']<='2022-12-31'),:].copy()
 
 
 
 
 
-capital=1
 
-spx['spx_60_max']=spx['Close_spx'].rolling(60).max()
-spx['spx_60_dd']=spx['Close_spx']/spx['spx_60_max']-1
-spx['spx_60_dd_shift']=spx['spx_60_dd'].shift(1)
 
 
-spx=spx.reset_index(drop=True)
 
 
-#determine when hedge
-spx['spx_max']=spx['Close_spx'].rolling(28).max()
 
-spx['spx_min']=spx['Close_spx'].rolling(28).min()
 
-spx['spx_close_normalized']=(spx['Close_spx']-spx['spx_min'])/(spx['spx_max']-spx['spx_min'])
-spx['spx_slow']=spx['spx_close_normalized'].rolling(6).mean()
 
-spx['hedge_B']=((spx['spx_close_normalized']>0.2)&(spx['spx_close_normalized']>spx['spx_slow']))*1
-spx['hedge_S']=((spx['spx_close_normalized']<0.8)&(spx['spx_close_normalized']<spx['spx_slow']))*1
-spx['hedge_B_shift']=spx['hedge_B'].shift(1)
 
 
 
-spx_use=spx[['Date','Close_spx','spx_change','Close_rty','rty_change','spx_60_dd_shift','hedge_B_shift']].copy()
-#spx_use=spx_use.loc[(~pd.isnull(spx_use['spx_change']))&(~pd.isnull(spx_use['djia_change'])),:].copy()
 
 
-spx_use=spx_use[60:].copy()
-spx_use=spx_use.reset_index(drop=True)
 
-spx_use[['Date','Close_spx']].head(5)
-spx_use[['Date','Close_spx']].tail(5)
 
-spx_use[['Date','Close_rty']].head(5)
-spx_use[['Date','Close_rty']].tail(5)
 
 
 
 
 
-capital=1
-spx_use['account_value']=0
-spx_use['hedge_size']=0
-spx_use['spx_change_1']=(1+spx_use['spx_change'])
-spx_use['spx_cum_product']=spx_use['spx_change_1'].cumprod()
-spx_use['rty_change_1']=(1+spx_use['rty_change'])
-spx_use['rty_cum_product']=spx_use['rty_change_1'].cumprod()
-
-
-i=0
-for i in range(0,spx_use.shape[0]):
-    if i==0:
-        if spx_use.loc[i,'hedge_B_shift']==0:
-            spx_use.loc[i,'hedge_pnl']=0
-            spx_use.loc[i,'account_value']=capital*(1+spx_use.loc[i,'spx_change'])
-        else:
-            spx_use.loc[i,'hedge_pnl']=capital*(1+0.5*spx_use.loc[i,'spx_60_dd_shift'])*spx_use.loc[i,'rty_change']*-1
-            spx_use.loc[i,'account_value']=capital*(1+spx_use.loc[i,'spx_change'])+spx_use.loc[i,'hedge_pnl']        
-
-    if i>0:
-        if spx_use.loc[i,'hedge_B_shift']==0:
-            spx_use.loc[i,'hedge_pnl']=0
-            spx_use.loc[i,'account_value']=spx_use.loc[i-1,'account_value']*(1+spx_use.loc[i,'spx_change'])
-        else:
-            spx_use.loc[i,'hedge_pnl']=spx_use.loc[i-1,'account_value']*(1+0.5*spx_use.loc[i,'spx_60_dd_shift'])*spx_use.loc[i,'rty_change']*-1
-            spx_use.loc[i,'account_value']=spx_use.loc[i-1,'account_value']*(1+spx_use.loc[i,'spx_change'])+spx_use.loc[i,'hedge_pnl']              
-
-
-
-
-
-spx_use.tail(10)
-
-        
-    
-#https://stackoverflow.com/questions/69861880/plotly-colorize-line-segments
-#https://medium.com/codex/financial-charts-and-visuals-with-plotly-in-python-843ffa9341a9   #plot stock 
-#./python -m pip install plotly
-#./python -m pip install kaleido
-
-from plotly.offline import download_plotlyjs, init_notebook_mode,  plot
-from plotly import graph_objects as go
-
-x =spx_use['Date'].values
-y1 = spx_use['spx_cum_product'].values
-y2 = spx_use['rty_cum_product'].values
-y3 = spx_use['account_value'].values
-
-
-
-layout = go.Layout(autosize=False,width=1300,height=700,
-                   title='<span style="font-size: 30px;">abc plot</span>',
-                   xaxis_title='<b>Date</b>',#"Date",
-                   yaxis_title='<b>Cumulative P&L</b>',#"Cumulative P&L",
-                   legend_title='<span style="font-size: 15px;">Legend Description</span>')
-fig = go.Figure(layout=layout)
-#obj1 = go.Scatter(x = x,y = y2,mode = 'lines')
-#fig.add_trace(obj1)
-obj2 = go.Scatter(x = x,y = y3,mode = 'lines',marker=dict(color='#CDAA7D'))
-fig.add_trace(obj2)
-
-fig['data'][0]['name'] = 'Account Value - S&P hedge with Russel'   #change legend first color description name
-
-#defind 2 colors for hedge
-line_cols = np.where(spx_use['hedge_B_shift'].values==1,"red","black")
-color_legend_name={'red':'S&P (Own Movement) - Hedging Triggered','black':'S&P (Own Movement) - Hedging Not Triggered'}
-
-#find the index of first occurance of distince emement
-distinct_element_first_occurance_index=[np.where(line_cols==k)[0][0] for k in list(set(line_cols))]
-
-i=0
-#iterate every single points in line_cols, each will show a legend line in right, but only show it when it is in the index of
-#distinct color
-for i, col in enumerate(line_cols):
-    if i in distinct_element_first_occurance_index:
-        fig.add_scatter(x=x[i:(i+2)], y=y1[i:(i+2)],line=dict(color=col),mode='lines',showlegend=True) #don't know why use i+2, just follow it
-        fig['data'][i+1]['name'] = color_legend_name[col]  #need to use i+1 because fig['data'][0]['name'] already used above
-    else:
-        fig.add_scatter(x=x[i:(i+2)], y=y1[i:(i+2)],line=dict(color=col),mode='lines',showlegend=False)        
-
-#add vertical line
-fig.add_vline(x='2022-04-07')
-#add horizontal line
-fig.add_hline(y=0.8, line_dash="dot",annotation_text="hello",annotation_position="bottom left")
-#add verticval rectangular
-fig.add_vrect(x0="2022-05-18", x1="2022-06-01",annotation_text="decline", annotation_position="top left",fillcolor="green", opacity=0.25, line_width=0)
-#fig.layout.yaxis.tickformat = ',.0%'  #display in percentage
-
-plot(fig)
-
-fig.write_image("plotly_temp.jpeg")
+
+
+
+
+
+
 
 
