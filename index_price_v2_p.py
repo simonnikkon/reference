@@ -110,7 +110,7 @@ if (chrome_driver_ok==False):
     from email import encoders
     mail_content = "email sent"
     #The mail addresses and password
-    sender_address = 'random9522@gmail.com'
+    sender_address = 'ra'
     sender_pass = '95229522'
     receiver_address = 'daniel.chunyuwai@gmail.com'
     #Setup the MIME
@@ -137,7 +137,7 @@ if (chrome_driver_ok==False):
     #adjust up volume
     for i in range(0,7):
         volume_up()
-    sound_path=r'C:\Users\daniellau\Dropbox\notebooks\index_analysis\IB_live_trade\Wecker-sound.mp3'
+    sound_path=r'C:\Users\danie_live_trade\Wecker-sound.mp3'
     os.system(sound_path)
 
 
@@ -2259,68 +2259,6 @@ for i in range(0,len(data.symbol)):
 #                ema_decay=5
                 
     
-            #approach 1
-            #merge hsi_x date with asset date and fill na with zero
-            #NA means the date is in HSI but not in asset
-            hsi_x_temp=hsi_x.copy()  
-            hsi_x_temp=pd.merge(left=hsi_x_temp[['Date2','DateNum']],right=appear[['Date2',data.Name_use_python[i]+'_change']],how='left',on=['Date2'])        
-            hsi_x_temp=hsi_x_temp.fillna(0)
-            
-            hsi_x_temp.sort_values(by='Date2',ascending=False,inplace=True)
-            target_col=data.Name_use_python[i]+'_change'
-            hsi_x_temp=ema_custom_v2(hsi_x_temp,'DateNum',target_col,ema_decay)
-            name_old='EMA_'+target_col
-            name_new='EMA_'+target_col+'_v1_'+str(ema_decay)
-            hsi_x_temp=hsi_x_temp.rename(columns={name_old:name_new})
-            hsi_x=pd.merge(left=hsi_x,right=hsi_x_temp[['Date2',name_new]],how='left',on=['Date2'])     
-            
-    
-    
-            #appraoch2 equivalent (faster)
-            #for each date with NA value in hsi_x
-            #append to asset and perform ema and output the value
-            hsi_x_temp=hsi_x.copy()  
-            hsi_x_temp=pd.merge(left=hsi_x_temp[['Date2','DateNum']],right=appear[['Date2',data.Name_use_python[i]+'_change']],how='left',on=['Date2'])        
-            hsi_x_temp_Date_with_na=pd.DataFrame(hsi_x_temp.loc[pd.isnull(hsi_x_temp[data.Name_use_python[i]+'_change']),'Date2'].copy())
-            
-            if len(hsi_x_temp_Date_with_na)!=0: #for hk stock, date same as HSI, so no NA
-                #find out latest date in hsi_y_x
-                #if say today is trading date, asset won't have this date, so need to append to "appear"
-                latest_date_hsi=max(hsi_x_temp_Date_with_na['Date2'])
-                last_date=dt.strptime(latest_date_hsi,'%Y-%m-%d')
-                add_datenum= (last_date-dt(1970,1,1)).days
-                
-                if latest_date_hsi>max(appear['Date2']):
-                    add_df=pd.DataFrame({'Date2':[latest_date_hsi],target_col:[np.nan],'DateNum':add_datenum})
-                    appear=add_df.append(appear)
-                appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-                
-                #
-                hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na.loc[hsi_x_temp_Date_with_na['Date2']<max(appear['Date2']),:].copy()
-        
-                
-                date_in_asset=appear['Date2'].values
-                
-                #say, if 2018-09-09 is not in appear, and 2018-09-10 is the closest date in appear greatest then it
-                #the ema of 2018-09-09 will be the same as 2018-09-10
-                hsi_x_temp_Date_with_na_work['latest_date']=hsi_x_temp_Date_with_na_work['Date2'].apply(lambda x:date_in_asset[x<date_in_asset][-1])
-                hsi_x_temp_Date_with_na_work=pd.merge(hsi_x_temp_Date_with_na_work,
-                                                      appear[['Date2','EMA_'+target_col]].copy(),how='left',
-                                                      left_on=['latest_date'],
-                                                      right_on=['Date2'])
-                del hsi_x_temp_Date_with_na_work['Date2_y']
-                hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na_work.rename(columns={'Date2_x':'Date2'})
-            else:
-                appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-                hsi_x_temp_Date_with_na_work=pd.DataFrame(columns=['Date2','latest_date','EMA_'+target_col])
-            
-            hsi_x_temp=pd.merge(hsi_x_temp[['Date2','DateNum']],appear[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-            hsi_x_temp=pd.merge(hsi_x_temp,hsi_x_temp_Date_with_na_work[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-            hsi_x_temp=hsi_x_temp.fillna(0)
-            hsi_x_temp['EMA_'+target_col+'_v2_'+str(ema_decay)]=hsi_x_temp['EMA_'+target_col+'_x']+hsi_x_temp['EMA_'+target_col+'_y']
-    
-            hsi_x=pd.merge(hsi_x,hsi_x_temp[['Date2','EMA_'+target_col+'_v2_'+str(ema_decay)]],how='left',left_on=['Date2'],right_on=['Date2'])
-    
     
             count=count+1
             print('finished EMA ',count,' out of ',total,'\n')
@@ -2371,133 +2309,6 @@ use_list_dataframe = use_list_dataframe.merge(use_list_dataframe.apply(factor_st
 #list(hsi_x.columns.values).index('AMT_change')
 
 
-
-
-
-
-
-
-
-
-
-
-
-#add common use field to hsi_y_x
-
-hsi_y_x['month']=hsi_y_x['Date2'].apply(lambda x: dt.strptime(x,'%Y-%m-%d').month)
-hsi_y_x.loc[(hsi_y_x['month']>=1)&(hsi_y_x['month']<=3),'quarter']=1
-hsi_y_x.loc[(hsi_y_x['month']>=4)&(hsi_y_x['month']<=6),'quarter']=2
-hsi_y_x.loc[(hsi_y_x['month']>=7)&(hsi_y_x['month']<=9),'quarter']=3
-hsi_y_x.loc[(hsi_y_x['month']>=10)&(hsi_y_x['month']<=12),'quarter']=4
-hsi_y_x['year']=hsi_y_x['Date2'].apply(lambda x: dt.strptime(x,'%Y-%m-%d').year)
-
-
-#create interaction factors
-interact_list=[]
-for i in range(0,len(data.symbol)):
-    if (data.create_interaction[i]=='Yes'):
-        if data.UseEMA[i]=='Yes':
-            interact_list.append('EMA_'+data['Name_use_python'][i]+'_change')
-        else:
-            interact_list.append(data['Name_use_python'][i]+'_change')
-#i=0
-#j=1
-for i in range(0,len(interact_list)-1):
-    for j in range(i+1,len(interact_list)):
-        hsi_y_x[interact_list[i]+'_interact_'+interact_list[j]]=hsi_y_x[interact_list[i]]*hsi_y_x[interact_list[j]]
-
-
-
-
-
-#create factor if greater than average change
-hsi_y_temp=hsi_y.copy()
-hsi_y_temp['year']=hsi_y_temp['Date2'].apply(lambda x: dt.strptime(x,'%Y-%m-%d').year)
-hsi_y_temp['change']=hsi_y_temp['Close_HSI']-hsi_y_temp['Open_HSI']
-#DJI_use=DJI.copy()
-#DJI_use['year']=DJI_use['Date2'].apply(lambda x: datetime.strptime(x,'%Y-%m-%d').year)
-
-#x=DJI_use.loc[DJI_use['year']==1990,:]
-#asset_name='DJI'
-def find_mean(x,asset_name):
-    mean_up=x.loc[x[asset_name+'_change']>0,:][asset_name+'_change'].mean()
-    mean_down=x.loc[x[asset_name+'_change']<0,:][asset_name+'_change'].mean()
-    sd_up=x.loc[x[asset_name+'_change']>0,:][asset_name+'_change'].std(ddof=0)
-    sd_down=x.loc[x[asset_name+'_change']<0,:][asset_name+'_change'].std(ddof=0)
-
-    mean_up_sd1=mean_up+sd_up
-    mean_up_sd2=mean_up+sd_up*2
-    mean_down_sd1=mean_down-sd_down
-    mean_down_sd2=mean_down-sd_down*2
-    return pd.Series([mean_up,mean_up_sd1,mean_up_sd2,mean_down,mean_down_sd1,mean_down_sd2])
-
-
-
-             
-                 
-
-                 
-                 
-
-mean_asset_list=['index_DJIA_wsj','brent_oil_investing','euro_bobl_investing',
-                 'gold_futures_investing','oats_futures_investing','hang_seng_oi','hang_seng_oi_volume']#,'0700_HK','0005_HK','1299_HK']
-                 #'EMA_N225','EMA_HSI_index','EMA_00001.SS','EMA_1398_HK','EMA_0001_HK','EMA_0016_HK','EMA_0002_HK']
-
-
-for asset_name in mean_asset_list:
-    vars()[asset_name+'_use']=vars()[asset_name].copy()
-    vars()[asset_name+'_use']['year']=vars()[asset_name+'_use']['Date2'].apply(lambda x: dt.strptime(x,'%Y-%m-%d').year)
-    #DJI_use
-    table_name=asset_name+'_use_year_mean'
-    table_use=vars()[asset_name+'_use'].copy()
-    vars()[table_name]=vars()[asset_name+'_use'].groupby(['year']).apply(lambda x:find_mean(x.reset_index(drop=True),asset_name))
-    #vars()[table_name]=vars()[asset_name+'_use'].groupby(['year']).apply(lambda x:find_mean(table_use,x.reset_index(drop=True),asset_name))
-    #vars()[table_name]=vars()[table_name].rename(columns={0:'mean_up',1:'mean_up_sd1',2:'mean_up_sd2',3:'mean_down',4:'mean_down_sd1',5:'mean_down_sd2',6:'sd_up',7:'sd_down'})
-    vars()[table_name]=vars()[table_name].rename(columns={0:'mean_up',1:'mean_up_sd1',2:'mean_up_sd2',3:'mean_down',4:'mean_down_sd1',5:'mean_down_sd2'})    
-    vars()[table_name].reset_index(0,inplace=True)
-    vars()[table_name]['year_plus_one']=vars()[table_name]['year']+1
-    
-    hsi_y_x_use=hsi_y_x[['Date2','year',asset_name+'_change']].copy()
-    hsi_y_x_use=pd.merge(hsi_y_x_use,vars()[table_name],how='left',left_on=['year'],right_on=['year_plus_one'])
-    
-   
-    
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']>hsi_y_x_use['mean_up'],asset_name+'_greatless_mean_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_up']
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']<hsi_y_x_use['mean_down'],asset_name+'_greatless_mean_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_down']
-    hsi_y_x_use[asset_name+'_greatless_mean_value_indicator']=hsi_y_x_use[asset_name+'_greatless_mean_value_indicator'].fillna(0)
-    
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']>hsi_y_x_use['mean_up_sd1'],asset_name+'_greatless_mean_sd1_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_up_sd1']
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']<hsi_y_x_use['mean_down_sd1'],asset_name+'_greatless_mean_sd1_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_down_sd1']
-    hsi_y_x_use[asset_name+'_greatless_mean_sd1_value_indicator']=hsi_y_x_use[asset_name+'_greatless_mean_sd1_value_indicator'].fillna(0)
-    
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']>hsi_y_x_use['mean_up_sd2'],asset_name+'_greatless_mean_sd2_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_up_sd2']
-    hsi_y_x_use.loc[hsi_y_x_use[asset_name+'_change']<hsi_y_x_use['mean_down_sd2'],asset_name+'_greatless_mean_sd2_value_indicator']=hsi_y_x_use[asset_name+'_change']-hsi_y_x_use['mean_down_sd2']
-    hsi_y_x_use[asset_name+'_greatless_mean_sd2_value_indicator']=hsi_y_x_use[asset_name+'_greatless_mean_sd2_value_indicator'].fillna(0)
-    
-    hsi_y_x=pd.merge(hsi_y_x,hsi_y_x_use[['Date2',asset_name+'_greatless_mean_value_indicator',asset_name+'_greatless_mean_sd1_value_indicator',asset_name+'_greatless_mean_sd2_value_indicator']],how='left',left_on=['Date2'],right_on=['Date2'])
-    
-    hsi_y_x[asset_name+'_change_lag2']=hsi_y_x[asset_name+'_change'].shift(1)
-    hsi_y_x[asset_name+'_change_lag3']=hsi_y_x[asset_name+'_change'].shift(2)
-    hsi_y_x=hsi_y_x.fillna(0)
-
-
-
-
-factor_indicator=['index_DJIA_wsj','brent_oil_investing','euro_bobl_investing',
-                  'gold_futures_investing','oats_futures_investing','hang_seng_oi','hang_seng_oi_volume']#,'0700_HK','0005_HK','1299_HK']
-
-#create indicator factor
-for i in factor_indicator:
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_sd2_value_indicator']>0,i+'_greatless_mean_sd2_value_indicator_10']=1
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_sd2_value_indicator']<0,i+'_greatless_mean_sd2_value_indicator_10']=-1
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_sd2_value_indicator']==0,i+'_greatless_mean_sd2_value_indicator_10']=0
-
-for i in factor_indicator:
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_value_indicator']>0,i+'_greatless_mean_value_indicator_10']=1
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_value_indicator']<0,i+'_greatless_mean_value_indicator_10']=-1
-    hsi_y_x.loc[hsi_y_x[i+'_greatless_mean_value_indicator']==0,i+'_greatless_mean_value_indicator_10']=0
-
-hsi_y_x['brent_oil_gold_future_interact_indicator']=hsi_y_x['brent_oil_investing_greatless_mean_value_indicator_10']*hsi_y_x['gold_futures_investing_greatless_mean_value_indicator_10']
 
 
 
@@ -2568,53 +2379,6 @@ for f_name in ['hang_seng_oi_change_revised1','hang_seng_oi_change_revised2',
         
         #ema_decay=2
             
-        #appraoch2 equivalent (faster)
-        #for each date with NA value in hsi_x
-        #append to asset and perform ema and output the value
-        hsi_x_temp=hsi_x.copy()  
-        hsi_x_temp=pd.merge(left=hsi_x_temp[['Date2','DateNum']],right=appear[['Date2',f_name]],how='left',on=['Date2'])        
-        hsi_x_temp_Date_with_na=pd.DataFrame(hsi_x_temp.loc[pd.isnull(hsi_x_temp[f_name]),'Date2'].copy())
-        
-        if len(hsi_x_temp_Date_with_na)!=0: #for hk stock, date same as HSI, so no NA
-            #find out latest date in hsi_y_x
-            #if say today is trading date, asset won't have this date, so need to append to "appear"
-            latest_date_hsi=max(hsi_x_temp_Date_with_na['Date2'])
-            last_date=dt.strptime(latest_date_hsi,'%Y-%m-%d')
-            add_datenum= (last_date-dt(1970,1,1)).days
-            
-            if latest_date_hsi>max(appear['Date2']):
-                add_df=pd.DataFrame({'Date2':[latest_date_hsi],target_col:[np.nan],'DateNum':add_datenum})
-                appear=add_df.append(appear)
-            appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-            hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na.loc[hsi_x_temp_Date_with_na['Date2']<max(appear['Date2']),:].copy()
-            date_in_asset=appear['Date2'].values
-            
-            #say, if 2018-09-09 is not in appear, and 2018-09-10 is the closest date in appear greatest then it
-            #the ema of 2018-09-09 will be the same as 2018-09-10
-            hsi_x_temp_Date_with_na_work['latest_date']=hsi_x_temp_Date_with_na_work['Date2'].apply(lambda x:date_in_asset[x<date_in_asset][-1])
-            hsi_x_temp_Date_with_na_work=pd.merge(hsi_x_temp_Date_with_na_work,
-                                                  appear[['Date2','EMA_'+target_col]].copy(),how='left',
-                                                  left_on=['latest_date'],
-                                                  right_on=['Date2'])
-            del hsi_x_temp_Date_with_na_work['Date2_y']
-            hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na_work.rename(columns={'Date2_x':'Date2'})
-        else:
-            appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-            hsi_x_temp_Date_with_na_work=pd.DataFrame(columns=['Date2','latest_date','EMA_'+target_col])
-        
-        hsi_x_temp=pd.merge(hsi_x_temp[['Date2','DateNum']],appear[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-        hsi_x_temp=pd.merge(hsi_x_temp,hsi_x_temp_Date_with_na_work[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-        hsi_x_temp=hsi_x_temp.fillna(0)
-        hsi_x_temp['EMA_'+target_col+'_v2'+'_'+str(ema_decay)]=hsi_x_temp['EMA_'+target_col+'_x']+hsi_x_temp['EMA_'+target_col+'_y']
-        
-        hsi_y_x=pd.merge(hsi_y_x,hsi_x_temp[['Date2','EMA_'+target_col+'_v2'+'_'+str(ema_decay)]],how='left',left_on=['Date2'],right_on=['Date2'])
-
-
-
-
-
-
-
 
 
 
@@ -2708,53 +2472,6 @@ for f_name in ['hang_seng_oi_change_revised5','hang_seng_oi_change_revised6',
         appear=target_table[['Date2',f_name,'DateNum']].copy()
         target_col=f_name
         
-        #ema_decay=2
-            
-        #appraoch2 equivalent (faster)
-        #for each date with NA value in hsi_x
-        #append to asset and perform ema and output the value
-        hsi_x_temp=hsi_x.copy()  
-        hsi_x_temp=pd.merge(left=hsi_x_temp[['Date2','DateNum']],right=appear[['Date2',f_name]],how='left',on=['Date2'])        
-        hsi_x_temp_Date_with_na=pd.DataFrame(hsi_x_temp.loc[pd.isnull(hsi_x_temp[f_name]),'Date2'].copy())
-        
-        if len(hsi_x_temp_Date_with_na)!=0: #for hk stock, date same as HSI, so no NA
-            #find out latest date in hsi_y_x
-            #if say today is trading date, asset won't have this date, so need to append to "appear"
-            latest_date_hsi=max(hsi_x_temp_Date_with_na['Date2'])
-            last_date=dt.strptime(latest_date_hsi,'%Y-%m-%d')
-            add_datenum= (last_date-dt(1970,1,1)).days
-            
-            if latest_date_hsi>max(appear['Date2']):
-                add_df=pd.DataFrame({'Date2':[latest_date_hsi],target_col:[np.nan],'DateNum':add_datenum})
-                appear=add_df.append(appear)
-            appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-            hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na.loc[hsi_x_temp_Date_with_na['Date2']<max(appear['Date2']),:].copy()
-            date_in_asset=appear['Date2'].values
-            
-            #say, if 2018-09-09 is not in appear, and 2018-09-10 is the closest date in appear greatest then it
-            #the ema of 2018-09-09 will be the same as 2018-09-10
-            hsi_x_temp_Date_with_na_work['latest_date']=hsi_x_temp_Date_with_na_work['Date2'].apply(lambda x:date_in_asset[x<date_in_asset][-1])
-            hsi_x_temp_Date_with_na_work=pd.merge(hsi_x_temp_Date_with_na_work,
-                                                  appear[['Date2','EMA_'+target_col]].copy(),how='left',
-                                                  left_on=['latest_date'],
-                                                  right_on=['Date2'])
-            del hsi_x_temp_Date_with_na_work['Date2_y']
-            hsi_x_temp_Date_with_na_work=hsi_x_temp_Date_with_na_work.rename(columns={'Date2_x':'Date2'})
-        else:
-            appear=ema_custom_v2(appear,'DateNum',target_col,ema_decay)
-            hsi_x_temp_Date_with_na_work=pd.DataFrame(columns=['Date2','latest_date','EMA_'+target_col])
-        
-        hsi_x_temp=pd.merge(hsi_x_temp[['Date2','DateNum']],appear[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-        hsi_x_temp=pd.merge(hsi_x_temp,hsi_x_temp_Date_with_na_work[['Date2','EMA_'+target_col]],how='left',left_on=['Date2'],right_on=['Date2'])
-        hsi_x_temp=hsi_x_temp.fillna(0)
-        hsi_x_temp['EMA_'+target_col+'_v2'+'_'+str(ema_decay)]=hsi_x_temp['EMA_'+target_col+'_x']+hsi_x_temp['EMA_'+target_col+'_y']
-        
-        hsi_y_x=pd.merge(hsi_y_x,hsi_x_temp[['Date2','EMA_'+target_col+'_v2'+'_'+str(ema_decay)]],how='left',left_on=['Date2'],right_on=['Date2'])
-
-
-
-
-
 
 
 
@@ -2990,9 +2707,9 @@ from email.mime.base import MIMEBase
 from email import encoders
 mail_content = output
 #The mail addresses and password
-sender_address = 'daniel2019trading@gmail.com'
-sender_pass = 'vhfrnlisxofeajsy'
-receiver_address = 'daniel2019trading@gmail.com'
+sender_address = 'daniel20ng@gmail.com'
+sender_pass = 'vhy'
+receiver_address = 'daniel20ing@gmail.com'
 #Setup the MIME
 message = MIMEMultipart()
 message['From'] = sender_address
