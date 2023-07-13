@@ -45,7 +45,7 @@ krow_summary
 sql_query.sql
 
 
-
+#post_race_update_odd_table
 
 
 
@@ -25017,8 +25017,518 @@ SELECT person_id, pd_type, SUM(fee) FROM policy_holder GROUP BY person_id, pd_ty
 
 
 
+#post_race_update_odd_table
 
 
+
+
+from sqlalchemy import create_engine
+import configparser
+import re
+#import MySQLdb as mdb
+import pandas as pd
+import numpy as np
+import pymysql
+import pandas.io.sql as sql
+
+from datetime import datetime as dt
+import datetime
+from datetime import timedelta
+
+from pandas import HDFStore,DataFrame
+
+from numba import jit
+
+import itertools
+
+
+import os
+os.getcwd()
+os.chdir('/home/tomm')
+log_path='/extdrive'
+log_path='/home/tomu/my_storage/tradelog/horse_cumulative'
+
+import sys
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
+
+#output stan out
+import sys
+import time
+time_now_save=time.strftime("%Y%m%d")+'_'+time.strftime("%H%M%S")
+stan_out_log=os.path.join(log_path,'log','stan_out_post_odd_rearrangment_'+time_now_save+'_production'+'.log')
+sys.stderr = open(stan_out_log, 'w')
+
+
+
+connection=create_engine("mysql+
+query='SELECT * from racecard'
+racecard= sql.read_sql(query,connection)
+
+
+#racecard=racecard[['Date','RaceNo','Horse No.','race_start_time']].copy() 
+racecard=racecard[['Date','RaceNo','race_start_time']].copy() 
+
+racecard=racecard.drop_duplicates()
+racecard=racecard.reset_index(drop=True)
+
+#convert date to %Y-%m-%d format
+racecard['Date']=racecard['Date'].apply(lambda x:dt.strptime(x,"%Y/%m/%d").strftime("%Y-%m-%d")) #string to date then to string again
+
+#remove 2019-09-18 races, on this day, hkjc stop all races because of ho kwan yiu horse
+racecard=racecard.loc[~(racecard['Date']=='2019-09-18'),:]
+
+#remove 2019-09-18 races, on this day, hkjc stop all races because of protest
+racecard=racecard.loc[~(racecard['Date']=='2019-11-13'),:]
+racecard=racecard.reset_index(drop=True)
+
+#edit raceno
+racecard['RaceNo']=racecard['RaceNo'].astype(int)
+
+##edit horseno
+#
+#racecard=racecard.rename(columns={'Horse No.':'HorseNo'})
+#racecard['HorseNo']=racecard['HorseNo'].astype(int)
+
+#select date after 20191006 because one-off odd are up to 20191006
+#racecard=racecard.loc[racecard['Date']>'2019-10-06',:]
+
+
+connection_odd=create_engine("mysqore")  
+
+
+
+
+
+    
+    
+    
+    
+
+#./pip install mysql-connector-python
+
+import mysql.connector
+
+mydb = mysql.connector.connect(
+  host="localhost",
+  user="",
+  passwd="Ha#",
+  database="Odds_store"
+)
+
+mycursor = mydb.cursor()
+
+
+
+
+
+
+aa='2022-01-23'
+bb=1
+cc="13:00"
+bet_type='pla'
+
+
+def extract_odd(aa,bb,cc,bet_type):
+    race_date=str(aa)
+    Race_no=str(bb)
+    time_set_full=race_date+":"+str(cc)+':00'
+    time_set_full_dt=dt.strptime(time_set_full,'%Y-%m-%d:%H:%M:%S')
+    #time_set_datetime=dt.strptime(time_set_full,'%Y-%m-%d:%H:%M:%S')-datetime.timedelta(minutes=0)
+    time_set_datetime=dt.strptime(time_set_full,'%Y-%m-%d:%H:%M:%S')+datetime.timedelta(seconds=25)
+    time_set=time_set_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+
+    #add 90 second before open
+    if (bet_type=='win')|(bet_type=='pla'):
+        time2_set_datetime=dt.strptime(time_set_full,'%Y-%m-%d:%H:%M:%S')-datetime.timedelta(seconds=5)
+        time2_set=time2_set_datetime.strftime('%Y-%m-%d %H:%M:%S')
+
+
+    time_set_finalpool_datetime=dt.strptime(time_set_full,'%Y-%m-%d:%H:%M:%S')+datetime.timedelta(seconds=600)
+    time_set_finalpool=time_set_finalpool_datetime.strftime('%Y-%m-%d %H:%M:%S')
+    
+    
+    
+    
+    
+    #check if table exist
+    table_exist=False
+    
+
+
+    
+        
+    try:
+        #read 25s odd
+        query='select * from odds_'+race_date.replace('-','')+' where bettype='+'"'+bet_type+'"'+ ' and up_time<='+'"'+time_set+'"'+' and extraction_time>='+'"'+race_date+' 00:00:00'+'"'+' and raceno='+Race_no+' '+'and date='+'"'+race_date+'"'+' order by up_time desc limit 1'
+        odds = pd.read_sql(query, con=connection_odd_live)
+
+        #find time difference between uptime and race start time    
+        odds['up_time_dt']=odds['up_time'].apply(lambda x:dt.strptime(x,"%Y-%m-%d %H:%M:%S"))
+        odds['time_diff']=time_set_full_dt-odds['up_time_dt']
+        odds['time_diff_second']=odds['time_diff'].apply(lambda x:x.total_seconds())
+        del odds['time_diff']
+
+        if (bet_type=='win')|(bet_type=='pla'):
+            #read 90 second before open odd
+            query='select * from odds_'+race_date.replace('-','')+' where bettype='+'"'+bet_type+'"'+ ' and up_time<='+'"'+time2_set+'"'+' and extraction_time>='+'"'+race_date+' 00:00:00'+'"'+' and raceno='+Race_no+' '+'and date='+'"'+race_date+'"'+' order by up_time desc limit 1'
+            odds_before90s = pd.read_sql(query, con=connection_odd_live)  
+    
+            #find time difference between uptime and race start time    
+            odds_before90s['up_time_dt']=odds_before90s['up_time'].apply(lambda x:dt.strptime(x,"%Y-%m-%d %H:%M:%S"))
+            odds_before90s['time_diff']=time_set_full_dt-odds_before90s['up_time_dt']
+            odds_before90s['time_diff_second']=odds_before90s['time_diff'].apply(lambda x:x.total_seconds())
+            del odds_before90s['time_diff']
+        
+        #read 25s pool
+        bet_type_pool=bet_type+'_pool' if bet_type!='ff' else 'f-f_pool'
+        query_pool_25s='select * from odds_'+race_date.replace('-','')+' where bettype='+'"'+bet_type_pool+'"'+ ' and up_time<='+'"'+time_set+'"'+' and extraction_time>='+'"'+race_date+' 00:00:00'+'"'+' and raceno='+Race_no+' '+'and date='+'"'+race_date+'"'+' order by up_time desc limit 1'
+        pool_25s = pd.read_sql(query_pool_25s, con=connection_odd_live)        
+        pool_25s=pool_25s.rename(columns={'odds':'pool_25s'})
+
+       #find time difference between uptime and race start time  
+        pool_25s['up_time_dt']=pool_25s['up_time'].apply(lambda x:dt.strptime(x,"%Y-%m-%d %H:%M:%S"))
+        pool_25s['time_diff']=time_set_full_dt-pool_25s['up_time_dt']
+        pool_25s['time_diff_pool_25s_second']=pool_25s['time_diff'].apply(lambda x:x.total_seconds())
+        del pool_25s['time_diff']
+        
+        #find final pool
+        query_pool_final='select * from odds_'+race_date.replace('-','')+' where bettype='+'"'+bet_type_pool+'"'+ ' and up_time<='+'"'+time_set_finalpool+'"'+' and extraction_time>='+'"'+race_date+' 00:00:00'+'"'+' and raceno='+Race_no+' '+'and date='+'"'+race_date+'"'+' order by up_time desc limit 100'
+        pool_final = pd.read_sql(query_pool_final, con=connection_odd_live)        
+        pool_final=pool_final.head(1)
+        pool_final=pool_final.rename(columns={'odds':'pool_final'})
+        
+        #find time difference between uptime and race start time  
+        pool_final['up_time_dt']=pool_final['up_time'].apply(lambda x:dt.strptime(x,"%Y-%m-%d %H:%M:%S"))
+        pool_final['time_diff']=time_set_full_dt-pool_final['up_time_dt']
+        pool_final['time_diff_pool_final_second']=pool_final['time_diff'].apply(lambda x:x.total_seconds())
+        del pool_final['time_diff']
+        
+        if odds.shape[0]!=0: #e.g. 20200621 race 3 only 5 hrs so no qpl
+            table_exist=True
+            
+        if all(['---' in x for x in odds['odds'].values[0].split(';')]):  #20200503 race1 hr 2 withdraw, so change from 5 hr to 4 hr so no tri
+            table_exist=False
+            
+            
+            
+    except:
+        pass
+    
+    if table_exist:
+
+        #save to sql db, remove same date and raceno if exist
+        table_name='odds_25s_after20191006_'+bet_type
+        #delete record in df if already exist
+        try:
+            query='DELETE FROM '+'`'+table_name+'`'+' where date='+'"'+race_date+'"'+' and raceno='+Race_no
+            mycursor.execute(query)     
+            mydb.commit()
+        except:
+            pass
+        odds.to_sql(table_name,connection_odd,if_exists='append',chunksize=1000,index=False)   
+
+
+
+
+        if (bet_type=='win')|(bet_type=='pla'):
+            table_name='odds_before90s_after20191006_'+bet_type
+            #delete record in df if already exist
+            try:
+                query='DELETE FROM '+'`'+table_name+'`'+' where date='+'"'+race_date+'"'+' and raceno='+Race_no
+                mycursor.execute(query)     
+                mydb.commit()
+            except:
+                pass
+            odds_before90s.to_sql(table_name,connection_odd,if_exists='append',chunksize=1000,index=False) 
+
+
+
+
+
+        pool_name=bet_type+'_pool' if bet_type!='ff' else 'f-f_pool'
+        table_name='pools_25s_after20191006'
+        try:
+            query='DELETE FROM '+'`'+table_name+'`'+' where date='+'"'+race_date+'"'+' and raceno='+Race_no+' and bettype='+'"'+pool_name+'"'
+            mycursor.execute(query)     
+            mydb.commit()
+        except:
+            pass
+        pool_25s.to_sql(table_name,connection_odd,if_exists='append',chunksize=1000,index=False)             
+
+
+
+
+
+
+        table_name='pools_final_after20191006'
+        try:
+            query='DELETE FROM '+'`'+table_name+'`'+' where date='+'"'+race_date+'"'+' and raceno='+Race_no+' and bettype='+'"'+pool_name+'"'
+            mycursor.execute(query)     
+            mydb.commit()
+        except:
+            pass
+        pool_final.to_sql(table_name,connection_odd,if_exists='append',chunksize=1000,index=False)
+
+        
+        
+        if (bet_type=='win')|(bet_type=='pla'):
+            df=pd.DataFrame([])
+            col_name=bet_type+'_odd_25s'
+
+            date=odds['date'].values[0]
+            raceno=int(odds['raceno'].values[0])
+            odd=odds['odds'].values[0]
+            odd=odd.split(';')
+            
+            horseno=[i.split('=')[0] for i in odd]
+            odd2=[i.split('=')[1] for i in odd]
+
+
+
+            col_name2=bet_type+'_odd_before90s'
+
+            date=odds_before90s['date'].values[0]
+            raceno=int(odds_before90s['raceno'].values[0])
+            odd_before90s=odds_before90s['odds'].values[0]
+            odd_before90s=odd_before90s.split(';')
+            
+            horseno=[i.split('=')[0] for i in odd_before90s]
+            odd2_before90s=[i.split('=')[1] for i in odd_before90s]
+
+            
+            
+            
+            pool_25s_value=pool_25s['pool_25s'].values[0]
+            pool_final_value=pool_final['pool_final'].values[0]
+
+            race_start_time=time_set_full
+            up_time_odd_25s=odds['up_time'].values[0]
+            time_diff_second=odds['time_diff_second'].values[0]
+            time_diff_pool_25s_second=pool_25s['time_diff_pool_25s_second'].values[0]
+            time_diff_pool_final_second=pool_final['time_diff_pool_final_second'].values[0]
+                        
+            df=pd.DataFrame({'Date':date,'RaceNo':raceno,'race_start_time':race_start_time,'up_time_odd_25s':up_time_odd_25s,'HorseNo':horseno,col_name:odd2,col_name2:odd2_before90s,'pool_25s':pool_25s_value,'pool_final':pool_final_value,'time_diff_second':time_diff_second,'time_diff_pool_25s_second':time_diff_pool_25s_second,'time_diff_pool_final_second':time_diff_pool_final_second})    
+
+            df['RaceNo']=df['RaceNo'].astype(int)
+            df['HorseNo']=df['HorseNo'].astype(int)
+            df['pool_25s']=df['pool_25s'].astype(float)
+            df['pool_final']=df['pool_final'].astype(float)
+
+        if (bet_type=='qin')|(bet_type=='qpl')|(bet_type=='fct'):
+            df=pd.DataFrame([])
+            col_name=bet_type+'_odd_25s'
+
+            date=odds['date'].values[0]
+            raceno=int(odds['raceno'].values[0])
+            odd=odds['odds'].values[0]
+            odd=odd.split(';')
+            
+            hr1=[i.split("=")[0].split("-")[0] for i in odd]
+            hr2=[i.split("=")[0].split("-")[1] for i in odd]
+            odd2=[i.split('=')[1] for i in odd]
+            
+            pool_25s_value=pool_25s['pool_25s'].values[0]
+            pool_final_value=pool_final['pool_final'].values[0]
+
+            race_start_time=time_set_full
+            up_time_odd_25s=odds['up_time'].values[0]
+            time_diff_second=odds['time_diff_second'].values[0]
+            time_diff_pool_25s_second=pool_25s['time_diff_pool_25s_second'].values[0]
+            time_diff_pool_final_second=pool_final['time_diff_pool_final_second'].values[0]
+                        
+            df=pd.DataFrame({'Date':date,'RaceNo':raceno,'race_start_time':race_start_time,'up_time_odd_25s':up_time_odd_25s,'hr1':hr1,'hr2':hr2,col_name:odd2,'pool_25s':pool_25s_value,'pool_final':pool_final_value,'time_diff_second':time_diff_second,'time_diff_pool_25s_second':time_diff_pool_25s_second,'time_diff_pool_final_second':time_diff_pool_final_second})    
+            
+
+
+            df['hr1']=df['hr1'].astype(int)
+            df['hr2']=df['hr2'].astype(int)
+            df['RaceNo']=df['RaceNo'].astype(int)
+            df['pool_25s']=df['pool_25s'].astype(float)
+            df['pool_final']=df['pool_final'].astype(float)
+
+        if (bet_type=='tri'):
+            df=pd.DataFrame([])
+            col_name=bet_type+'_odd_25s'
+
+            date=odds['date'].values[0]
+            raceno=int(odds['raceno'].values[0])
+            odd=odds['odds'].values[0]
+            odd=odd.split(';')
+            
+            hr1=[i.split("=")[0].split("-")[0] for i in odd]
+            hr2=[i.split("=")[0].split("-")[1] for i in odd]
+            hr3=[i.split("=")[0].split("-")[2] for i in odd]
+            odd2=[i.split('=')[1] for i in odd]
+            
+            pool_25s_value=pool_25s['pool_25s'].values[0]
+            pool_final_value=pool_final['pool_final'].values[0]
+
+            race_start_time=time_set_full
+            up_time_odd_25s=odds['up_time'].values[0]
+            time_diff_second=odds['time_diff_second'].values[0]
+            time_diff_pool_25s_second=pool_25s['time_diff_pool_25s_second'].values[0]
+            time_diff_pool_final_second=pool_final['time_diff_pool_final_second'].values[0]
+                        
+            df=pd.DataFrame({'Date':date,'RaceNo':raceno,'race_start_time':race_start_time,'up_time_odd_25s':up_time_odd_25s,'hr1':hr1,'hr2':hr2,'hr3':hr3,col_name:odd2,'pool_25s':pool_25s_value,'pool_final':pool_final_value,'time_diff_second':time_diff_second,'time_diff_pool_25s_second':time_diff_pool_25s_second,'time_diff_pool_final_second':time_diff_pool_final_second})    
+                        
+
+            df['hr1']=df['hr1'].astype(int)
+            df['hr2']=df['hr2'].astype(int)
+            df['hr3']=df['hr3'].astype(int)
+            df['RaceNo']=df['RaceNo'].astype(int)
+            df['pool_25s']=df['pool_25s'].astype(float)
+            df['pool_final']=df['pool_final'].astype(float)      
+            
+        if (bet_type=='ff'):
+            df=pd.DataFrame([])
+            col_name=bet_type+'_odd_25s'
+
+            date=odds['date'].values[0]
+            raceno=int(odds['raceno'].values[0])
+            odd=odds['odds'].values[0]
+            odd=odd.split(';')
+            
+            hr1=[i.split("=")[0].split("-")[0] for i in odd]
+            hr2=[i.split("=")[0].split("-")[1] for i in odd]
+            hr3=[i.split("=")[0].split("-")[2] for i in odd]
+            hr4=[i.split("=")[0].split("-")[3] for i in odd]
+            odd2=[i.split('=')[1] for i in odd]
+            
+            pool_25s_value=pool_25s['pool_25s'].values[0]
+            pool_final_value=pool_final['pool_final'].values[0]
+
+            race_start_time=time_set_full
+            up_time_odd_25s=odds['up_time'].values[0]
+            time_diff_second=odds['time_diff_second'].values[0]
+            time_diff_pool_25s_second=pool_25s['time_diff_pool_25s_second'].values[0]
+            time_diff_pool_final_second=pool_final['time_diff_pool_final_second'].values[0]
+                        
+            df=pd.DataFrame({'Date':date,'RaceNo':raceno,'race_start_time':race_start_time,'up_time_odd_25s':up_time_odd_25s,'hr1':hr1,'hr2':hr2,'hr3':hr3,'hr4':hr4,col_name:odd2,'pool_25s':pool_25s_value,'pool_final':pool_final_value,'time_diff_second':time_diff_second,'time_diff_pool_25s_second':time_diff_pool_25s_second,'time_diff_pool_final_second':time_diff_pool_final_second})    
+             
+            df['hr1']=df['hr1'].astype(int)
+            df['hr2']=df['hr2'].astype(int)
+            df['hr3']=df['hr3'].astype(int)
+            df['hr4']=df['hr4'].astype(int)
+            df['RaceNo']=df['RaceNo'].astype(int)
+            df['pool_25s']=df['pool_25s'].astype(float)
+            df['pool_final']=df['pool_final'].astype(float)            
+            
+        df.loc[df[col_name]=='SCR',col_name]='0'
+        df[col_name]=df[col_name].astype(np.float)
+        
+        if (bet_type=='win')|(bet_type=='pla'):
+            df.loc[df[col_name2]=='SCR',col_name2]='0'
+            df[col_name2]=df[col_name2].astype(np.float)
+        
+        table_name=bet_type+'_odds_25s_nice_format'
+        
+        try:
+            query='DELETE FROM '+'`'+table_name+'`'+' where date='+'"'+race_date+'"'+' and raceno='+Race_no
+            mycursor.execute(query)     
+            mydb.commit()
+        except:
+            pass
+        df.to_sql(table_name,connection_odd,if_exists='append',chunksize=1000,index=False)
+        eprint("finished odd rearrangment for ",bet_type," on",aa,'race ',bb)
+        print("finished odd rearrangment for ",bet_type," on",aa,'race ',bb)
+         
+    else:
+        eprint("odds or pool table not exist on ",aa,'race ',bb)
+        print("odds or pool table not exist on ",aa,'race ',bb)
+
+
+
+
+
+
+
+
+
+
+
+
+connection_odd_live=create_engine("mysql+psLive")  
+
+
+
+
+
+#bet_type='win'
+race_key_data=racecard.loc[(racecard['Date']>='2019-10-09'),:].copy()
+
+
+#bet_type='pla'
+#odd_start_date='2019-10-09'
+def rearrange_odd(bet_type,race_key_data,odd_start_date):
+    race_key_data=race_key_data.loc[race_key_data['Date']>=odd_start_date,:]
+    race_key_data=race_key_data.reset_index(drop=True)
+    race_key_data['Date_RaceNo']=race_key_data['Date']+'_'+race_key_data['RaceNo'].astype(str)
+    
+    output_table=bet_type+'_odds_25s_nice_format'
+    
+    query='SELECT DISTINCT Date, RaceNo from '+output_table
+    
+    #if error, means nice format table not exist
+    try:
+        sql_table=sql.read_sql(query,connection_odd)
+        sql_table=sql_table.reset_index(drop=True)  
+        
+        sql_table['Date_RaceNo']=sql_table['Date']+'_'+sql_table['RaceNo'].astype(str)
+    
+        Date_RaceNo_indb=sql_table['Date_RaceNo'].tolist()
+        
+        race_key_data['in_db']=race_key_data['Date_RaceNo'].apply(lambda x: 'yes' if x in Date_RaceNo_indb else 'no')
+        
+        #if already in nice format table, then will not do odd rearrangment
+        race_key_data=race_key_data.loc[race_key_data['in_db']=='no',:]
+        race_key_data=race_key_data.reset_index(drop=True)
+    except:
+        pass
+    
+
+    
+    i=0
+    for i in range(0,race_key_data.shape[0]):
+        row_use=race_key_data[i:i+1]
+        extract_odd(row_use['Date'].values[0],row_use['RaceNo'].values[0],row_use['race_start_time'].values[0],bet_type)
+
+
+rearrange_odd('win',race_key_data,'2019-10-09')
+rearrange_odd('pla',race_key_data,'2019-10-09')
+
+
+
+rearrange_odd('qin',race_key_data,'2019-10-09')  
+rearrange_odd('qpl',race_key_data,'2019-10-09')    #coz not enought horse, so odds or pool table not exist on  2020-06-21 race  3
+rearrange_odd('tri',race_key_data,'2019-10-09')
+rearrange_odd('ff',race_key_data,'2019-10-09')
+rearrange_odd('fct',race_key_data,'2020-09-06')    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+sys.stderr.close()
+sys.stderr = sys.__stderr__
+
+
+    
+    
+    
+    
+    
+    
+    
+    
 
 
 
